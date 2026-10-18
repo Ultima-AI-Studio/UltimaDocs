@@ -1,14 +1,14 @@
 {
   "schema": "ultima-console-queue-status-v1",
-  "updated_at": "2026-10-18T21:43:47+0800",
+  "updated_at": "2026-10-19T01:02:15+0800",
   "source": "H:\\UltimaAI\\UltimaConsole\\tasks\\queue\\console-queue-index.md",
   "executor": "Codex",
   "channel": "A",
   "product": "Ultima Console",
   "summary": {
-    "total": 15,
+    "total": 16,
     "frozen": 15,
-    "in_progress": 0,
+    "in_progress": 1,
     "blocked": 0,
     "pending": 0,
     "wip": {
@@ -160,6 +160,17 @@
       "blocked_reason": "",
       "prerequisite": "v11-n4-frozen",
       "gate": "横竖屏品牌区 Ultima+Console（accent）+工程调度管理中心，对照预览一致；证据 docs/reports/evidence/v11-brand/"
+    },
+    {
+      "id": "wo-console-v11-n6",
+      "milestone": "v1.1-N6 悬浮球扫光动画模拟器渲染层排查",
+      "tasks": "T0-T2",
+      "state": "in_progress",
+      "status": "**执行中（2026-10-19 派发 Codex；背景：动画状态驱动正常（hilog 证实 step 1-14 每 100ms），但模拟器截图 20 轮验证扫光条未渲染——7 种实现路径穷举；根因疑点：渲染层/抓帧层/状态触发/合成层）**",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "v11-n5-frozen",
+      "gate": "根因明确+修复后模拟器截图/录像可证动画运行（或真机路径声明）+无 UI 回归；证据 docs/reports/stage-v11-n6.md"
     },
     {
       "id": "wo-console-v11-ic",
