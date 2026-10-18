@@ -1,0 +1,187 @@
+{
+  "schema": "ultima-console-queue-status-v1",
+  "updated_at": "2026-10-18T21:43:47+0800",
+  "source": "H:\\UltimaAI\\UltimaConsole\\tasks\\queue\\console-queue-index.md",
+  "executor": "Codex",
+  "channel": "A",
+  "product": "Ultima Console",
+  "summary": {
+    "total": 15,
+    "frozen": 15,
+    "in_progress": 0,
+    "blocked": 0,
+    "pending": 0,
+    "wip": {
+      "executing": 0,
+      "audit": 0
+    }
+  },
+  "blocked_items": [],
+  "queue": [
+    {
+      "id": "wo-console-m1",
+      "milestone": "M1 数据链路",
+      "tasks": "T0-T6",
+      "state": "frozen",
+      "status": "已完成（T0-T6 PASS；m1-frozen）",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "—",
+      "gate": "断网可读最近一次有效状态，不白屏"
+    },
+    {
+      "id": "wo-console-m2",
+      "milestone": "M2 仪表盘容器",
+      "tasks": "T0-T3",
+      "state": "frozen",
+      "status": "已完成（m2-frozen）",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "m1-frozen",
+      "gate": "一屏可读全产品状态（判据已参数化）"
+    },
+    {
+      "id": "wo-console-m3",
+      "milestone": "M3 产品钻取",
+      "tasks": "T0-T4",
+      "state": "frozen",
+      "status": "已完成（m3-frozen）",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "m2-frozen",
+      "gate": "3 步内到达工单/审计层（固定路径）"
+    },
+    {
+      "id": "wo-console-m4",
+      "milestone": "M4 审计与评分",
+      "tasks": "T0-T5",
+      "state": "frozen",
+      "status": "已完成（m4-frozen）",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "m3-frozen",
+      "gate": "评分偏移可算可显示（§5.5 金样本）"
+    },
+    {
+      "id": "wo-console-m5",
+      "milestone": "M5 双通道+预警",
+      "tasks": "T0-T3",
+      "state": "frozen",
+      "status": "已完成（m5-frozen）",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "m4-frozen",
+      "gate": "通道分栏正确，达阈值提示（§6.4 样例）"
+    },
+    {
+      "id": "wo-console-m6",
+      "milestone": "M6 审批流+小助手",
+      "tasks": "T0-T4",
+      "state": "frozen",
+      "status": "已完成（m6-frozen）",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "m5-frozen",
+      "gate": "决策闭环率回执 ≥80%（样本口径固定）"
+    },
+    {
+      "id": "wo-console-m7",
+      "milestone": "M7 旋转布局",
+      "tasks": "T0-T3",
+      "state": "frozen",
+      "status": "已完成（m7-frozen）",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "m6-frozen",
+      "gate": "两方向均无布局破坏（5 页×2 方向矩阵）"
+    },
+    {
+      "id": "wo-console-m8",
+      "milestone": "M8 验收+发布",
+      "tasks": "T0-T4",
+      "state": "frozen",
+      "status": "已完成（`m8-frozen` / `v1.0.0`）",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "m7-frozen",
+      "gate": "DoD 项目级通过、缺陷清零、埋点可采"
+    },
+    {
+      "id": "wo-console-v11-n1",
+      "milestone": "v1.1-N1 导航与全局框架",
+      "tasks": "T0-T4",
+      "state": "frozen",
+      "status": "已完成（T0-T4 PASS；`v11-n1-frozen`，2026-10-18；closeout 2026-10-18：8 receipts + E1 waiver）",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "v1.0.0",
+      "gate": "导航 2 项/竖屏平滑过渡/滑动切标签/标题右对齐+分割线/无滚动条（focused 8/8 + signed HAP + 设备截图）"
+    },
+    {
+      "id": "wo-console-v11-n2",
+      "milestone": "v1.1-N2 产品卡片与详情整合",
+      "tasks": "T0-T4",
+      "state": "frozen",
+      "status": "已完成（修正 2026-10-18 验证通过；`v11-n2-frozen`；closeout 2026-10-18：7 receipts + tag）",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "v11-n1-frozen",
+      "gate": "卡片精简+布局（横屏 4 列/竖屏 3 列/三行结构/页头右对齐+分割线/分组计数）/详情三标签/任务队列并入/头部精简/分组字号 20；修正证据 fix-layout-landscape/portrait.jpeg"
+    },
+    {
+      "id": "wo-console-v11-n3",
+      "milestone": "v1.1-N3 悬浮球与动效",
+      "tasks": "T0-T4",
+      "state": "frozen",
+      "status": "已完成（14/14 Gate PASS，2026-10-18；`v11-n3-frozen`；closeout 2026-10-18：横屏 CLOSED、录像 **CLOSED**（n3-sweep-animation.mp4 帧序列合成））",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "v11-n2-frozen",
+      "gate": "拖动(8px 阈值)/旋转回位 60vp/头盔 logo+镜片推光同框锁死 108vp（无圆底无呼吸灯）/审批浮窗 blur(6px)+球隐藏/动画 1.2s 仅首播（含旋转不重播）；证据 docs/reports/evidence/v11-fab/"
+    },
+    {
+      "id": "wo-console-v11-n4",
+      "milestone": "v1.1-N4 全局视觉主题落地",
+      "tasks": "T0-T5",
+      "state": "frozen",
+      "status": "已完成（14/14 Gate PASS，2026-10-18；`v11-n4-frozen`；closeout 2026-10-18：签名/真竖屏/portrait gate CLOSED，T5 录像 **CLOSED**（t5-splash-recording.mp4 帧序列合成））",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "v11-n3-frozen",
+      "gate": "深色主题 tokens 全量替换（底/面板/浮层三档、文字六档、语义色、圆角三档、对比度回归）+ 品牌启动页（自定义首帧+星星闪烁全程+镜片推光 1.5s+整体渐隐 0.5s，总 2s 进主界面）"
+    },
+    {
+      "id": "wo-console-v11-n5",
+      "milestone": "v1.1-N5 品牌区落地",
+      "tasks": "T0-T2",
+      "state": "frozen",
+      "status": "已完成（3/3 Gate PASS + signed HAP 构建成功，2026-10-18；`v11-n5-frozen`；closeout 2026-10-18：tag verified）",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "v11-n4-frozen",
+      "gate": "横竖屏品牌区 Ultima+Console（accent）+工程调度管理中心，对照预览一致；证据 docs/reports/evidence/v11-brand/"
+    },
+    {
+      "id": "wo-console-v11-ic",
+      "milestone": "v1.1 应用图标落地",
+      "tasks": "—",
+      "state": "frozen",
+      "status": "已完成（豆包直接落地，2026-10-18）",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "—",
+      "gate": "头盔 logo 替换占位图标：AppScope 应用图标 + entry 启动图标，引用无冲突（旧 SVG 归档 ops/archive）"
+    },
+    {
+      "id": "v11-datachannel",
+      "milestone": "v1.1 真实数据通道接入（ADR-002 GitHub 桥）",
+      "tasks": "排障 12 轮",
+      "state": "frozen",
+      "status": "**已闭环（2026-10-18 13:30 首屏五卡 1/1/0/0/2 截图确认）**",
+      "blocked": false,
+      "blocked_reason": "",
+      "prerequisite": "v11-n5-frozen",
+      "gate": "token 注入→GitHub http=200→RDB 快照→load 回调→首屏渲染全链路日志+截图；排障结论 docs/reports/stage-v11-datachannel-closeout.md"
+    }
+  ]
+}
