@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultima Console · UI 视觉预览 v0.1</title>
+<style>
+:root{
+  --bg:#0F1420; --surface:#161D2C; --elevated:#1E2A3D;
+  --text:#E6EAF2; --sub:#9AA3B8; --accent:#3D7EFF; --danger:#E5484D;
+  --warn:#F59E0B; --ok:#22C55E; --line:#2A3550;
+  --codex:#3D7EFF; --deepseek:#8B7CF6;
+  --r-card:12px; --r-ctl:8px; --r-tag:4px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0A0E16;color:var(--text);font-family:"HarmonyOS Sans","HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;min-height:100vh;}
+.head{max-width:1760px;margin:0 auto;padding:24px 32px 8px;}
+.head h1{font-size:24px;font-weight:600;letter-spacing:.5px;}
+.head p{color:var(--sub);font-size:14px;margin-top:6px;}
+.tabs{display:flex;gap:8px;margin:16px 32px;max-width:1760px;}
+.tab{background:var(--surface);border:1px solid var(--line);color:var(--sub);border-radius:var(--r-ctl);padding:8px 18px;font-size:14px;cursor:pointer;transition:.15s;}
+.tab:hover{border-color:var(--accent);color:var(--text);}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+.view{display:none;max-width:2560px;margin:0 auto;padding:0 0 48px;zoom:0.336;}
+.view.show{display:block;}
+.device{background:var(--bg);border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+
+/* ============ 启动页动效演示 ============ */
+.sdemo{background:var(--bg);border-radius:var(--r-card);overflow:hidden;border:1px solid var(--line);}
+.sdemo-in{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;background:radial-gradient(circle at 50% 42%,#1E2A3D 0%,#0F1420 60%);}
+.sstar{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 4px rgba(255,255,255,.8);animation:twinkle 3s ease-in-out infinite;}
+@keyframes twinkle{0%,100%{opacity:.12;}50%{opacity:.95;}}
+.shelmet{position:absolute;left:50%;top:calc(24% + 42px);width:17%;transform:translateX(-50%);}
+.slight{position:absolute;left:50%;top:calc(24% + 42px);width:17%;height:27.2%;transform:translateX(-50%);clip-path:ellipse(31% 23% at 50.8% 51.5%);overflow:hidden;mix-blend-mode:screen;}
+.slight::after{content:'';position:absolute;top:-25%;bottom:-25%;left:-80%;width:60%;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.1) 24%,rgba(255,255,255,.7) 49%,rgba(255,255,255,.7) 51%,rgba(255,255,255,.1) 76%,transparent 100%);transform:skewX(-18deg);animation:sweep 1.5s ease-in-out infinite;-webkit-mask:linear-gradient(to bottom,transparent 0%,#000 49.7%,#000 50.3%,transparent 100%);mask:linear-gradient(to bottom,transparent 0%,#000 49.7%,#000 50.3%,transparent 100%);}
+@keyframes sweep{0%{left:-90%;opacity:0;}10%{left:-72%;opacity:1;}80%{left:150%;opacity:1;}100%{left:150%;opacity:0;}}
+.sbrand{position:absolute;left:0;right:0;top:calc(54% + 12px);text-align:center;font-size:48px;font-weight:700;color:var(--text);letter-spacing:.5px;}
+.sbrand span{color:var(--accent);}
+.ssub{position:absolute;left:0;right:0;top:calc(65% - 38px);text-align:center;font-size:26px;color:var(--sub);letter-spacing:1px;}
+.sver{position:absolute;left:0;right:0;top:92%;text-align:center;font-size:12px;color:#78849E;letter-spacing:2px;}
+
+/* ============ 启动页竖屏动效 ============ */
+.sdemo-v{max-width:420px;margin:0 auto;}
+.sdemo-in-v{position:relative;width:100%;aspect-ratio:10/16;overflow:hidden;background:radial-gradient(circle at 50% 40%,#1E2A3D 0%,#0F1420 60%);}
+.vsstar{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 4px rgba(255,255,255,.8);animation:twinkle 3s ease-in-out infinite;}
+.vshelmet{position:absolute;left:50%;top:calc(20% + 20px);width:34%;transform:translateX(-50%);}
+.vslight{position:absolute;left:50%;top:calc(20% + 20px);width:34%;height:21.25%;transform:translateX(-50%);clip-path:ellipse(31% 23% at 50.8% 51.5%);overflow:hidden;mix-blend-mode:screen;}
+.vslight::after{content:'';position:absolute;top:-25%;bottom:-25%;left:-80%;width:60%;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.1) 24%,rgba(255,255,255,.7) 49%,rgba(255,255,255,.7) 51%,rgba(255,255,255,.1) 76%,transparent 100%);transform:skewX(-18deg);animation:sweep 1.5s ease-in-out infinite;-webkit-mask:linear-gradient(to bottom,transparent 0%,#000 49.7%,#000 50.3%,transparent 100%);mask:linear-gradient(to bottom,transparent 0%,#000 49.7%,#000 50.3%,transparent 100%);}
+.vsbrand{position:absolute;left:0;right:0;top:44.1%;text-align:center;font-size:24px;font-weight:700;color:var(--text);letter-spacing:.5px;}
+.vsbrand span{color:var(--accent);}
+.vssub{position:absolute;left:0;right:0;top:49%;text-align:center;font-size:13px;color:var(--sub);letter-spacing:1px;}
+.vsver{position:absolute;left:0;right:0;top:92%;text-align:center;font-size:11px;color:#78849E;letter-spacing:2px;}
+
+/* ============ 启动→首页过渡演示 ============ */
+.sdemo-trans{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:var(--r-card);background:var(--bg);border:1px solid var(--line);}
+.tr-splash{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:trSplash 4s linear infinite;}
+.tr-home{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0F1420 0%,#161D2C 100%);opacity:0;animation:trHome 4s linear infinite;}
+.tr-home-inner{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;}
+.tr-home-title{font-size:30px;font-weight:600;color:var(--text);}
+.tr-home-sub{font-size:15px;color:var(--sub);}
+.tr-home-bar{width:320px;height:10px;background:var(--elevated);border-radius:5px;overflow:hidden;}
+.tr-home-bar i{display:block;height:100%;width:60%;background:var(--accent);border-radius:5px;}
+@keyframes trSplash{0%,37.5%{opacity:1;}50%{opacity:0;}100%{opacity:0;}}
+@keyframes trHome{0%,42%{opacity:0;}48%{opacity:1;}100%{opacity:1;}}
+
+/* ============ 横屏 2560 ============ */
+.hz{display:flex;width:1280px;height:800px;position:relative;zoom:2;}
+.side{width:230px;background:var(--surface);border-right:1px solid var(--line);padding:24px 16px;display:flex;flex-direction:column;gap:6px;}
+.logo{font-size:24px;font-weight:700;padding:0 12px 4px;color:var(--text);}
+.logo span{color:var(--accent);}
+.logo-sub{font-size:14px;color:var(--sub);padding:0 12px 20px;letter-spacing:1px;}
+.mi{display:flex;align-items:center;gap:12px;padding:20px 12px;min-height:64px;border-radius:var(--r-ctl);font-size:16px;color:var(--sub);cursor:pointer;position:relative;}
+.mi .dot{display:none;}
+.mi.on{background:var(--elevated);color:var(--text);}
+.mi.on::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 2px 2px 0;background:var(--accent);}
+.mi.on{background:var(--elevated);color:var(--text);}
+.mi.on b{color:var(--accent);}
+.mi .dot{width:8px;height:8px;border-radius:50%;}
+.mi.on .dot{background:var(--accent);}
+.badge{margin-left:auto;background:var(--danger);color:#fff;font-size:12px;border-radius:10px;padding:1px 8px;}
+.main{flex:1;padding:28px 32px;overflow:auto;}
+/* Pad 触屏滑动：隐藏滚动条（触屏/滚轮仍可滑动） */
+*::-webkit-scrollbar{width:0;height:0;display:none;}
+*{scrollbar-width:none;-ms-overflow-style:none;}
+.page-t{font-size:32px;font-weight:600;margin-bottom:6px;}
+.page-s{color:var(--sub);font-size:14px;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--line);}
+.board{font-size:20px;font-weight:600;color:var(--text);margin:28px 0 16px;display:flex;align-items:center;gap:10px;}
+.board .cnt{font-size:14px;color:var(--sub);font-weight:400;}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:20px;cursor:pointer;transition:.15s;position:relative;}
+.card:hover{transform:translateY(-2px);border-color:var(--accent);}
+.card:active{transform:scale(.985);}
+.c-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.c-name{font-size:24px;font-weight:600;}
+.tag{font-size:12px;font-weight:500;border-radius:var(--r-tag);padding:3px 8px;background:var(--elevated);}
+.tag.c{color:var(--codex);border:1px solid var(--codex);}
+.tag.d{color:var(--deepseek);border:1px solid var(--deepseek);}
+.c-score{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.c-num{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;}
+.c-off{font-size:14px;border-radius:var(--r-tag);padding:2px 8px;}
+.off-ok{color:var(--ok);background:rgba(34,197,94,.12);}
+.off-ng{color:var(--warn);background:rgba(245,158,11,.12);}
+.c-state{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:14px;color:var(--sub);}
+.blk{color:var(--danger);}
+.pend{margin-left:auto;background:var(--danger);color:#fff;font-size:12px;border-radius:10px;padding:1px 8px;}
+.stage{font-size:12px;color:var(--sub);margin-top:6px;}
+
+/* ============ 总览 ============ */
+.ov{background:var(--bg);border:1px solid var(--line);border-radius:var(--r-card);padding:40px 48px;min-height:900px;}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:40px;}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:20px;}
+.kpi .n{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;}
+.kpi .l{font-size:14px;color:var(--sub);margin-top:6px;}
+.kpi.hot .n{color:var(--danger);}
+.sec-t{font-size:24px;font-weight:600;margin:32px 0 16px;}
+.rows{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden;}
+.row{display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:16px;}
+.row:last-child{border-bottom:none;}
+.row .nm{width:220px;font-weight:500;}
+.row .sc{width:80px;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;}
+.row .bar{flex:1;height:8px;background:var(--elevated);border-radius:4px;overflow:hidden;}
+.row .bar i{display:block;height:100%;background:var(--accent);border-radius:4px;}
+.row .off{font-size:14px;border-radius:var(--r-tag);padding:2px 8px;}
+.alert-row{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:16px;background:var(--surface);}
+.alert-row:last-child{border-bottom:none;}
+.a-tag{font-size:12px;border-radius:var(--r-tag);padding:3px 8px;font-weight:500;}
+.a-w{color:var(--warn);background:rgba(245,158,11,.12);}
+.a-d{color:var(--danger);background:rgba(229,72,77,.12);}
+
+/* ============ 连接状态 ============ */
+.conn-box{display:grid;grid-template-columns:auto auto auto;row-gap:6px;column-gap:14px;align-items:center;justify-content:end;}
+.side .conn-box{margin-top:auto;justify-content:start;padding-top:16px;border-top:1px solid var(--line);}
+.conn-row{display:contents;}
+.conn-row .cn{font-weight:500;color:var(--text);justify-self:start;font-size:14px;}
+.conn-row .role{font-size:13px;justify-self:end;}
+.role-ctl{color:var(--deepseek);}
+.role-dev{color:var(--codex);}
+.conn-row .st{font-size:12px;border-radius:var(--r-tag);padding:1px 8px;font-weight:500;justify-self:start;display:flex;align-items:center;gap:6px;}
+.conn-row .st i{width:7px;height:7px;border-radius:50%;}
+.conn-row .st.ok{color:var(--ok);background:rgba(34,197,94,.12);}
+.conn-row .st.ok i{background:var(--ok);}
+.conn-row .st.run{color:var(--warn);background:rgba(245,158,11,.12);}
+.conn-row .st.run i{background:var(--warn);}
+
+/* ============ 审批弹窗 ============ */
+.ap{background:var(--bg);border:1px solid var(--line);border-radius:var(--r-card);padding:48px;min-height:900px;display:flex;flex-direction:column;justify-content:flex-start;position:relative;width:1280px;zoom:2;}
+#v-splash .device{width:1280px;zoom:2;}
+.fab{position:absolute;right:60px;bottom:60px;width:108px;height:108px;border-radius:50%;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.fab .n{position:absolute;top:-6px;right:-6px;background:var(--danger);color:#fff;font-size:14px;border-radius:14px;padding:2px 9px;font-weight:600;z-index:2;}
+.fab-logo{position:absolute;inset:0;border-radius:50%;overflow:hidden;}
+.fab-logo img{width:100%;height:100%;object-fit:cover;display:block;}
+.fab-sweep{position:absolute;inset:0;clip-path:ellipse(31% 23% at 50.8% 51.5%);overflow:hidden;mix-blend-mode:screen;}
+.fab-sweep::after{content:'';position:absolute;top:-25%;bottom:-25%;left:-80%;width:60%;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.1) 24%,rgba(255,255,255,.7) 49%,rgba(255,255,255,.7) 51%,rgba(255,255,255,.1) 76%,transparent 100%);transform:skewX(-18deg);animation:sweep 1.5s ease-in-out infinite;-webkit-mask:linear-gradient(to bottom,transparent 0%,#000 49.7%,#000 50.3%,transparent 100%);mask:linear-gradient(to bottom,transparent 0%,#000 49.7%,#000 50.3%,transparent 100%);}
+.dlg{background:var(--elevated);border:1px solid var(--line);border-radius:var(--r-card);padding:28px;box-shadow:0 24px 80px rgba(0,0,0,.55);}
+.dlg-t{display:flex;align-items:center;justify-content:space-between;font-size:24px;font-weight:600;margin-bottom:4px;}
+.dlg-src{font-size:14px;color:var(--sub);margin-bottom:20px;}
+.dlg-sec{font-size:16px;line-height:1.7;color:var(--text);margin-bottom:16px;}
+.dlg-sec b{color:var(--accent);font-weight:600;}
+.dlg-sec .src{color:var(--sub);}
+.ai{background:var(--bg);border:1px solid var(--line);border-radius:var(--r-ctl);padding:16px 18px;font-size:15px;line-height:1.7;color:var(--text);margin-bottom:20px;}
+.ai .ai-t{font-size:14px;color:var(--accent);font-weight:600;margin-bottom:6px;}
+.impact{margin-top:10px;color:var(--sub);font-size:14px;}
+.btns{display:flex;gap:12px;justify-content:flex-end;}
+.btn{border:none;border-radius:var(--r-ctl);padding:12px 28px;font-size:16px;cursor:pointer;font-weight:500;}
+.btn.ok{background:var(--accent);color:#fff;}
+.btn.no{background:var(--danger);color:#fff;}
+.btn.ghost{background:transparent;color:var(--sub);border:1px solid var(--line);}
+
+/* ============ 竖屏 1600 ============ */
+.vp{width:800px;min-height:1280px;max-width:100%;margin:0 auto;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);zoom:2;}
+.vhead{display:flex;align-items:center;gap:16px;padding:12px 20px;background:var(--surface);}
+.vleft{display:flex;flex-direction:column;gap:14px;flex:1;}
+.vbrand{display:flex;flex-direction:column;gap:1px;}
+.vbrand-logo{font-size:24px;font-weight:700;color:var(--text);}
+.vbrand-logo span{color:var(--accent);}
+.vbrand-sub{font-size:14px;color:var(--sub);letter-spacing:1px;}
+.vnav{display:flex;gap:10px;justify-content:flex-start;}
+.vconn{display:grid;grid-template-columns:auto auto auto;row-gap:4px;column-gap:12px;margin-left:auto;align-items:center;flex-shrink:0;}
+.vc{display:contents;}
+.vc .cn{font-weight:500;color:var(--text);justify-self:start;font-size:14px;}
+.vc .role{font-size:13px;justify-self:end;}
+.vc .st{font-size:12px;display:flex;align-items:center;gap:5px;justify-self:start;border-radius:var(--r-tag);padding:1px 8px;font-weight:500;}
+.vc .st i{width:6px;height:6px;border-radius:50%;}
+.vc .st.ok{color:var(--ok);background:rgba(34,197,94,.12);}
+.vc .st.ok i{background:var(--ok);}
+.vc .st.run{color:var(--warn);background:rgba(245,158,11,.12);}
+.vc .st.run i{background:var(--warn);}
+.vp{position:relative;}
+.vp .fab{position:absolute;right:60px;bottom:60px;width:108px;height:108px;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;}
+.vp .fab .n{position:absolute;top:-3px;right:-3px;background:var(--danger);color:#fff;font-size:16px;border-radius:16px;padding:2px 10px;font-weight:600;z-index:2;}
+.hz .fab{position:absolute;right:60px;bottom:60px;width:108px;height:108px;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;}
+.hz .fab .n{position:absolute;top:-3px;right:-3px;background:var(--danger);color:#fff;font-size:16px;border-radius:16px;padding:2px 10px;font-weight:600;z-index:2;}
+.ap-bubble{position:absolute;right:60px;bottom:148px;width:340px;max-width:calc(100vw - 140px);max-height:420px;overflow-y:auto;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-card);box-shadow:0 16px 40px rgba(0,0,0,.55);z-index:30;padding:16px 18px;}
+.ap-bubble::-webkit-scrollbar{width:4px;}
+.ap-bubble::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px;}
+.ap-bubble::after{content:'';position:absolute;bottom:-9px;right:100px;border-left:9px solid transparent;border-right:9px solid transparent;border-top:9px solid var(--bg);}
+.ap-bubble .ab-t{display:flex;align-items:center;justify-content:space-between;font-size:16px;font-weight:600;margin-bottom:2px;}
+.ap-bubble .ab-s{font-size:12px;color:var(--sub);font-weight:400;}
+.ap-bubble .ab-sec{font-size:13px;font-weight:600;color:var(--accent);margin:12px 0 6px;}
+.ap-bubble .ab-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;padding:8px 10px;border-radius:var(--r-ctl);background:var(--surface);border:1px solid var(--line);margin-bottom:6px;line-height:1.5;cursor:pointer;transition:.12s;}
+.ap-bubble .ab-item:hover{border-color:var(--accent);}
+.ap-bubble .ab-item .a-tag{flex-shrink:0;margin-top:1px;}
+.ap-bubble .ab-item span:last-child{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all;}
+.ap-bubble .ab-hint{font-size:12px;color:var(--sub);margin-top:10px;}
+.ap-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-start;justify-content:center;padding:48px;z-index:40;overflow-y:auto;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+.ap-card{width:720px;max-width:100%;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-card);padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.6);}
+.ap-card-t{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:600;margin-bottom:4px;}
+.ap-card-s{font-size:13px;color:var(--sub);font-weight:400;}
+.ap-close{margin-left:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-ctl);padding:6px 16px;font-size:13px;cursor:pointer;color:var(--sub);}
+.ap-close:hover{border-color:var(--accent);color:var(--text);}
+.ap-sec{font-size:14px;font-weight:600;color:var(--accent);margin:16px 0 8px;}
+.ap-item{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);margin-bottom:10px;overflow:hidden;}
+.ap-item-head{display:flex;align-items:center;gap:12px;padding:14px 18px;font-size:15px;cursor:pointer;}
+.ap-item-head .a-tag{flex-shrink:0;}
+.ap-arrow{margin-left:auto;color:var(--sub);transition:.2s;}
+.ap-item.open .ap-arrow{transform:rotate(90deg);}
+.ap-item-body{display:none;padding:0 18px 16px;}
+.ap-item.open .ap-item-body{display:block;}
+.ap-sum{font-size:14px;line-height:1.7;color:var(--text);}
+.ap-impact{margin-top:8px;font-size:13px;color:var(--sub);}
+.ap-ops{display:flex;gap:10px;margin-top:14px;}
+.ap-ops .btn{border:none;border-radius:var(--r-ctl);padding:8px 22px;font-size:14px;cursor:pointer;font-weight:500;}
+.ap-ops .b-ok{background:var(--accent);color:#fff;}
+.ap-ops .b-no{background:transparent;border:1px solid var(--line);color:var(--sub);}
+.ap-item.ap-done{opacity:.55;}
+.ap-item.ap-done .ap-ops{display:none;}
+.ap-item .ap-done-tag{margin-left:12px;font-size:12px;color:var(--accent);}
+.vmi{font-size:16px;color:var(--sub);padding:20px 34px;min-height:64px;border-radius:var(--r-ctl);cursor:pointer;text-align:center;position:relative;transition:color .25s,background .25s;}
+.vmi b{display:none;}
+.vmi::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--accent);border-radius:2px 2px 0 0;opacity:0;transform:scaleX(0);transition:opacity .25s,transform .25s;}
+.vmi.on{color:var(--text);background:var(--elevated);}
+.vnav .vmi.on::after{opacity:1;transform:scaleX(1);}
+.vbody{padding:24px 20px;}
+.vp .kpis{grid-template-columns:repeat(5,1fr);gap:10px;}
+.vp .kpi{padding:10px;height:96px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
+.vp .kpi .n{font-size:28px;}
+.vp .kpi .l{font-size:14px;margin-top:4px;}
+.vp .rows .nm{width:150px;font-size:16px;}
+.vp .rows .sc{font-size:20px;width:60px;}
+.vp .sec-t{font-size:24px;margin:24px 0 12px;}
+.vcards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.vcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:16px;}
+.vcard .c-name{font-size:24px;}
+.vcard .c-num{font-size:28px;}
+.vcard .c-off{font-size:14px;}
+.vc .cn{font-size:14px;}
+.vc .role{font-size:13px;}
+.vc .st{font-size:12px;}
+.vmi{font-size:16px;}
+.vtop .fab{position:static;margin-left:auto;width:48px;height:48px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;}
+.vtop .fab .n{position:absolute;top:-4px;right:-4px;background:var(--danger);color:#fff;font-size:11px;border-radius:10px;padding:1px 6px;}
+
+/* ============ 任务队列 ============ */
+.wo-stat{display:flex;gap:16px;margin-bottom:24px;}
+.wo-k{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:14px 20px;display:flex;align-items:baseline;gap:10px;}
+.wo-k .n{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;}
+.wo-k .l{font-size:14px;color:var(--sub);}
+.wo-group{font-size:20px;font-weight:600;margin:20px 0 12px;color:var(--text);}
+.wo-list{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden;margin-bottom:8px;}
+.wo-row{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid var(--line);cursor:pointer;transition:.12s;font-size:15px;}
+.wo-row:hover{background:var(--elevated);}
+.wo-row:last-child{border-bottom:none;}
+.wo-id{font-family:ui-monospace,Consolas,monospace;font-size:13px;color:var(--sub);width:150px;flex-shrink:0;}
+.wo-title{font-weight:500;flex:1;color:var(--text);}
+.wo-meta{color:var(--sub);font-size:13px;width:130px;text-align:right;flex-shrink:0;}
+.st-badge{font-size:12px;border-radius:var(--r-tag);padding:3px 10px;font-weight:500;flex-shrink:0;}
+.st-run{color:var(--codex);background:rgba(61,126,255,.12);}
+.st-wait{color:var(--warn);background:rgba(245,158,11,.12);}
+.st-done{color:var(--ok);background:rgba(34,197,94,.12);}
+.wo-arrow{color:var(--sub);font-size:12px;flex-shrink:0;transition:.2s;}
+.wo-row.open .wo-arrow{transform:rotate(90deg);}
+.wo-units{display:none;background:var(--bg);border-top:1px solid var(--line);padding:8px 20px 16px;}
+.wo-row.open+.wo-units{display:block;}
+.wu{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-ctl);font-size:14px;}
+.wu:hover{background:var(--elevated);}
+.wu .t{flex:1;color:var(--text);}
+.wu .v{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--sub);width:90px;text-align:right;}
+.wu-st{display:flex;align-items:center;gap:6px;font-size:12px;width:80px;flex-shrink:0;}
+.wu-st i{width:7px;height:7px;border-radius:50%;}
+.wu-st.run{color:var(--codex);} .wu-st.run i{background:var(--codex);}
+.wu-st.done{color:var(--ok);} .wu-st.done i{background:var(--ok);}
+.wu-st.todo{color:var(--sub);} .wu-st.todo i{background:var(--line);}
+.wu-st.blk{color:var(--danger);} .wu-st.blk i{background:var(--danger);}
+.wu .rl{font-size:12px;color:var(--sub);width:70px;text-align:right;flex-shrink:0;}
+
+/* ============ 文档库 ============ */
+.doc-t{font-size:20px;font-weight:600;margin:20px 0 12px;color:var(--text);}
+.doc-t .cnt{font-size:13px;color:var(--sub);font-weight:400;}
+.doc-list{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden;margin-bottom:8px;}
+.doc-row{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--line);cursor:pointer;transition:.12s;font-size:15px;flex-wrap:wrap;}
+.doc-row:hover{background:var(--elevated);}
+.doc-row:last-child{border-bottom:none;}
+.doc-expand{display:none;padding:14px 20px 16px;background:var(--bg);border-top:1px dashed var(--line);font-size:13px;color:var(--sub);line-height:1.7;}
+.doc-row.open .doc-arrow{transform:rotate(90deg);}
+.de-sum{color:var(--text);font-size:14px;}
+.de-foot{display:flex;align-items:center;gap:14px;margin-top:10px;}
+.doc-type{font-size:12px;border-radius:var(--r-tag);padding:3px 10px;font-weight:500;flex-shrink:0;width:52px;text-align:center;order:0;}
+.dt-plan{color:var(--codex);background:rgba(61,126,255,.12);}
+.dt-intro{color:#38BDF8;background:rgba(56,189,248,.12);}
+.dt-arch{color:var(--deepseek);background:rgba(139,124,246,.12);}
+.dt-rpt{color:var(--warn);background:rgba(245,158,11,.12);}
+.doc-name{font-weight:500;flex:0 1 auto;margin-right:12px;color:var(--text);order:1;}
+.doc-ver{font-family:ui-monospace,Consolas,monospace;font-size:13px;color:var(--sub);width:70px;flex-shrink:0;order:3;margin-left:auto;}
+.doc-src{font-size:12px;color:var(--sub);border:1px solid var(--line);border-radius:var(--r-tag);padding:2px 8px;flex-shrink:0;order:2;}
+.doc-time{font-size:12px;color:var(--sub);width:90px;text-align:right;flex-shrink:0;order:5;}
+.doc-arrow{color:var(--sub);font-size:12px;flex-shrink:0;order:6;}
+.doc-row .st-badge{order:4;}
+
+/* ============ 产品详情（标签组） ============ */
+.crumb{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--sub);margin-bottom:18px;}
+.crumb a{color:var(--sub);cursor:pointer;}
+.crumb a:hover{color:var(--accent);}
+.crumb .sep{color:var(--line);}
+.crumb .now{color:var(--text);}
+.phead{display:flex;align-items:center;gap:20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:24px 28px;margin-bottom:20px;}
+.pname{font-size:28px;font-weight:700;}
+.pmeta{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:14px;color:var(--sub);}
+.pscore{margin-left:auto;text-align:right;}
+.pscore .n{font-size:36px;font-weight:700;font-variant-numeric:tabular-nums;}
+.pscore .l{font-size:13px;font-weight:500;color:var(--ok);background:rgba(34,197,94,.12);padding:3px 10px;border-radius:var(--r-tag);display:inline-block;}
+.psum{flex:1;max-width:420px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-ctl);padding:12px 16px;font-size:14px;line-height:1.6;color:var(--text);}
+.psum .ai-t{font-size:12px;color:var(--accent);font-weight:600;margin-bottom:4px;}
+.ptabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:20px;}.ptab{padding:12px 22px;font-size:16px;color:var(--sub);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.ptab:hover{color:var(--text);}
+.ptab.on{color:var(--text);border-bottom-color:var(--accent);font-weight:500;}
+.pbody{display:none;}
+.pbody.show{display:block;}
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.pintro{font-size:15px;line-height:1.85;color:var(--text);}
+.pintro p{margin:0 0 14px;}
+.info{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:20px;}
+.info .k{font-size:13px;color:var(--sub);margin-bottom:8px;}
+.info .v{font-size:18px;color:var(--text);line-height:1.6;}
+.place{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:20px;font-size:15px;color:var(--sub);line-height:1.7;}
+
+/* ============ 悬浮球小助手弹窗 ============ */
+.ap-item{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);margin-bottom:12px;overflow:hidden;}
+.ap-item-head{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;}
+.ap-item-head:hover{background:var(--elevated);}
+.ap-itype{font-size:12px;border-radius:var(--r-tag);padding:3px 10px;font-weight:500;flex-shrink:0;}
+.ap-itype.plan{color:var(--codex);background:rgba(61,126,255,.12);}
+.ap-itype.adv{color:var(--warn);background:rgba(245,158,11,.12);}
+.ap-itype.node{color:var(--deepseek);background:rgba(139,124,246,.12);}
+.ap-title{flex:1;font-size:16px;font-weight:500;color:var(--text);}
+.ap-src{font-size:12px;color:var(--sub);flex-shrink:0;}
+.ap-x{color:var(--sub);font-size:12px;flex-shrink:0;transition:.2s;}
+.ap-item.open .ap-x{transform:rotate(90deg);}
+.ap-body{display:none;padding:0 20px 18px;border-top:1px solid var(--line);}
+.ap-item.open .ap-body{display:block;}
+.ap-sum{font-size:14px;line-height:1.7;color:var(--text);padding:12px 0 4px;}
+.ap-impact{font-size:13px;color:var(--sub);line-height:1.6;padding-bottom:12px;}
+.ap-ops{display:flex;gap:10px;justify-content:flex-end;padding-top:4px;}
+.ap-ops .btn{padding:8px 20px;font-size:14px;}
+.ap-done .ap-item-head{opacity:.45;}
+.ap-done .ap-ops{display:none;}
+.ap-done-tag{margin-left:auto;font-size:12px;color:var(--ok);border:1px solid var(--ok);border-radius:var(--r-tag);padding:2px 8px;flex-shrink:0;}
+.foot{max-width:1760px;margin:0 auto;padding:0 32px 40px;color:var(--sub);font-size:13px;line-height:1.8;}
+.foot b{color:var(--text);}
+</style>
+</head>
+<body>
+
+<div class="head">
+  <h1>Ultima Console · UI 视觉预览 v0.1</h1>
+  <p>基于 UI 方案 v0.1 tokens（深色监督工作台）· 鸿蒙 MatePad mini · 可旋转 · 待你确认效果后冻结</p>
+</div>
+
+<div class="tabs" id="tabs">
+  <div class="tab" data-v="splash">启动页</div>
+  <div class="tab" data-v="hz">横屏 · 产品卡片集合</div>
+  <div class="tab" data-v="detail">产品详情（点卡片进入）</div>
+  <div class="tab" data-v="doc">文档库</div>
+  <div class="tab on" data-v="ov">横屏 · 总览（默认主页）</div>
+  <div class="tab" data-v="ap">悬浮球小助手</div>
+  <div class="tab" data-v="vp">竖屏 1600</div>
+</div>
+
+<!-- 横屏主页 -->
+<div class="view" id="v-splash">
+  <div style="display:flex;flex-direction:column;gap:24px;">
+    <div class="device" style="padding:16px;">
+      <div style="font-size:16px;color:var(--sub);margin-bottom:12px;">横屏 2560×1600 · 冷启动首帧（深色底 + 头盔 logo + 品牌名 + 副标题）</div>
+      <img src="splash_landscape.png" alt="启动页横屏" style="width:100%;border-radius:8px;display:block;"/>
+    </div>
+    <div class="device" style="padding:16px;">
+      <div style="font-size:16px;color:var(--sub);margin-bottom:12px;">竖屏 1600×2560 · 冷启动首帧</div>
+      <img src="splash_portrait.png" alt="启动页竖屏" style="width:auto;height:640px;border-radius:8px;display:block;margin:0 auto;"/>
+    </div>
+    <div class="device" style="padding:16px;">
+      <div style="font-size:16px;color:var(--sub);margin-bottom:12px;">动效演示 · 星星闪烁 + 镜片推光（光效蒙版限幅在镜片内）</div>
+      <div class="sdemo">
+        <div class="sdemo-in">
+          <span class="sstar" style="left:6%;top:10%;animation-duration:2.4s"></span>
+          <span class="sstar" style="left:12%;top:26%;animation-duration:3.1s;animation-delay:.6s"></span>
+          <span class="sstar" style="left:20%;top:14%;animation-duration:2.8s;animation-delay:1.2s"></span>
+          <span class="sstar" style="left:30%;top:8%;animation-duration:3.4s;animation-delay:.3s"></span>
+          <span class="sstar" style="left:44%;top:12%;animation-duration:2.6s;animation-delay:.9s"></span>
+          <span class="sstar" style="left:58%;top:9%;animation-duration:3s;animation-delay:.2s"></span>
+          <span class="sstar" style="left:70%;top:14%;animation-duration:2.5s;animation-delay:1.5s"></span>
+          <span class="sstar" style="left:80%;top:10%;animation-duration:3.2s;animation-delay:.7s"></span>
+          <span class="sstar" style="left:90%;top:24%;animation-duration:2.7s;animation-delay:1.1s"></span>
+          <span class="sstar" style="left:26%;top:52%;animation-duration:3.3s;animation-delay:.5s"></span>
+          <span class="sstar" style="left:74%;top:54%;animation-duration:2.9s;animation-delay:1.4s"></span>
+          <span class="sstar" style="left:10%;top:68%;animation-duration:3s;animation-delay:.8s"></span>
+          <span class="sstar" style="left:90%;top:66%;animation-duration:2.6s;animation-delay:1.6s"></span>
+          <img class="shelmet" src="helmet.png" alt="头盔"/>
+          <div class="slight"></div>
+          <div class="sbrand">Ultima<span>Console</span></div>
+          <div class="ssub">极致造物，定义终局</div>
+          <div class="sver">Ultima AI Studio</div>
+        </div>
+      </div>
+    </div>
+    <div class="device" style="padding:16px;">
+      <div style="font-size:16px;color:var(--sub);margin-bottom:12px;">竖屏动效 · 星星闪烁 + 镜片推光（与横屏同参数）</div>
+      <div class="sdemo sdemo-v">
+        <div class="sdemo-in-v">
+          <span class="vsstar" style="left:8%;top:8%;animation-duration:2.4s"></span>
+          <span class="vsstar" style="left:16%;top:18%;animation-duration:3.1s;animation-delay:.6s"></span>
+          <span class="vsstar" style="left:26%;top:12%;animation-duration:2.8s;animation-delay:1.2s"></span>
+          <span class="vsstar" style="left:40%;top:8%;animation-duration:3.4s;animation-delay:.3s"></span>
+          <span class="vsstar" style="left:58%;top:10%;animation-duration:2.6s;animation-delay:.9s"></span>
+          <span class="vsstar" style="left:72%;top:15%;animation-duration:3s;animation-delay:.2s"></span>
+          <span class="vsstar" style="left:84%;top:10%;animation-duration:2.5s;animation-delay:1.5s"></span>
+          <span class="vsstar" style="left:92%;top:20%;animation-duration:3.2s;animation-delay:.7s"></span>
+          <span class="vsstar" style="left:30%;top:70%;animation-duration:3.3s;animation-delay:.5s"></span>
+          <span class="vsstar" style="left:70%;top:72%;animation-duration:2.9s;animation-delay:1.4s"></span>
+          <span class="vsstar" style="left:10%;top:82%;animation-duration:3s;animation-delay:.8s"></span>
+          <span class="vsstar" style="left:90%;top:84%;animation-duration:2.6s;animation-delay:1.6s"></span>
+          <img class="vshelmet" src="helmet.png" alt="头盔"/>
+          <div class="vslight"></div>
+          <div class="vsbrand">Ultima<span>Console</span></div>
+          <div class="vssub">极致造物，定义终局</div>
+          <div class="vsver">Ultima AI Studio</div>
+        </div>
+      </div>
+    </div>
+    <div class="device" style="padding:16px;">
+      <div style="font-size:16px;color:var(--sub);margin-bottom:12px;">启动 → 首页过渡 · 出现即显示，推光 1.5s + 整体渐隐 0.5s，总 2s 进首页（星星全程闪烁）</div>
+      <div class="sdemo-trans">
+        <img class="tr-splash" src="splash_landscape.png" alt="启动帧"/>
+        <div class="tr-home"><div class="tr-home-inner">
+          <div class="tr-home-title">总览</div>
+          <div class="tr-home-sub">全局监督汇总</div>
+          <div class="tr-home-bar"><i></i></div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="view" id="v-hz">
+  <div class="device hz">
+    <div class="side">
+      <div class="logo">Ultima<span>Console</span></div>
+      <div class="logo-sub">工程调度管理中心</div>
+      <div class="mi"><span class="dot"></span>总览</div>
+      <div class="mi on"><span class="dot"></span>产品 <span class="badge">2</span></div>
+    </div>
+    <div class="main">
+      <div class="page-t" style="text-align:right;">产品</div>
+      <div class="page-s" style="text-align:right;">当前共 7 个产品</div>
+
+      <div class="board">开发中 <span class="cnt">4 个</span></div>
+      <div class="cards">
+        <div class="card">
+          <div class="c-top"><span class="c-name">UltimaRadar</span></div>
+          <div class="c-score"><span class="c-num">92</span><span class="c-off off-ok">无偏移</span></div>
+          <div class="c-state"><span class="stage">v1.2 · M3</span></div>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-name">UltimaGold</span></div>
+          <div class="c-score"><span class="c-num">78</span><span class="c-off off-ng">偏移 −6</span></div>
+          <div class="c-state"><span class="stage">v0.9 · M2</span></div>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-name">UltimaEngine</span></div>
+          <div class="c-score"><span class="c-num">88</span><span class="c-off off-ok">无偏移</span></div>
+          <div class="c-state"><span class="stage">v1.0 · M5</span></div>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-name">UltimaConsole</span></div>
+          <div class="c-score"><span class="c-num">96</span><span class="c-off off-ok">无偏移</span></div>
+          <div class="c-state"><span class="stage">v1.1 · 设计中</span></div>
+        </div>
+      </div>
+
+      <div class="board">沟通规划中 <span class="cnt">1 个</span></div>
+      <div class="cards">
+        <div class="card">
+          <div class="c-top"><span class="c-name">UltimaGame</span></div>
+          <div class="c-score"><span class="c-num">—</span><span class="c-off off-ok">规划中</span></div>
+          <div class="c-state"><span class="stage">需求未冻结</span></div>
+        </div>
+      </div>
+
+      <div class="board">已开发结束 / 已上线 <span class="cnt">2 个</span></div>
+      <div class="cards">
+        <div class="card">
+          <div class="c-top"><span class="c-name">UltimaM2</span></div>
+          <div class="c-score"><span class="c-num">95</span><span class="c-off off-ok">无偏移</span></div>
+          <div class="c-state"><span class="stage">v2.3 · 冻结</span></div>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-name">UltimaAgent</span></div>
+          <div class="c-score"><span class="c-num">90</span><span class="c-off off-ok">无偏移</span></div>
+          <div class="c-state"><span class="stage">v1.0 · 运营中</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 产品详情 -->
+<div class="view" id="v-detail">
+  <div class="device hz">
+    <div class="side">
+      <div class="logo">Ultima<span>Console</span></div>
+      <div class="logo-sub">工程调度管理中心</div>
+      <div class="mi"><span class="dot"></span>总览</div>
+      <div class="mi on"><span class="dot"></span>产品 <span class="badge">2</span></div>
+    </div>
+    <div class="main">
+      <div class="crumb"><a>产品</a><span class="sep">›</span><span class="now">UltimaConsole</span></div>
+
+      <div class="phead">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;"><span class="pname">UltimaConsole</span><span class="st-badge st-run">开发中</span></div>
+          <div class="pmeta">v1.1 · 设计中</div>
+        </div>
+        <div class="psum"><div class="ai-t">小助手摘要</div>v1.1 设计已冻结 UX/UI 方案，待回填技术方案后拆工单；2 个方案待你审批。</div>
+        <div class="pscore"><div class="n">96</div><div class="l">无偏移</div></div>
+      </div>
+
+      <div class="ptabs">
+        <div class="ptab on" data-dt="intro">介绍</div>
+        <div class="ptab" data-dt="queue">任务队列</div>
+        <div class="ptab" data-dt="docs">文档库</div>
+      </div>
+
+      <div class="pbody show" id="pd-intro">
+        <div class="pintro">
+          <p>UltimaConsole 是 Ultima 体系的一体化监督控制台，面向单 Owner 的 AI 产品群管理场景。它将全部产品的推进状态、阶段进度、质量评分与待办事项聚合于一块鸿蒙平板之上，Owner 打开即可纵览全局：每款产品处于哪个阶段、评分有无偏移、哪些决策等待拍板，一目了然。</p>
+          <p>产品提供三层核心能力：<b>全局监督</b>——总览屏聚合全部产品的状态、评分、偏移与待拍板事项；<b>产品钻取</b>——逐产品查看策划、设计、技术、测试、发布全链路的文档与工单队列；<b>审批助手</b>——悬浮球小助手即时送达待办与审批，决策不遗漏。</p>
+          <p>数据以本地为权威源、经 GitHub 桥接同步，保证监督数据的实时与可追溯。产品的北极星指标为 Owner 每周主动打开 ≥5 次，目标是成为 Ultima 体系持续运转的监督中枢。</p>
+        </div>
+      </div>
+
+      <div class="pbody" id="pd-queue">
+        <div class="wo-stat">
+          <div class="wo-k"><span class="n">2</span><span class="l">执行中</span></div>
+          <div class="wo-k"><span class="n">1</span><span class="l">待审核</span></div>
+          <div class="wo-k"><span class="n">8</span><span class="l">已冻结</span></div>
+          <div class="wo-k"><span class="n">1</span><span class="l" style="color:var(--danger)">阻塞</span></div>
+        </div>
+        <div class="wo-group">当前队列 · 执行中</div>
+        <div class="wo-list">
+          <div class="wo-row">
+            <span class="wo-id">WO-CONSOLE-011</span>
+            <span class="wo-title">v1.1 设计启动（UX 方案 v0.2 / UI 方案 v0.1）</span>
+            <span class="wo-meta">M9 · v1.1</span>
+            <span class="st-badge st-run">执行中</span>
+            <span class="wo-arrow">▸</span>
+          </div>
+          <div class="wo-units">
+            <div class="wu"><span class="t">T0 · 产品理解与功能盘点</span><span class="v">v0.2</span><span class="wu-st done"><i></i>已完成</span><span class="rl">medium</span></div>
+            <div class="wu"><span class="t">T1 · UX 方案产出（IA 重构 3 项导航）</span><span class="v">v0.2</span><span class="wu-st done"><i></i>已完成</span><span class="rl">high</span></div>
+            <div class="wu"><span class="t">T2 · UI 视觉方案产出</span><span class="v">v0.1</span><span class="wu-st done"><i></i>已完成</span><span class="rl">high</span></div>
+            <div class="wu"><span class="t">T3 · 设计依据回填技术方案</span><span class="v">v0.9.2</span><span class="wu-st run"><i></i>进行中</span><span class="rl">medium</span></div>
+            <div class="wu"><span class="t">T4 · v1.1 工单拆分</span><span class="v">—</span><span class="wu-st todo"><i></i>待开始</span><span class="rl">—</span></div>
+          </div>
+          <div class="wo-row">
+            <span class="wo-id">WO-CONSOLE-012</span>
+            <span class="wo-title">偏离纠正建议派发（UltimaGold 评分 −6）</span>
+            <span class="wo-meta">M9 · v1.1</span>
+            <span class="st-badge st-run">执行中</span>
+            <span class="wo-arrow">▸</span>
+          </div>
+          <div class="wo-units">
+            <div class="wu"><span class="t">T0 · 评分基线对比与缺口定位</span><span class="v">—</span><span class="wu-st run"><i></i>进行中</span><span class="rl">medium</span></div>
+            <div class="wu"><span class="t">T1 · 纠正建议生成</span><span class="v">—</span><span class="wu-st todo"><i></i>待开始</span><span class="rl">—</span></div>
+          </div>
+        </div>
+        <div class="wo-group">待审核</div>
+        <div class="wo-list">
+          <div class="wo-row">
+            <span class="wo-id">WO-CONSOLE-013</span>
+            <span class="wo-title">设计启动决策（PD-2026-01）审批</span>
+            <span class="wo-meta">M9 · v1.1</span>
+            <span class="st-badge st-wait">待审核</span>
+            <span class="wo-arrow">▸</span>
+          </div>
+          <div class="wo-units">
+            <div class="wu"><span class="t">T0 · 决策书已呈用户</span><span class="v">PD-2026-01</span><span class="wu-st wait"><i></i>待拍板</span><span class="rl">—</span></div>
+          </div>
+        </div>
+        <div class="wo-group">历史 · 已冻结</div>
+        <div class="wo-list">
+          <div class="wo-row">
+            <span class="wo-id">WO-CONSOLE-M8</span>
+            <span class="wo-title">发布与北极星验证</span>
+            <span class="wo-meta">v1.0.0</span>
+            <span class="st-badge st-done">已冻结</span>
+            <span class="wo-arrow">▸</span>
+          </div>
+          <div class="wo-units">
+            <div class="wu"><span class="t">T0 · 项目级 DoD 核对</span><span class="v">v1.0.0</span><span class="wu-st done"><i></i>已完成</span><span class="rl">medium</span></div>
+            <div class="wu"><span class="t">T1 · 已知问题清零</span><span class="v">v1.0.0</span><span class="wu-st done"><i></i>已完成</span><span class="rl">medium</span></div>
+            <div class="wu"><span class="t">T2 · 构建矩阵与产物</span><span class="v">v1.0.0</span><span class="wu-st done"><i></i>已完成</span><span class="rl">high</span></div>
+            <div class="wu"><span class="t">T3 · 北极星埋点验证</span><span class="v">v1.0.0</span><span class="wu-st done"><i></i>已完成</span><span class="rl">medium</span></div>
+          </div>
+          <div class="wo-row">
+            <span class="wo-id">WO-CONSOLE-M1</span>
+            <span class="wo-title">数据链路打通</span>
+            <span class="wo-meta">v1.0.0</span>
+            <span class="st-badge st-done">已冻结</span>
+            <span class="wo-arrow">▸</span>
+          </div>
+          <div class="wo-units">
+            <div class="wu"><span class="t">T0 · 本地权威源读取</span><span class="v">v1.0.0</span><span class="wu-st done"><i></i>已完成</span><span class="rl">high</span></div>
+            <div class="wu"><span class="t">T1 · GitHub 桥接</span><span class="v">v1.0.0</span><span class="wu-st done"><i></i>已完成</span><span class="rl">high</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pbody" id="pd-docs">
+        <div class="doc-t">产品方案 <span class="cnt">6 份</span></div>
+        <div class="doc-list">
+          <div class="doc-row"><span class="doc-type dt-plan">方案</span><span class="doc-name">需求登记 REQ-CONSOLE-001</span><span class="doc-ver">v1.0</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+          <div class="doc-row"><span class="doc-type dt-plan">方案</span><span class="doc-name">产品策划方案</span><span class="doc-ver">v0.2</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+          <div class="doc-row"><span class="doc-type dt-plan">方案</span><span class="doc-name">技术落地方案</span><span class="doc-ver">v0.9.1</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+          <div class="doc-row"><span class="doc-type dt-plan">方案</span><span class="doc-name">UX 设计方案</span><span class="doc-ver">v0.2</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-18</span><span class="doc-arrow">›</span></div>
+          <div class="doc-row"><span class="doc-type dt-plan">方案</span><span class="doc-name">UI 视觉方案</span><span class="doc-ver">v0.1</span><span class="st-badge st-wait">待审核</span><span class="doc-src">本地</span><span class="doc-time">10-18</span><span class="doc-arrow">›</span></div>
+          <div class="doc-row"><span class="doc-type dt-plan">方案</span><span class="doc-name">决策书 PD-2026-01</span><span class="doc-ver">v1.0</span><span class="st-badge st-wait">待拍板</span><span class="doc-src">本地</span><span class="doc-time">10-18</span><span class="doc-arrow">›</span></div>
+        </div>
+        <div class="doc-t">产品说明 <span class="cnt">2 份</span></div>
+        <div class="doc-list">
+          <div class="doc-row"><span class="doc-type dt-intro">说明</span><span class="doc-name">产品介绍 README</span><span class="doc-ver">v1.0</span><span class="st-badge st-done">已发布</span><span class="doc-src">GitHub</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+          <div class="doc-row"><span class="doc-type dt-intro">说明</span><span class="doc-name">使用说明（监督操作手册）</span><span class="doc-ver">v0.1</span><span class="st-badge st-run">进行中</span><span class="doc-src">本地</span><span class="doc-time">10-18</span><span class="doc-arrow">›</span></div>
+        </div>
+        <div class="doc-t">产品架构 <span class="cnt">3 份</span></div>
+        <div class="doc-list">
+          <div class="doc-row"><span class="doc-type dt-arch">架构</span><span class="doc-name">架构总览（模块划分）</span><span class="doc-ver">v0.9</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+          <div class="doc-row"><span class="doc-type dt-arch">架构</span><span class="doc-name">数据链路设计（本地→GitHub 桥接）</span><span class="doc-ver">v0.9</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+          <div class="doc-row"><span class="doc-type dt-arch">架构</span><span class="doc-name">组件与数据模型</span><span class="doc-ver">v0.9</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+        </div>
+        <div class="doc-t">审计与报告 <span class="cnt">11 份</span></div>
+        <div class="doc-list">
+          <div class="doc-row"><span class="doc-type dt-rpt">报告</span><span class="doc-name">发布报告 v1.0.0</span><span class="doc-ver">v1.0</span><span class="st-badge st-done">已发布</span><span class="doc-src">GitHub</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+          <div class="doc-row"><span class="doc-type dt-rpt">报告</span><span class="doc-name">阶段报告 M1-M8</span><span class="doc-ver">8 份</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+          <div class="doc-row"><span class="doc-type dt-rpt">报告</span><span class="doc-name">工单审计报告（队列审计）</span><span class="doc-ver">v5</span><span class="st-badge st-done">已关闭</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 文档库 -->
+<div class="view" id="v-doc">
+  <div class="device hz">
+    <div class="side">
+      <div class="logo">Ultima<span>Console</span></div>
+      <div class="logo-sub">工程调度管理中心</div>
+      <div class="mi"><span class="dot"></span>总览</div>
+      <div class="mi on"><span class="dot"></span>产品 <span class="badge">2</span></div>
+    </div>
+    <div class="main">
+      <div class="page-t">文档库</div>
+      <div class="page-s">UltimaConsole · 方案 / 说明 / 架构 / 报告 四类 · 来源：本地 · GitHub · 飞书</div>
+
+      <div class="doc-t">产品方案 <span class="cnt">6 份</span></div>
+      <div class="doc-list">
+        <div class="doc-row"><span class="doc-type dt-plan">方案</span><span class="doc-name">需求登记 REQ-CONSOLE-001</span><span class="doc-ver">v1.0</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+        <div class="doc-row"><span class="doc-type dt-plan">方案</span><span class="doc-name">产品策划方案</span><span class="doc-ver">v0.2</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+        <div class="doc-row"><span class="doc-type dt-plan">方案</span><span class="doc-name">技术落地方案</span><span class="doc-ver">v0.9.1</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+        <div class="doc-row"><span class="doc-type dt-plan">方案</span><span class="doc-name">UX 设计方案</span><span class="doc-ver">v0.2</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-18</span><span class="doc-arrow">›</span></div>
+        <div class="doc-row"><span class="doc-type dt-plan">方案</span><span class="doc-name">UI 视觉方案</span><span class="doc-ver">v0.1</span><span class="st-badge st-wait">待审核</span><span class="doc-src">本地</span><span class="doc-time">10-18</span><span class="doc-arrow">›</span></div>
+        <div class="doc-row"><span class="doc-type dt-plan">方案</span><span class="doc-name">决策书 PD-2026-01</span><span class="doc-ver">v1.0</span><span class="st-badge st-wait">待拍板</span><span class="doc-src">本地</span><span class="doc-time">10-18</span><span class="doc-arrow">›</span></div>
+      </div>
+
+      <div class="doc-t">产品说明 <span class="cnt">2 份</span></div>
+      <div class="doc-list">
+        <div class="doc-row"><span class="doc-type dt-intro">说明</span><span class="doc-name">产品介绍 README</span><span class="doc-ver">v1.0</span><span class="st-badge st-done">已发布</span><span class="doc-src">GitHub</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+        <div class="doc-row"><span class="doc-type dt-intro">说明</span><span class="doc-name">使用说明（监督操作手册）</span><span class="doc-ver">v0.1</span><span class="st-badge st-run">进行中</span><span class="doc-src">本地</span><span class="doc-time">10-18</span><span class="doc-arrow">›</span></div>
+      </div>
+
+      <div class="doc-t">产品架构 <span class="cnt">3 份</span></div>
+      <div class="doc-list">
+        <div class="doc-row"><span class="doc-type dt-arch">架构</span><span class="doc-name">架构总览（模块划分）</span><span class="doc-ver">v0.9</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+        <div class="doc-row"><span class="doc-type dt-arch">架构</span><span class="doc-name">数据链路设计（本地→GitHub 桥接）</span><span class="doc-ver">v0.9</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+        <div class="doc-row"><span class="doc-type dt-arch">架构</span><span class="doc-name">组件与数据模型</span><span class="doc-ver">v0.9</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+      </div>
+
+      <div class="doc-t">审计与报告 <span class="cnt">11 份</span></div>
+      <div class="doc-list">
+        <div class="doc-row"><span class="doc-type dt-rpt">报告</span><span class="doc-name">发布报告 v1.0.0</span><span class="doc-ver">v1.0</span><span class="st-badge st-done">已发布</span><span class="doc-src">GitHub</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+        <div class="doc-row"><span class="doc-type dt-rpt">报告</span><span class="doc-name">阶段报告 M1-M8</span><span class="doc-ver">8 份</span><span class="st-badge st-done">已冻结</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+        <div class="doc-row"><span class="doc-type dt-rpt">报告</span><span class="doc-name">工单审计报告（队列审计）</span><span class="doc-ver">v5</span><span class="st-badge st-done">已关闭</span><span class="doc-src">本地</span><span class="doc-time">10-17</span><span class="doc-arrow">›</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 总览（默认主页） -->
+<div class="view show" id="v-ov">
+  <div class="device hz">
+    <div class="side">
+      <div class="logo">Ultima<span>Console</span></div>
+      <div class="logo-sub">工程调度管理中心</div>
+      <div class="mi on"><span class="dot"></span>总览</div>
+      <div class="mi"><span class="dot"></span>产品 <span class="badge">2</span></div>
+    </div>
+    <div class="main">
+      <div class="page-t" style="text-align:right;">总览</div>
+      <div class="page-s" style="text-align:right;">全局监督汇总</div>
+      <div class="kpis">
+        <div class="kpi"><div class="n">7</div><div class="l">产品总数</div></div>
+        <div class="kpi"><div class="n">4</div><div class="l">开发中</div></div>
+        <div class="kpi"><div class="n">2</div><div class="l">已上线</div></div>
+        <div class="kpi hot"><div class="n">1</div><div class="l">卡壳</div></div>
+        <div class="kpi hot"><div class="n">2</div><div class="l">待拍板</div></div>
+      </div>
+
+      <div class="sec-t">评分汇总</div>
+      <div class="rows">
+        <div class="row"><span class="nm">UltimaConsole</span><span class="sc">96</span><div class="bar"><i style="width:96%"></i></div><span class="off off-ok">无偏移</span></div>
+        <div class="row"><span class="nm">UltimaM2</span><span class="sc">95</span><div class="bar"><i style="width:95%"></i></div><span class="off off-ok">无偏移</span></div>
+        <div class="row"><span class="nm">UltimaRadar</span><span class="sc">92</span><div class="bar"><i style="width:92%"></i></div><span class="off off-ok">无偏移</span></div>
+        <div class="row"><span class="nm">UltimaAgent</span><span class="sc">90</span><div class="bar"><i style="width:90%"></i></div><span class="off off-ok">无偏移</span></div>
+        <div class="row"><span class="nm">UltimaEngine</span><span class="sc">88</span><div class="bar"><i style="width:88%"></i></div><span class="off off-ok">无偏移</span></div>
+        <div class="row"><span class="nm">UltimaGold</span><span class="sc">78</span><div class="bar"><i style="width:78%;background:var(--warn)"></i></div><span class="off off-ng">偏移 −6</span></div>
+      </div>
+
+      <div class="sec-t">需关注</div>
+      <div class="rows">
+        <div class="alert-row"><span class="a-tag a-w">预警</span><span>UltimaGold 评分下降 6 分（相对上次审计）</span></div>
+        <div class="alert-row"><span class="a-tag a-d">阻塞</span><span>UltimaEngine 存在阻塞状态工单</span></div>
+        <div class="alert-row"><span class="a-tag a-d">待拍板</span><span>UltimaConsole 2 个方案待审批</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 悬浮球小助手弹窗 -->
+<div class="view" id="v-ap">
+  <div class="device ap">
+    <div class="fab" id="fab"><span class="n">3</span><div class="fab-logo"><img src="helmet.png" alt="logo"/><i class="fab-sweep"></i></div>
+    </div>
+    <div class="dlg" id="apdlg">
+      <div class="dlg-t">小助手 <span class="ap-src" style="color:var(--sub);font-size:14px;font-weight:400;">3 项待办 · 点条目展开总结</span></div>
+      <div class="dlg-src">审批与监督提醒 · 处理结果即时生效</div>
+
+      <div style="font-size:15px;font-weight:600;margin:6px 0 10px;color:var(--accent);">待审批 · 2</div>
+
+      <div class="ap-item" id="ap1">
+        <div class="ap-item-head">
+          <span class="ap-itype plan">方案</span>
+          <span class="ap-title">v1.1 设计冻结（UX v0.2 / UI v0.1）</span>
+          <span class="ap-src">UltimaConsole</span>
+          <span class="ap-x">▸</span>
+        </div>
+        <div class="ap-body">
+          <div class="ap-sum"><b>小助手总结：</b>设计已覆盖 IA 重构后的全部页面与视觉规范，自检门 8/8 全绿。建议进入技术落地方案回填设计依据，按设计档拆 v1.1 工单。</div>
+          <div class="ap-impact">影响分析：界面按新设计深化；卡片集合与悬浮球为新增实现项；预计新增工单 3 张。</div>
+          <div class="ap-ops"><button class="btn ghost">忽略</button><button class="btn no" data-a="ap1">打回</button><button class="btn ok" data-a="ap1">同意</button></div>
+        </div>
+      </div>
+
+      <div class="ap-item" id="ap2">
+        <div class="ap-item-head">
+          <span class="ap-itype adv">建议</span>
+          <span class="ap-title">UltimaGold 偏离纠正建议</span>
+          <span class="ap-src">评分 78（−6）</span>
+          <span class="ap-x">▸</span>
+        </div>
+        <div class="ap-body">
+          <div class="ap-sum"><b>小助手总结：</b>UltimaGold 存在 1 项 P0 未关闭缺口。建议优先关闭 P0 缺口，恢复评分基线后再推进 M3。</div>
+          <div class="ap-impact">影响分析：调整任务优先级；需重新路由至执行端调度。</div>
+          <div class="ap-ops"><button class="btn ghost">忽略</button><button class="btn no" data-a="ap2">打回</button><button class="btn ok" data-a="ap2">同意</button></div>
+        </div>
+      </div>
+
+      <div style="font-size:15px;font-weight:600;margin:14px 0 10px;color:var(--accent);">关键节点 · 1</div>
+
+      <div class="ap-item" id="ap3">
+        <div class="ap-item-head">
+          <span class="ap-itype node">节点</span>
+          <span class="ap-title">UltimaConsole 北极星周报待确认</span>
+          <span class="ap-src">今日</span>
+          <span class="ap-x">▸</span>
+        </div>
+        <div class="ap-body">
+          <div class="ap-sum"><b>小助手总结：</b>本周打开次数 6 次（基线 5），达标。本周 2 个方案待拍板未影响主线；建议确认后进入 v1.1 工单拆分。</div>
+          <div class="ap-impact">影响分析：无阻塞；确认后可推进设计依据回填。</div>
+          <div class="ap-ops"><button class="btn ghost">稍后</button><button class="btn ok" data-a="ap3">已确认</button></div>
+        </div>
+      </div>
+
+      <div class="btns" style="margin-top:14px;">
+        <button class="btn ghost">查看全部待办</button>
+        <button class="btn ok" id="closeap">收起</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 竖屏 1600（总览默认） -->
+<div class="view" id="v-vp">
+  <div class="vp">
+    <div class="vhead">
+      <div class="vleft">
+        <div class="vbrand">
+          <div class="vbrand-logo">Ultima<span>Console</span></div>
+          <div class="vbrand-sub">工程调度管理中心</div>
+        </div>
+        <div class="vnav">
+          <div class="vmi on"><b>●</b> 总览</div>
+          <div class="vmi">产品</div>
+        </div>
+      </div>
+    </div>
+    <div class="vbody">
+      <div class="page-t" style="font-size:24px;text-align:right;">总览</div>
+      <div class="page-s" style="margin-bottom:20px;text-align:right;">全局监督汇总</div>
+      <div class="kpis">
+        <div class="kpi"><div class="n">7</div><div class="l">产品总数</div></div>
+        <div class="kpi"><div class="n">4</div><div class="l">开发中</div></div>
+        <div class="kpi"><div class="n">2</div><div class="l">已上线</div></div>
+        <div class="kpi hot"><div class="n">1</div><div class="l">卡壳</div></div>
+        <div class="kpi hot"><div class="n">2</div><div class="l">待拍板</div></div>
+      </div>
+      <div class="sec-t">评分汇总</div>
+      <div class="rows">
+        <div class="row"><span class="nm">UltimaConsole</span><span class="sc">96</span><div class="bar"><i style="width:96%"></i></div><span class="off off-ok">无偏移</span></div>
+        <div class="row"><span class="nm">UltimaM2</span><span class="sc">95</span><div class="bar"><i style="width:95%"></i></div><span class="off off-ok">无偏移</span></div>
+        <div class="row"><span class="nm">UltimaRadar</span><span class="sc">92</span><div class="bar"><i style="width:92%"></i></div><span class="off off-ok">无偏移</span></div>
+        <div class="row"><span class="nm">UltimaAgent</span><span class="sc">90</span><div class="bar"><i style="width:90%"></i></div><span class="off off-ok">无偏移</span></div>
+        <div class="row"><span class="nm">UltimaEngine</span><span class="sc">88</span><div class="bar"><i style="width:88%"></i></div><span class="off off-ok">无偏移</span></div>
+        <div class="row"><span class="nm">UltimaGold</span><span class="sc">78</span><div class="bar"><i style="width:78%;background:var(--warn)"></i></div><span class="off off-ng">偏移 −6</span></div>
+      </div>
+      <div class="sec-t">需关注</div>
+      <div class="rows">
+        <div class="alert-row"><span class="a-tag a-w">预警</span><span>UltimaGold 评分下降 6 分（相对上次审计）</span></div>
+        <div class="alert-row"><span class="a-tag a-d">阻塞</span><span>UltimaEngine 存在阻塞状态工单</span></div>
+        <div class="alert-row"><span class="a-tag a-d">待拍板</span><span>UltimaConsole 2 个方案待审批</span></div>
+      </div>
+    </div>
+    <div class="fab"><span class="n">2</span><div class="fab-logo"><img src="helmet.png" alt="logo"/><i class="fab-sweep"></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- 竖屏 产品（卡片集合） -->
+<div class="view" id="v-vp-pr">
+  <div class="vp">
+    <div class="vhead">
+      <div class="vleft">
+        <div class="vbrand">
+          <div class="vbrand-logo">Ultima<span>Console</span></div>
+          <div class="vbrand-sub">工程调度管理中心</div>
+        </div>
+        <div class="vnav">
+          <div class="vmi">总览</div>
+          <div class="vmi on"><b>●</b> 产品</div>
+        </div>
+      </div>
+    </div>
+    <div class="vbody">
+      <div class="page-t" style="font-size:24px;text-align:right;">产品</div>
+      <div class="page-s" style="margin-bottom:20px;text-align:right;">当前共 7 个产品</div>
+
+      <div class="sec-t" style="font-size:20px;">开发中 <span class="cnt" style="font-size:14px;color:var(--sub);font-weight:400;">4 个</span></div>
+      <div class="vcards">
+        <div class="vcard">
+          <div class="c-top"><span class="c-name">UltimaRadar</span></div>
+          <div class="c-score"><span class="c-num">92</span><span class="c-off off-ok">无偏移</span></div>
+          <div class="c-state"><span class="stage">v1.2 · M3</span></div>
+        </div>
+        <div class="vcard">
+          <div class="c-top"><span class="c-name">UltimaGold</span></div>
+          <div class="c-score"><span class="c-num">78</span><span class="c-off off-ng">偏移 −6</span></div>
+          <div class="c-state"><span class="stage">v0.9 · M2</span></div>
+        </div>
+        <div class="vcard">
+          <div class="c-top"><span class="c-name">UltimaEngine</span></div>
+          <div class="c-score"><span class="c-num">88</span><span class="c-off off-ok">无偏移</span></div>
+          <div class="c-state"><span class="stage">v1.0 · M5</span></div>
+        </div>
+        <div class="vcard">
+          <div class="c-top"><span class="c-name">UltimaConsole</span></div>
+          <div class="c-score"><span class="c-num">96</span><span class="c-off off-ok">无偏移</span></div>
+          <div class="c-state"><span class="stage">v1.1 · 设计中</span></div>
+        </div>
+      </div>
+
+      <div class="sec-t" style="font-size:20px;">沟通规划中 <span class="cnt" style="font-size:14px;color:var(--sub);font-weight:400;">1 个</span></div>
+      <div class="vcards">
+        <div class="vcard">
+          <div class="c-top"><span class="c-name">UltimaGame</span></div>
+          <div class="c-score"><span class="c-num">—</span><span class="c-off off-ok">规划中</span></div>
+          <div class="c-state"><span class="stage">需求未冻结</span></div>
+        </div>
+      </div>
+
+      <div class="sec-t" style="font-size:20px;">已开发结束 / 已上线 <span class="cnt" style="font-size:14px;color:var(--sub);font-weight:400;">2 个</span></div>
+      <div class="vcards">
+        <div class="vcard">
+          <div class="c-top"><span class="c-name">UltimaM2</span></div>
+          <div class="c-score"><span class="c-num">95</span><span class="c-off off-ok">无偏移</span></div>
+          <div class="c-state"><span class="stage">v2.3 · 冻结</span></div>
+        </div>
+        <div class="vcard">
+          <div class="c-top"><span class="c-name">UltimaAgent</span></div>
+          <div class="c-score"><span class="c-num">90</span><span class="c-off off-ok">无偏移</span></div>
+          <div class="c-state"><span class="stage">v1.0 · 运营中</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="fab"><span class="n">2</span><div class="fab-logo"><img src="helmet.png" alt="logo"/><i class="fab-sweep"></i></div>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  <b>说明：</b>本预览为视觉效果稿（HTML 高保真），非鸿蒙 ArkUI 成品；落地实现按 UI 方案 v0.1 tokens（深色场 / HarmonyOS Sans / 圆角 12·8·4 / 强调蓝 #3D7EFF）转 ArkUI 组件。<br>
+  <b>数据：</b>示例数据仅用于效果展示（评分/状态为占位演示），实际数据由 sync 供数文件驱动。<br>
+  <b>物理尺寸：</b>画布渲染已对齐<b>模拟器 Pad 屏幕区域</b>（861×538px，16:10 与真机一致；内部 zoom:2 等效真机 2x 元素大小）—— 横屏 <span id="phys-hz">计算中…</span>、竖屏 <span id="phys-pt">计算中…</span>。若与实物不符，请按 Ctrl+0 重置浏览器缩放后刷新。
+</div>
+
+<script>
+/* 预览自适应缩放：整体等比缩放适配屏幕宽度 */
+function fitPreview(){
+  var base=1760, w=window.innerWidth;
+  var s=Math.min(1, w/base);
+  document.body.style.transform='scale('+s+')';
+  document.body.style.transformOrigin='top center';
+  document.body.style.width=base+'px';
+  document.body.style.margin='0 auto';
+}
+window.addEventListener('resize', fitPreview);
+fitPreview();
+document.querySelectorAll('.wo-row').forEach(r=>r.addEventListener('click',()=>{
+  r.classList.toggle('open');
+}));
+const docSum={
+  '需求登记 REQ-CONSOLE-001':'需求登记：编号 REQ-CONSOLE-001，Ultima Console 立项需求，优先级 P0。覆盖产品定位（单 Owner 的 AI 产品群监督中枢）、核心功能范围与验收口径，评审结论为通过，进入产品策划阶段。',
+  '产品策划方案':'产品策划方案 v0.2：目标用户为单 Owner 开发/运营者，核心痛点是在多产品并行推进时缺乏统一的监督视图。方案定义 MVP 范围（总览、产品钻取、审批助手），设定北极星指标：Owner 每周主动打开 ≥5 次。',
+  '技术落地方案':'技术落地方案 v0.9.1：鸿蒙平板端应用，数据链路采用本地权威源 → GitHub 桥接，飞书灾备为第二阶段。定义模块划分（监督数据读取、评分引擎、审批流）、接口契约与推进节奏（M1-M8）。',
+  'UX 设计方案':'UX 方案 v0.2：信息架构重构为两层导航（总览/产品），主流程为打开即见全局 → 钻取产品 → 审批处理，并定义异常四态（空/错/加载/断网）。交互规范覆盖悬浮球小助手、卡片集合与审批浮窗。',
+  'UI 视觉方案':'UI 方案 v0.1：深色监督工作台视觉语言，定义全局/语义/组件三层 tokens、组件视觉规格与横竖屏栅格。对比度按 WCAG 2.1 逐项核查达标，素材来源登记可商用清单。',
+  '决策书 PD-2026-01':'一页纸决策书：问题（v1.1 是否启动设计）、选项（A 启动 / B 延后 / C 维持现状）、建议启动。预设 kill 信号（设计验收不通过）与 hold 信号（资源冲突），待用户拍板后执行。',
+  '产品介绍 README':'Ultima Console 产品介绍：面向单 Owner 的 AI 产品群监督中枢，聚合产品状态、评分、偏移与待办。README 覆盖产品定位、核心能力与快速上手入口。',
+  '使用说明（监督操作手册）':'监督操作手册（编写中）：说明各页面操作路径——总览页查看全局状态、产品页进入详情、文档库查看文档、悬浮球处理审批，并给出常见问题处理方式。',
+  '架构总览（模块划分）':'架构总览 v0.9：模块划分包括监督数据读取层、评分与偏移引擎、审批流与悬浮球、旋转布局适配。组件结构与职责边界明确，为技术方案的模块依据。',
+  '数据链路设计（本地→GitHub 桥接）':'数据链路 v0.9：本地为权威数据源，经 GitHub 桥接同步至远程仓库；飞书灾备为第二阶段规划。定义同步频率、冲突处理与失败重试策略。',
+  '组件与数据模型':'组件与数据模型 v0.9：组件清单（导航、卡片、工单行、文档行、悬浮球）与数据模型（产品、工单、文档、审计）字段定义，供前端实现与数据读取使用。',
+  '发布报告 v1.0.0':'v1.0.0 发布报告：构建矩阵全绿，验收结论通过，北极星埋点已上线。发布内容覆盖 M1-M8 全部阶段工单交付物。',
+  '阶段报告 M1-M8':'阶段报告 8 份：覆盖 M1 数据链路打通至 M8 端到端验收与发布，每阶段含门禁结论、交付证据与遗留问题处理记录。',
+  '工单审计报告（队列审计）':'队列审计报告 v5：审计结论 40/40 PASS，P0/P1 缺口已清零，可派发后续工单。修复清单与复验结果完整记录。'
+};
+document.querySelectorAll('.doc-row').forEach(r=>{
+  let d=null;
+  r.addEventListener('click',()=>{
+    r.classList.toggle('open');
+    if(!d){
+      const nm=r.querySelector('.doc-name').textContent;
+      const ver=r.querySelector('.doc-ver').textContent;
+      const src=r.querySelector('.doc-src').textContent;
+      const tm=r.querySelector('.doc-time').textContent;
+      d=document.createElement('div');
+      d.className='doc-expand';
+      d.innerHTML='<div class="de-sum">'+(docSum[nm]||'文档正文……')+'</div>'+
+        '<div class="de-foot"><span>版本 '+ver+'</span><span>来源 '+src+'</span><span>更新 '+tm+'</span></div>';
+      r.after(d);
+    }
+    d.style.display=r.classList.contains('open')?'block':'none';
+  });
+});
+document.querySelectorAll('.ptab').forEach(p=>p.addEventListener('click',()=>{
+  document.querySelectorAll('.ptab').forEach(x=>x.classList.remove('on'));
+  p.classList.add('on');
+  document.querySelectorAll('.pbody').forEach(b=>b.classList.remove('show'));
+  document.getElementById('pd-'+p.dataset.dt).classList.add('show');
+}));
+const apdlg=document.getElementById('apdlg');
+function attachFab(f,container){
+  const b=document.createElement('div');
+  b.className='ap-bubble';
+  b.innerHTML='<div class="ab-t">小助手 <span class="ab-s">3 项待办</span></div>'+
+    '<div class="ab-sec">待审批</div>'+
+    '<div class="ab-item"><span class="a-tag a-d">方案</span><span>UltimaConsole UI 方案 v0.1 待拍板（含 7 屏高保真预览与 tokens 视觉规范，确认冻结后移交技术落地方案）</span></div>'+
+    '<div class="ab-item"><span class="a-tag a-d">工单</span><span>M1 审计结果待确认</span></div>'+
+    '<div class="ab-sec">关键节点</div>'+
+    '<div class="ab-item"><span class="a-tag a-w">节点</span><span>M2 交付窗口 10-19</span></div>'+
+    '<div class="ab-hint">点击条目进入完整审批</div>';
+  b.style.display='none';
+  container.appendChild(b);
+  const ov=document.createElement('div');
+  ov.className='ap-overlay';
+  ov.innerHTML='<div class="ap-card">'+
+    '<div class="ap-card-t">小助手 <span class="ap-card-s">3 项待办</span><button class="ap-close">收起</button></div>'+
+    '<div class="ap-sec">待审批</div>'+
+    '<div class="ap-item"><div class="ap-item-head"><span class="a-tag a-d">方案</span><span>UltimaConsole UI 方案 v0.1 待拍板</span><span class="ap-arrow">›</span></div>'+
+      '<div class="ap-item-body"><div class="ap-sum">UI 视觉方案 v0.1 已产出，含 7 屏高保真预览与 tokens 视觉规范，建议冻结后移交技术落地方案回填设计依据。</div><div class="ap-impact">影响：冻结后进入技术方案 v0.9.1 回填，拆 v1.1 工单。</div><div class="ap-ops"><button class="btn b-ok">同意</button><button class="btn b-no">打回</button></div></div></div>'+
+    '<div class="ap-item"><div class="ap-item-head"><span class="a-tag a-d">工单</span><span>M1 审计结果待确认</span><span class="ap-arrow">›</span></div>'+
+      '<div class="ap-item-body"><div class="ap-sum">M1 工单试跑已通过，审计结论 PASS，确认后连续派发剩余工单。</div><div class="ap-ops"><button class="btn b-ok">已确认</button><button class="btn b-no">打回</button></div></div></div>'+
+    '<div class="ap-sec">关键节点</div>'+
+    '<div class="ap-item"><div class="ap-item-head"><span class="a-tag a-w">节点</span><span>M2 交付窗口 10-19</span><span class="ap-arrow">›</span></div>'+
+      '<div class="ap-item-body"><div class="ap-sum">M2 工单队列计划于 10-19 前完成交付与审计。</div></div></div>'+
+  '</div>';
+  ov.style.display='none';
+  container.appendChild(ov);
+  ov.querySelector('.ap-close').addEventListener('click',()=>{ov.style.display='none';f.style.display='';});
+  ov.querySelectorAll('.ap-item-head').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('open')));
+  ov.querySelectorAll('.ap-ops .btn').forEach(bt=>{
+    bt.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      const it=bt.closest('.ap-item');
+      it.classList.add('ap-done');
+      it.classList.remove('open');
+      const t=document.createElement('span');
+      t.className='ap-done-tag';
+      t.textContent=bt.classList.contains('b-ok')?'已同意':'已打回';
+      it.querySelector('.ap-item-head').appendChild(t);
+      const n=f.querySelector('.n');
+      const v=parseInt(n.textContent)-1;
+      n.textContent=v>0?v:'';
+    });
+  });
+  b.querySelectorAll('.ab-item').forEach(it=>{
+    it.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      document.querySelectorAll('.ap-bubble').forEach(x=>x.style.display='none');
+      f.style.display='none';
+      ov.style.display='flex';
+    });
+  });
+  f.addEventListener('click',(e)=>{
+    if(f.__drag){f.__drag=false;return;}
+    e.stopPropagation();
+    const show=b.style.display!=='block';
+    document.querySelectorAll('.ap-bubble').forEach(x=>x.style.display='none');
+    b.style.display=show?'block':'none';
+  });
+}
+document.querySelectorAll('.vp .fab,.ap .fab').forEach(f=>attachFab(f,f.closest('.vp')||f.closest('.ap')));
+document.getElementById('closeap').addEventListener('click',()=>{apdlg.style.display='none';});
+document.addEventListener('click',e=>{if(!e.target.closest('.fab,.ap-bubble'))document.querySelectorAll('.ap-bubble').forEach(x=>x.style.display='none');});
+document.querySelectorAll('#apdlg .ap-item').forEach(it=>{
+  it.querySelector('.ap-item-head').addEventListener('click',()=>it.classList.toggle('open'));
+  it.querySelectorAll('.ap-ops .btn').forEach(b=>{
+    b.addEventListener('click',e=>{e.stopPropagation();it.classList.add('ap-done');it.classList.remove('open');
+      const t=document.createElement('span');t.className='ap-done-tag';t.textContent=b.textContent==='同意'||b.textContent==='已确认'?'已同意':'已打回';
+      it.querySelector('.ap-item-head').appendChild(t);
+      const n=document.querySelector('.fab .n');const v=parseInt(n.textContent)-1;n.textContent=v>0?v:'';});
+  });
+});
+const tabs=document.querySelectorAll('.tab');
+document.querySelectorAll('.device.hz').forEach(d=>{
+  const f=document.createElement('div');
+  f.className='fab';
+  f.innerHTML='<span class="n">2</span><div class="fab-logo"><img src="helmet.png" alt="logo"/><i class="fab-sweep"></i></div>';
+  attachFab(f,d);
+  d.appendChild(f);
+});
+function makeDraggable(f){
+  let sx=0,sy=0,dx=0,dy=0;
+  f.addEventListener('pointerdown',e=>{
+    f.__drag=false;
+    sx=e.clientX;sy=e.clientY;
+    const r=f.getBoundingClientRect(),cr=f.offsetParent?f.offsetParent.getBoundingClientRect():{left:0,top:0};
+    dx=r.left-cr.left;dy=r.top-cr.top;
+    try{f.setPointerCapture(e.pointerId);}catch(_){}
+  });
+  f.addEventListener('pointermove',e=>{
+    if(sx===0&&sy===0)return;
+    const mx=e.clientX-sx,my=e.clientY-sy;
+    if(Math.abs(mx)>5||Math.abs(my)>5){
+      f.__drag=true;
+      f.style.left=(dx+mx)+'px';
+      f.style.top=(dy+my)+'px';
+      f.style.right='auto';
+      f.style.bottom='auto';
+    }
+  });
+  f.addEventListener('pointerup',()=>{
+    sx=0;sy=0;
+    if(f.__drag){setTimeout(()=>{f.__drag=false;},50);}
+  });
+}
+document.querySelectorAll('.fab').forEach(makeDraggable);
+function resetFab(){
+  document.querySelectorAll('.fab').forEach(f=>{
+    f.style.left='';f.style.top='';f.style.right='';f.style.bottom='';
+  });
+}
+function closeFloaters(){
+  document.querySelectorAll('.ap-overlay').forEach(o=>o.style.display='none');
+  document.querySelectorAll('.ap-bubble').forEach(b=>b.style.display='none');
+  document.querySelectorAll('.fab').forEach(f=>f.style.display='');
+}
+function switchVP(key){
+  const map={'总览':'v-vp','产品':'v-vp-pr'};
+  closeFloaters();
+  document.querySelectorAll('.vnav .vmi').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+  document.getElementById(map[key]||'v-vp').classList.add('show');
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.vnav .vmi').forEach(x=>{
+      x.classList.toggle('on', x.textContent.trim().replace('●','').trim()===key);
+    });
+  });
+}
+document.querySelectorAll('.vnav .vmi').forEach(m=>{
+  m.addEventListener('click',()=>{
+    switchVP(m.textContent.trim().replace('●','').trim());
+  });
+});
+document.querySelectorAll('.vp').forEach(v=>{
+  let sx=0,sy=0,swiping=false;
+  v.addEventListener('pointerdown',e=>{
+    if(e.target.closest('.fab')||e.target.closest('.vnav'))return;
+    sx=e.clientX;sy=e.clientY;swiping=true;
+  });
+  v.addEventListener('pointermove',e=>{
+    if(!swiping)return;
+    const dx=e.clientX-sx,dy=e.clientY-sy;
+    if(Math.abs(dx)>60&&Math.abs(dy)<40){
+      swiping=false;
+      const cur=document.querySelector('.vnav .vmi.on');
+      const key=cur?cur.textContent.trim().replace('●','').trim():'总览';
+      const next=dx<0?'产品':'总览';
+      if(next!==key)switchVP(next);
+    }
+  });
+  v.addEventListener('pointerup',()=>{swiping=false;});
+});
+function rollKpi(){
+  document.querySelectorAll('.view.show .kpi .n').forEach(el=>{
+    const target=parseInt(el.textContent)||0;
+    const dur=1200;
+    const start=performance.now();
+    function tick(t){
+      const p=Math.min((t-start)/dur,1);
+      const eased=1-Math.pow(1-p,3);
+      el.textContent=Math.round(eased*target);
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+  document.querySelectorAll('.view.show .row').forEach(row=>{
+    const bar=row.querySelector('.bar i');
+    const sc=row.querySelector('.sc');
+    if(!bar||!sc)return;
+    const target=parseInt(sc.textContent)||0;
+    const dur=1200;
+    const start=performance.now();
+    function tick(t){
+      const p=Math.min((t-start)/dur,1);
+      const eased=1-Math.pow(1-p,3);
+      sc.textContent=Math.round(eased*target);
+      bar.style.width=eased*target+'%';
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+tabs.forEach(t=>t.addEventListener('click',()=>{
+  closeFloaters();
+  resetFab();
+  tabs.forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+  document.getElementById('v-'+t.dataset.v).classList.add('show');
+}));
+// 物理尺寸校正：画布渲染 = 模拟器 Pad 屏幕区域（861×538px @ 2560×1440，16:10 与真机一致）
+// 内部容器 zoom:2 等效真机 2x 物理渲染（vp=设计px → 物理px×2），外层 zoom 0.336 缩放到屏幕区域
+// devicePixelRatio 含浏览器页面缩放与系统缩放，zoom=基准/dpr 使物理渲染尺寸恒定
+function fitPhysical(){
+  var dpr = window.devicePixelRatio || 1;
+  var base = 0.336; // dpr=1 时基准：861/2560（对齐模拟器屏幕区域 861px 宽）
+  document.querySelectorAll('.view').forEach(function(v){ v.style.zoom = (base / dpr).toFixed(4); });
+  var hz = document.getElementById('phys-hz'), pt = document.getElementById('phys-pt');
+  if(hz) hz.textContent = Math.round(2560*base)+'×'+Math.round(1600*base)+'px ≈ 7.91×4.94 英寸（16:10，对齐模拟器 Pad 屏幕区域 861×538px）';
+  if(pt) pt.textContent = Math.round(1600*base)+'×'+Math.round(2560*base)+'px ≈ 4.94×7.91 英寸（竖屏对称）';
+}
+fitPhysical();
+window.addEventListener('resize', fitPhysical);
+rollKpi();
+</script>
+</body>
+</html>
