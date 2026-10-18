@@ -1,14 +1,14 @@
 {
   "schema": "ultima-console-queue-status-v1",
-  "updated_at": "2026-10-19T01:02:15+0800",
+  "updated_at": "2026-10-19T03:45:20+0800",
   "source": "H:\\UltimaAI\\UltimaConsole\\tasks\\queue\\console-queue-index.md",
   "executor": "Codex",
   "channel": "A",
   "product": "Ultima Console",
   "summary": {
     "total": 16,
-    "frozen": 15,
-    "in_progress": 1,
+    "frozen": 16,
+    "in_progress": 0,
     "blocked": 0,
     "pending": 0,
     "wip": {
@@ -165,12 +165,12 @@
       "id": "wo-console-v11-n6",
       "milestone": "v1.1-N6 悬浮球扫光动画模拟器渲染层排查",
       "tasks": "T0-T2",
-      "state": "in_progress",
-      "status": "**执行中（2026-10-19 派发 Codex；背景：动画状态驱动正常（hilog 证实 step 1-14 每 100ms），但模拟器截图 20 轮验证扫光条未渲染——7 种实现路径穷举；根因疑点：渲染层/抓帧层/状态触发/合成层）**",
+      "state": "frozen",
+      "status": "**已完成（2026-10-19 Codex 回执：T0/T1/T2 全 Gate PASS；`v11-n6-frozen`）**",
       "blocked": false,
       "blocked_reason": "",
       "prerequisite": "v11-n5-frozen",
-      "gate": "根因明确+修复后模拟器截图/录像可证动画运行（或真机路径声明）+无 UI 回归；证据 docs/reports/stage-v11-n6.md"
+      "gate": "根因=BlendMode.SCREEN 在嵌套 clip+渐变+旋转组合下模拟器合成不可见；修复=去 blendMode+渐变改直接填充 #CCFFFFFF 圆角 Rect（保留动画驱动/旋转/裁剪）；连拍位移 24.67vp>10vp，构建 PASS，无回归；证据 docs/reports/stage-v11-n6.md + evidence/v11-sweep/"
     },
     {
       "id": "wo-console-v11-ic",
