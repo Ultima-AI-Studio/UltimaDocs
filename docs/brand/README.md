@@ -39,6 +39,15 @@
 |---|---|
 | `combo/deep/ultima-console-landscape.png` 等 4 张 | 按参数规范渲染出的参考示例图。**应用时直接用 logo + 字体文字实时渲染，无需合成图**；需要预览图时可改 HTML 源重渲 |
 
+### 品牌字体（HarmonyOS Sans，唯一字库）
+
+| 文件 | 说明 |
+|---|---|
+| `fonts/HarmonyOS_Sans.ttf` | 品牌英文字体（主标 `Ultima` + 产品名用），HarmonyOS Sans，0.33MB |
+| `fonts/HarmonyOS_Sans_SC.ttf` | 品牌中文字体（副标/中文文案用），HarmonyOS Sans SC，19.66MB |
+
+> 来源：DevEco Studio SDK（华为官方字体，可商用）。品牌文字统一用本字库，禁止改用其他字体。
+
 ## 二、品牌规范要点
 
 ### 2.1 品牌组合参数规范（v1.2，2026-10-19 定版）
@@ -48,8 +57,9 @@
 **① logo**
 - 文件：`ultima-logo/helmet.png`（透明底），按场景定尺寸（见下表），可加光晕/投影
 
-**② 文字字体**
-- 主标字体：`Segoe UI`（优先）/ `Microsoft YaHei`，**Bold 700**，字距 1px
+**② 文字字体（固定 HarmonyOS Sans）**
+- 字体文件：`fonts/HarmonyOS_Sans.ttf`（英文主标）、`fonts/HarmonyOS_Sans_SC.ttf`（中文文案）
+- 主标字体：**HarmonyOS Sans**，Bold 700，字距 1px；禁止改用 Segoe UI / 微软雅黑等其他字体
 - 主标内容：`Ultima` + 产品名（如 `Console` / `Radar`），两段可分别着色
 
 **③ 文字颜色**
