@@ -68,10 +68,12 @@ H:\UltimaAI\
 
 **① 组织与仓库清单**（统一 GitHub 组织 **Ultima-AI-Studio**，全部私有仓）
 
+> **根路径命名规则（强制）**：组织根路径**只允许创建与项目同名的仓库**（如 `UltimaScan` / `UltimaConsole`）；项目的备份、文档等一律放同名仓库**内部子路径**（如 `UltimaScan/backup/`），禁止在根路径创建 `<项目>-backup` 之类的衍生仓库。
+
 | 仓库 | 用途 | 同步来源 |
 |---|---|---|
 | `Ultima-AI-Studio/ultima-docs` | 范式/文档镜像库 | `_shared\` + 各产品 `docs\shared\`（本地权威 → 镜像 → push） |
-| `Ultima-AI-Studio/UltimaScan-backup` | UltimaScan 每日备份（脱敏 push） | `UltimaScan\scanner\backup_to_github.py` |
+| `Ultima-AI-Studio/UltimaScan` | UltimaScan 项目仓库；**备份落 `backup/` 子路径** | `UltimaScan\scanner\backup_to_github.py`（REMOTE=org/UltimaScan.git，内容统一 `backup/` 前缀） |
 
 **② 授权方式（统一，禁止散用）**
 - 认证走**本机 Git Credential Manager（GCM）+ PAT**：`git config --global credential.helper manager`；日常 push/clone 免密由 GCM 管理（git config user：`ArkExlabs` / `ArkExlabs@users.noreply.github.com`）。
@@ -92,7 +94,8 @@ H:\UltimaAI\
 - 每日备份类脚本（如 backup_to_github.py）失败退出码非 0 时，查看其输出定位是凭证 / 仓库 / 网络哪一类，按上表处置。
 
 **⑤ 新建仓库 SOP**
-- 一律在组织 `Ultima-AI-Studio` 下创建、private=true、命名 `<产品>-backup` 或 `<产品>-docs` 制式；
+- 一律在组织 `Ultima-AI-Studio` 下创建、private=true；**仓库名与项目名一致**（禁止 `<项目>-backup` 类衍生名）；
+- 项目内部子路径自行规划（如备份 → `backup/`、文档 → `docs/`）；
 - 创建后登记进 ① 仓库清单 + 本范式，并在对应产品文档标注 remote 地址。
 
 ## 六、硬约束（治理体检项）
