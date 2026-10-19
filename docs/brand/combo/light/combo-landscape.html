@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:100%; height:100%; background:#E8EDF6; }
+  .stage {
+    width:1200px; height:400px;
+    margin:60px auto;
+    background:radial-gradient(120% 200% at 20% 0%, #FFFFFF 0%, #F1F5FB 55%, #E4EBF5 100%);
+    display:flex; align-items:center; justify-content:center; gap:32px;
+    border-radius:24px; border:1px solid #D3DCE9;
+    box-shadow:0 0 60px rgba(30,90,200,.10), inset 0 0 120px rgba(45,110,255,.04);
+    position:relative; overflow:hidden;
+  }
+  .stage::before {
+    content:""; position:absolute; top:-40%; left:-10%; width:60%; height:160%;
+    background:radial-gradient(circle, rgba(61,138,255,.12) 0%, transparent 65%);
+    pointer-events:none;
+  }
+  .logo {
+    width:200px; height:200px; flex:0 0 auto; filter:drop-shadow(0 4px 18px rgba(30,80,200,.22));
+    position:relative; z-index:2;
+  }
+  .logo img { width:100%; height:100%; display:block; }
+  .word { display:flex; flex-direction:column; gap:16px; position:relative; z-index:2; }
+  .main {
+    font-family:"Segoe UI","Microsoft YaHei",sans-serif;
+    font-size:88px; font-weight:700; letter-spacing:1px; line-height:1;
+    color:#0B1220;
+  }
+  .main .acc { color:#1D6FFF; }
+  .main .acc2 { color:#3D8BFF; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="logo"><img src="../../ultima-logo/helmet.png"></div>
+    <div class="word">
+      <div class="main">Ultima<span class="acc">Console</span></div>
+    </div>
+  </div>
+</body>
+</html>
