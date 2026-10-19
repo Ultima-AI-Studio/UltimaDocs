@@ -72,7 +72,7 @@ H:\UltimaAI\
 
 | 仓库 | 用途 | 同步来源 |
 |---|---|---|
-| `Ultima-AI-Studio/ultima-docs` | 范式/文档镜像库 | `_shared\` + 各产品 `docs\shared\`（本地权威 → 镜像 → push） |
+| `Ultima-AI-Studio/UltimaDocs` | 全局文档库（独立文档项目，项目同名库；范式/品牌/模板镜像） | `_shared\` + 各产品 `docs\shared\`（本地权威 → 镜像 → push） |
 | `Ultima-AI-Studio/UltimaScan` | UltimaScan 项目仓库；**备份落 `backup/` 子路径** | `UltimaScan\scanner\backup_to_github.py`（REMOTE=org/UltimaScan.git，内容统一 `backup/` 前缀） |
 
 **② 授权方式（统一，禁止散用）**
