@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family:"HarmonyOS Sans";
+    src:url("file:///H:/UltimaAI/_shared/brand/fonts/HarmonyOS_Sans.ttf") format("truetype");
+    font-weight:700;
+  }
+  @font-face {
+    font-family:"HarmonyOS Sans SC";
+    src:url("file:///H:/UltimaAI/_shared/brand/fonts/HarmonyOS_Sans_SC.ttf") format("truetype");
+    font-weight:400 700;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#070B14;display:flex;align-items:center;justify-content:center;min-height:100vh;}
+  .artboard{
+    width:2560px;height:1600px;zoom:0.5;flex:0 0 auto;
+    background:#0F1420;color:#E6EAF2;padding:80px 88px;
+    font-family:"HarmonyOS Sans SC","HarmonyOS Sans",sans-serif;
+  }
+  .head{display:flex;align-items:center;gap:24px;padding-bottom:40px;border-bottom:2px solid #2A3550;}
+  .head .logo{height:108px;width:108px;flex:0 0 auto;}
+  .head .logo img{width:100%;height:100%;display:block;}
+  .head .ttl{font-size:48px;font-weight:700;letter-spacing:.5px;color:#E6EAF2;}
+  .head .ttl span{color:#3D7EFF;}
+  .head .sub{font-size:28px;color:#9AA3B8;margin-top:8px;letter-spacing:1px;}
+  .grid{display:grid;grid-template-columns:1.15fr 1.15fr 1fr;gap:40px;margin-top:48px;}
+  .col h3{font-size:24px;font-weight:600;color:#3D7EFF;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+  .col h3::before{content:"";width:8px;height:28px;background:#3D7EFF;border-radius:4px;}
+  .sec{background:#161D2C;border:1px solid #2A3550;border-radius:12px;padding:28px 32px;margin-bottom:24px;}
+  .sec-t{font-size:26px;font-weight:500;color:#9AA3B8;margin-bottom:16px;}
+  /* 主形态展示 */
+  .stage{display:flex;align-items:center;justify-content:center;padding:56px 0;}
+  .appicon{width:512px;height:512px;border-radius:112px;background:#0F1420;border:2px solid #2A3550;display:flex;align-items:center;justify-content:center;}
+  .appicon img{width:60%;height:60%;display:block;}
+  .dims{display:flex;justify-content:center;gap:32px;margin-top:36px;}
+  .dim{background:#0F1420;border:1px solid #2A3550;border-radius:8px;padding:14px 24px;text-align:center;}
+  .dim .n{font-size:30px;font-weight:700;color:#3D7EFF;font-family:Consolas,monospace;}
+  .dim .t{font-size:22px;color:#78849E;margin-top:4px;}
+  .base{display:flex;align-items:center;gap:20px;background:#0F1420;border:1px solid #2A3550;border-radius:8px;padding:20px 24px;}
+  .base .big{font-size:40px;font-weight:700;color:#E6EAF2;}
+  .base .big em{font-style:normal;color:#3D7EFF;}
+  .base .d{font-size:24px;color:#78849E;line-height:1.6;}
+  /* 表格 */
+  table{width:100%;border-collapse:collapse;}
+  th{font-size:26px;font-weight:500;color:#9AA3B8;background:#1E2A3D;padding:16px 20px;text-align:left;border-bottom:2px solid #2A3550;}
+  td{font-size:28px;color:#E6EAF2;padding:16px 20px;border-bottom:1px solid #2A3550;vertical-align:top;}
+  td .s{font-size:22px;color:#78849E;display:block;margin-top:2px;line-height:1.5;}
+  td b{font-weight:700;}
+  .mono{font-family:Consolas,monospace;color:#3D7EFF;}
+  /* 变体 + 禁止 */
+  .variants{display:flex;gap:28px;align-items:flex-end;}
+  .v{text-align:center;}
+  .v .box{background:#fff;border-radius:8px;padding:20px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+  .v .lbl{font-size:22px;color:#78849E;}
+  .v .lbl b{color:#E6EAF2;}
+  .fav64{width:128px;height:128px;}
+  .fav32{width:64px;height:64px;}
+  .forb{display:flex;align-items:flex-start;gap:16px;padding:14px 0;border-bottom:1px dashed #2A3550;font-size:26px;line-height:1.5;color:#9AA3B8;}
+  .forb:last-child{border-bottom:none;}
+  .forb .x{flex:0 0 34px;width:34px;height:34px;border-radius:8px;background:#E5484D;color:#fff;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  .forb b{color:#E6EAF2;}
+  .rule{display:flex;align-items:flex-start;gap:20px;padding:14px 0;border-bottom:1px dashed #2A3550;font-size:26px;line-height:1.5;}
+  .rule:last-child{border-bottom:none;}
+  .rule .k{flex:0 0 130px;color:#3D7EFF;font-weight:600;}
+  .rule .v{flex:1;color:#9AA3B8;}
+  .rule .v b{color:#E6EAF2;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="artboard">
+  <div class="head">
+    <div class="logo"><img src="../../ultima-logo/helmet.png"></div>
+    <div>
+      <div class="ttl">Ultima<span>AI</span> · 应用图标样式</div>
+      <div class="sub">APP ICON STANDARD v1.2 ｜ Launcher / App Icon ｜ 深底 · 居中头盔 · 无文字</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="col">
+      <h3>主形态（唯一模板）</h3>
+      <div class="sec">
+        <div class="stage">
+          <div class="appicon"><img src="../../ultima-logo/helmet.png"></div>
+        </div>
+        <div class="dims">
+          <div class="dim"><div class="n">#0F1420</div><div class="t">底色 --bg</div></div>
+          <div class="dim"><div class="n">22%</div><div class="t">圆角 = 边长×22%</div></div>
+          <div class="dim"><div class="n">60%</div><div class="t">logo 高 = 边长×60%</div></div>
+          <div class="dim"><div class="n">20%</div><div class="t">左右安全区</div></div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-t">尺寸基准</div>
+        <div class="base">
+          <div class="big">128<em>px</em></div>
+          <div class="d">设计稿基准边长（2560×1600 物理）<br>缩放：横 `×min(w/2560, h/1600)` ｜ 竖 `×min(w/1600, h/2560)`</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h3>尺寸体系 · 导出规格</h3>
+      <div class="sec" style="padding:0;">
+        <table>
+          <thead><tr><th>场景</th><th>尺寸</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>设计稿基准</td><td class="mono">128px</td><td>缩放公式同 §十<span class="s">2560×1600 物理基准</span></td></tr>
+            <tr><td>HarmonyOS 应用图标</td><td class="mono">288×288</td><td>AppScope / resources / base / media / app_icon.png<span class="s">前台图标</span></td></tr>
+            <tr><td>Web favicon</td><td class="mono">32 / 64</td><td>透明底头盔（不带底框）<span class="s">网页场景</span></td></tr>
+            <tr><td>桌面 / 安装包主图</td><td class="mono">512×512</td><td>深底圆角 22%<span class="s">Windows / 鸿蒙桌面</span></td></tr>
+            <tr><td>应用商店宣传图</td><td class="mono">1024×1024</td><td>深底圆角 22%<span class="s">商店 / 推广物料</span></td></tr>
+            <tr><td>自适应图标</td><td class="mono">432×432</td><td>前景=头盔，安全区 66%<span class="s">Android 类自适应</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sec">
+        <div class="sec-t">任意目标尺寸换算（比例锁死）</div>
+        <div class="rule"><div class="k">圆角</div><div class="v"><b>边长 × 22%</b>（系统蒙版可最终裁定，设计稿按此渲染）</div></div>
+        <div class="rule"><div class="k">logo</div><div class="v"><b>边长 × 60%</b>，水平垂直居中，左右各留 20% 安全区防裁切</div></div>
+        <div class="rule"><div class="k">文字</div><div class="v"><b>禁止</b>——图标内不加任何文字（桌面图标下已有应用名）</div></div>
+        <div class="rule"><div class="k">装饰</div><div class="v"><b>禁止</b>阴影 / 光晕 / 渐变底纹 / 杂色噪点（沿用品牌规范）</div></div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h3>变体 · 禁止</h3>
+      <div class="sec">
+        <div class="sec-t">Web / 小尺寸变体（透明底头盔）</div>
+        <div class="variants">
+          <div class="v"><div class="box"><img class="fav64" src="../../ultima-logo/helmet.png"></div><div class="lbl">64px</div></div>
+          <div class="v"><div class="box"><img class="fav32" src="../../ultima-logo/helmet.png"></div><div class="lbl">32px</div></div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-t">禁止项（违禁清单）</div>
+        <div class="forb"><div class="x">✕</div><div><b>图标内加文字</b>——应用名已在桌面/商店呈现，重复冗余</div></div>
+        <div class="forb"><div class="x">✕</div><div><b>白底 + 白标 / 深底 + 深标</b>——对比失效</div></div>
+        <div class="forb"><div class="x">✕</div><div><b>缩放变形 / 拉伸</b>——logo 与底框比例锁死</div></div>
+        <div class="forb"><div class="x">✕</div><div><b>阴影 / 光晕 / 自造底纹</b>——产品专属底色须登记品牌库后方可用</div></div>
+      </div>
+      <div class="sec">
+        <div class="sec-t">变体规则</div>
+        <div class="rule"><div class="k">主形态</div><div class="v">深底 <b>#0F1420</b> + 头盔（桌面 / 安装包 / 商店唯一形态）</div></div>
+        <div class="rule"><div class="k">Web</div><div class="v">透明底头盔（复用品牌库同源资产）</div></div>
+        <div class="rule"><div class="k">专属主题</div><div class="v">子品牌可换底色（如金色），<b>须登记品牌库 README</b>，结构不变</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
