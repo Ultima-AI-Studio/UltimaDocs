@@ -36,7 +36,7 @@
   .flabel .star{color:#E5484D;}
   .input{background:#0F1420;border:2px solid #2A3550;border-radius:8px;padding:18px 24px;font-size:32px;color:#E6EAF2;display:flex;align-items:center;gap:16px;}
   .input .icon{color:#78849E;font-size:28px;}
-  .input .ph{color:#78849E;}
+  .input .ph{color:#78849E;font-size:28px;}
   .input.focus{border-color:#3D7EFF;}
   .input .unit{color:#9AA3B8;font-size:28px;margin-left:auto;}
   .qty{display:flex;align-items:baseline;gap:16px;}
@@ -61,6 +61,11 @@
   .unit-demo .n{font-size:56px;font-weight:700;font-variant-numeric:tabular-nums;}
   .unit-demo .n small{font-size:28px;font-weight:600;color:#3D7EFF;margin-left:6px;}
   .unit-demo .cap{font-size:24px;}
+  .btns{display:flex;gap:20px;align-items:center;margin-top:12px;}
+  .btn{border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:#E6EAF2;font-weight:500;border:2px solid transparent;}
+  .btn.p{font-size:32px;font-weight:500;background:#3D7EFF;padding:16px 48px;}
+  .btn.s{font-size:28px;font-weight:500;background:#1E2A3D;padding:12px 36px;}
+  .btn.x{font-size:26px;font-weight:500;background:transparent;border-color:#2A3550;color:#9AA3B8;padding:10px 28px;}
 </style>
 </head>
 <body>
@@ -69,7 +74,7 @@
     <div class="logo"><img src="../../ultima-logo/helmet.png"></div>
     <div>
       <div class="ttl">Ultima<span>AI</span> · 表单样式</div>
-      <div class="sub">FORM STANDARD v1.0 ｜ 2560×1600 物理基准 ｜ HarmonyOS Sans</div>
+      <div class="sub">FORM STANDARD v1.1 ｜ 2560×1600 物理基准 ｜ HarmonyOS Sans</div>
     </div>
   </div>
   <div class="grid">
@@ -94,10 +99,22 @@
           </div>
         </div>
         <div class="frow">
+          <div class="flabel">备注 Note</div>
+          <div class="input"><span class="ph">请输入备注内容…</span></div>
+        </div>
+        <div class="frow">
           <div class="flabel">数量 Quantity</div>
           <div class="qty">
             <div class="num">1.2<small class="u">K</small></div>
             <span class="hint">= 1,200 条数据 · 阿拉伯数字等宽对齐</span>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="flabel">按钮 Button</div>
+          <div class="btns">
+            <span class="btn p">保存</span>
+            <span class="btn s">取消</span>
+            <span class="btn x">更多</span>
           </div>
         </div>
       </div>
@@ -107,9 +124,10 @@
       <h3>表单规范 Rules</h3>
       <div class="sec">
         <div class="rule"><span class="k">字段标签</span><span class="v">中文字号 <b>26px</b>（13px 逻辑）· 字重 500 · 色 #9AA3B8 · 必填加红星 <b style="color:#E5484D">*</b><span class="m">label: font-size 26px · font-weight 500</span></span></div>
-        <div class="rule"><span class="k">输入框文字</span><span class="v">内容 <b>32px</b>（16px 逻辑）· 字重 400 · 色 #E6EAF2 · 占位符 #78849E<span class="m">input: font-size 32px · color #E6EAF2</span></span></div>
+        <div class="rule"><span class="k">输入框文字</span><span class="v">内容 <b>32px</b>（16px 逻辑）· 字重 400 · 色 #E6EAF2 · 占位符 <b>28px</b> #78849E<span class="m">input: font-size 32px · placeholder 28px</span></span></div>
         <div class="rule"><span class="k">时间/代码</span><span class="v">等宽 <b>Consolas</b> · 32px · 色 #E6EAF2 · 时区后缀 #9AA3B8<span class="m">time: font-family Consolas,monospace</span></span></div>
         <div class="rule"><span class="k">标签胶囊</span><span class="v">24px · 字重 500 · 圆角 4px · 选中=蓝描边+淡蓝底 · 中性=elevated 底<span class="m">tag: 24px · radius 4px</span></span></div>
+        <div class="rule"><span class="k">按钮</span><span class="v">主按钮 <b>32px 500</b> accent 填充 · 次要按钮 <b>28px 500</b> · 小按钮 <b>26px 500</b><span class="m">btn: 32/28/26 · weight 500</span></span></div>
         <div class="rule"><span class="k">数量数字</span><span class="v"><b>72px</b> · 字重 700 · <b>tabular-nums</b> 等宽对齐 · 计量单位 32px 字重 600<span class="m">number: 72px bold · tabular-nums</span></span></div>
       </div>
       <h3>计量单位 Unit</h3>
