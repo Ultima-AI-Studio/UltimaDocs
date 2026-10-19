@@ -78,20 +78,22 @@ cmd /c "codex.exe exec -m gpt-5.6-sol --dangerously-bypass-approvals-and-sandbox
 
 ---
 
-## 3. 队列方式（工单队列三件套）
+## 3. 队列方式（工单队列三件套 + 全局登记）
 
 | 件 | 路径 | 职责 |
 |---|---|---|
 | 工单文件 | `tasks/queue/wo-<product>-<阶段>.md` | 三段式工单（模板 `_shared\templates\工单模板.md`），逐 T 可执行 |
-| 队列主表 | `tasks/queue/console-queue-index.md` | **唯一权威**：每张工单状态/任务数/前置冻结/验收门/closeout |
+| 队列主表 | `tasks/queue/<product>-queue-index.md` | **项目级唯一权威**：每张工单状态/任务数/前置冻结/验收门/closeout |
 | 状态镜像 | `tasks/queue/queue-status.json` | `queue-status-gen.py` 生成：total/frozen/in_progress/blocked/wip |
+| **全局主表（2026-10-19 新增）** | `_shared\queue\global-queue-index.md` | **全项目监察总表**：所有项目派 Codex 的工单必须登记一行（项目+工单+状态+冻结门+回执），看门狗巡检此表；只聚合状态不复制正文（防双源漂移） |
 
 状态流转：`待派发 → 执行中 → 逐 T 验收 → 已完成（frozen）`
 
 硬约束：
-- WIP 上限：**执行中 ≤2 张、审计中 ≤1 张**
+- WIP 上限：**执行中 ≤2 张、审计中 ≤1 张（全项目合计）**
 - 前置冻结门：未冻结不进下一阶段；`mN-frozen` tag/阶段报告 `docs/reports/stage-mN.md` 缺失=冻结门未闭合
 - 队列主表是唯一权威，queue-status.json 只是其镜像，改状态先改主表再重新生成
+- **派单前必须先在全局主表登记**（项目/工单/状态三要素），禁止绕过全局登记直接派 Codex；没有本地队列的项目（Engine/Gold/Radar/Scan 等）派单时同步补建 `tasks\queue\`
 
 ---
 
