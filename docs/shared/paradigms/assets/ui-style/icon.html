@@ -58,7 +58,8 @@
   .v .lbl b{color:#E6EAF2;}
   .fav64{width:128px;height:128px;}
   .fav32{width:64px;height:64px;}
-  .desk{width:220px;height:220px;display:block;}
+  .desk-box{width:260px;height:260px;padding:0;}
+  .desk{width:98%;height:98%;display:block;}
   .forb{display:flex;align-items:flex-start;gap:16px;padding:14px 0;border-bottom:1px dashed #2A3550;font-size:26px;line-height:1.5;color:#9AA3B8;}
   .forb:last-child{border-bottom:none;}
   .forb .x{flex:0 0 34px;width:34px;height:34px;border-radius:8px;background:#E5484D;color:#fff;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;}
@@ -112,7 +113,7 @@
             <tr><td>设计稿基准</td><td class="mono">128px</td><td>缩放公式同 §十<span class="s">2560×1600 物理基准</span></td></tr>
             <tr><td>HarmonyOS 应用图标</td><td class="mono">288×288</td><td>AppScope / resources / base / media / app_icon.png<span class="s">前台图标</span></td></tr>
             <tr><td>Web favicon</td><td class="mono">32 / 64</td><td>透明底头盔（不带底框）<span class="s">网页场景</span></td></tr>
-            <tr><td><b>桌面图标（Win / macOS）</b></td><td class="mono">256 / 512</td><td>透明底头盔 · 占满 98%<span class="s">系统栏图标，无底框近贴边</span></td></tr>
+            <tr><td><b>桌面图标（Win / macOS）</b></td><td class="mono">256 / 512</td><td>透明底头盔 · 占满 98%<span class="s">导出 .ico（Win，内嵌 16–256）/ .icns（macOS）</span></td></tr>
             <tr><td>安装包主图</td><td class="mono">512×512</td><td>深底圆角 22%<span class="s">主形态</span></td></tr>
             <tr><td>应用商店宣传图</td><td class="mono">1024×1024</td><td>深底圆角 22%<span class="s">商店 / 推广物料</span></td></tr>
             <tr><td>自适应图标</td><td class="mono">432×432</td><td>前景=头盔，安全区 66%<span class="s">Android 类自适应</span></td></tr>
@@ -133,7 +134,7 @@
       <div class="sec">
         <div class="sec-t">桌面图标变体（Windows / macOS 系统栏）</div>
         <div class="variants">
-          <div class="v"><div class="box" style="background:#E8EDF5;"><img class="desk" src="../../../brand/ultima-logo/helmet.png"></div><div class="lbl"><b>透明底 · 占满 98%</b><br>近贴边小呼吸边，无底框</div></div>
+          <div class="v"><div class="box desk-box" style="background:#E8EDF5;"><img class="desk" src="../../../brand/ultima-logo/helmet.png"></div><div class="lbl"><b>透明底 · 占满 98%</b><br>近贴边（示例即 98%），导出 .ico / .icns</div></div>
         </div>
       </div>
       <div class="sec">
@@ -153,7 +154,7 @@
       <div class="sec">
         <div class="sec-t">变体规则</div>
         <div class="rule"><div class="k">主形态</div><div class="v">深底 <b>#0F1420</b> + 头盔 80%（安装包 / 商店 / 移动启动器唯一形态）</div></div>
-        <div class="rule"><div class="k">Win / macOS 桌面</div><div class="v"><b>透明底 · 占满 98%</b>，近贴边小呼吸边，无底框（系统自带圆角蒙版）</div></div>
+        <div class="rule"><div class="k">Win / macOS 桌面</div><div class="v"><b>透明底 · 占满 98%</b>，近贴边，无底框；导出 <b>.ico</b>（Win，内嵌 16–256）/ <b>.icns</b>（macOS）</div></div>
         <div class="rule"><div class="k">Web</div><div class="v">透明底头盔（复用品牌库同源资产）</div></div>
         <div class="rule"><div class="k">专属主题</div><div class="v">子品牌可换底色（如金色），<b>须登记品牌库 README</b>，结构不变</div></div>
       </div>
