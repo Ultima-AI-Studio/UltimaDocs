@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family:"HarmonyOS Sans";
+    src:url("file:///H:/UltimaAI/_shared/brand/fonts/HarmonyOS_Sans.ttf") format("truetype");
+    font-weight:700;
+  }
+  @font-face {
+    font-family:"HarmonyOS Sans SC";
+    src:url("file:///H:/UltimaAI/_shared/brand/fonts/HarmonyOS_Sans_SC.ttf") format("truetype");
+    font-weight:400 700;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#070B14;display:flex;align-items:center;justify-content:center;min-height:100vh;}
+  .artboard{
+    width:2560px;height:1600px;zoom:0.5;flex:0 0 auto;
+    background:#0F1420;color:#E6EAF2;padding:80px 88px;
+    font-family:"HarmonyOS Sans SC","HarmonyOS Sans",sans-serif;
+  }
+  .head{display:flex;align-items:center;gap:24px;padding-bottom:40px;border-bottom:2px solid #2A3550;}
+  .head .logo{height:108px;width:108px;flex:0 0 auto;}
+  .head .logo img{width:100%;height:100%;display:block;}
+  .head .ttl{font-size:48px;font-weight:700;letter-spacing:.5px;color:#E6EAF2;}
+  .head .ttl span{color:#3D7EFF;}
+  .head .sub{font-size:28px;color:#9AA3B8;margin-top:8px;letter-spacing:1px;}
+  .grid{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;margin-top:48px;}
+  .col h3{font-size:24px;font-weight:600;color:#3D7EFF;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+  .col h3::before{content:"";width:8px;height:28px;background:#3D7EFF;border-radius:4px;}
+  /* 表格 */
+  table{width:100%;border-collapse:collapse;background:#161D2C;border:1px solid #2A3550;border-radius:12px;overflow:hidden;}
+  thead th{
+    font-size:26px;font-weight:500;color:#9AA3B8;text-align:left;
+    padding:18px 24px;background:#1E2A3D;border-bottom:2px solid #2A3550;
+  }
+  tbody td{
+    font-size:32px;color:#E6EAF2;padding:20px 24px;border-bottom:1px solid #2A3550;
+    font-variant-numeric:tabular-nums;vertical-align:middle;
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  tr.buy{background:rgba(34,197,94,.07);}
+  tr.sell{background:rgba(229,72,77,.07);}
+  td .num{font-weight:700;}
+  td .u{font-size:24px;font-weight:600;color:#3D7EFF;margin-left:4px;}
+  td .mono{font-family:Consolas,monospace;}
+  td .pct{color:#9AA3B8;}
+  .dir{display:inline-block;border-radius:4px;padding:6px 18px;font-size:24px;font-weight:500;color:#fff;line-height:1.4;}
+  .dir.b{background:#22C55E;}
+  .dir.s{background:#E5484D;}
+  .strat{display:inline-block;border-radius:4px;padding:4px 16px;font-size:24px;font-weight:500;line-height:1.4;}
+  .strat.sl{border:2px solid #E5484D;color:#E5484D;}
+  .strat.sg{border:2px solid #3D7EFF;color:#3D7EFF;}
+  .strat.tp{border:2px solid #F59E0B;color:#F59E0B;}
+  /* 规则 */
+  .sec{background:#161D2C;border:1px solid #2A3550;border-radius:12px;padding:28px 32px;margin-bottom:24px;}
+  .rule{display:flex;align-items:flex-start;gap:20px;padding:14px 0;border-bottom:1px dashed #2A3550;font-size:26px;line-height:1.5;}
+  .rule:last-child{border-bottom:none;}
+  .rule .k{flex:0 0 150px;color:#3D7EFF;font-weight:600;}
+  .rule .v{flex:1;color:#9AA3B8;}
+  .rule .v b{color:#E6EAF2;font-weight:600;}
+  .rule .v .m{font-family:Consolas,monospace;font-size:22px;color:#78849E;display:block;margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="artboard">
+  <div class="head">
+    <div class="logo"><img src="../../ultima-logo/helmet.png"></div>
+    <div>
+      <div class="ttl">Ultima<span>AI</span> · 表格样式</div>
+      <div class="sub">TABLE STANDARD v1.0 ｜ 2560×1600 物理基准 ｜ HarmonyOS Sans</div>
+    </div>
+  </div>
+  <div class="grid">
+    <!-- 表格示例 -->
+    <div class="col">
+      <h3>交易记录 Table</h3>
+      <table>
+        <thead>
+          <tr><th>方向</th><th>规模</th><th>价格</th><th>比例</th><th>百分比</th><th>数值</th><th>策略</th></tr>
+        </thead>
+        <tbody>
+          <tr class="sell"><td><span class="dir s">卖出</span></td><td><span class="num">495.64<span class="u">K</span></span></td><td class="mono">0.000007478</td><td class="num">3.55</td><td class="pct">1.0%</td><td class="num">0.16</td><td><span class="strat sl">止损</span></td></tr>
+          <tr class="buy"><td><span class="dir b">买入</span></td><td><span class="num">495.64<span class="u">K</span></span></td><td class="mono">0.000005135</td><td class="num">25.45</td><td class="pct">1.0%</td><td class="num">0.23</td><td><span class="strat sg">信号跟随</span></td></tr>
+          <tr class="sell"><td><span class="dir s">卖出</span></td><td><span class="num">1.04<span class="u">M</span></span></td><td class="mono">0.00003607</td><td class="num">37.24</td><td class="pct">1.0%</td><td class="num">0.26</td><td><span class="strat sl">止损</span></td></tr>
+          <tr class="buy"><td><span class="dir b">买入</span></td><td><span class="num">1.04<span class="u">M</span></span></td><td class="mono">0.00007608</td><td class="num">79.12</td><td class="pct">1.0%</td><td class="num">0.39</td><td><span class="strat sg">信号跟随</span></td></tr>
+          <tr class="sell"><td><span class="dir s">卖出</span></td><td><span class="num">135.45<span class="u">K</span></span></td><td class="mono">0.0004477</td><td class="num">60.31</td><td class="pct">0.5%</td><td class="num">0.33</td><td><span class="strat tp">移动止盈</span></td></tr>
+          <tr class="buy"><td><span class="dir b">买入</span></td><td><span class="num">135.45<span class="u">K</span></span></td><td class="mono">0.0005962</td><td class="num">80.75</td><td class="pct">0.5%</td><td class="num">0.39</td><td><span class="strat sg">信号跟随</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 规则说明 -->
+    <div class="col">
+      <h3>表格规范 Rules</h3>
+      <div class="sec">
+        <div class="rule"><span class="k">表头</span><span class="v"><b>26px</b> · 字重 500 · 色 #9AA3B8 · 底色 elevated #1E2A3D · 下描边 2px line<span class="m">th: 26px · #1E2A3D bg</span></span></div>
+        <div class="rule"><span class="k">数据行</span><span class="v"><b>32px</b> · 字重 400 · 色 #E6EAF2 · 行高 padding 20px 24px · 行分隔 1px line<span class="m">td: 32px · padding 20px 24px</span></span></div>
+        <div class="rule"><span class="k">方向标签</span><span class="v">填充胶囊 · 24px 500 · <b>买入=绿 #22C55E 填充</b> · <b>卖出=红 #E5484D 填充</b> · 配对行淡绿/淡红底 rgba(·,07)<span class="m">dir: fill pill · 24px</span></span></div>
+        <div class="rule"><span class="k">规模/数值</span><span class="v"><b>阿拉伯数字 32px 700</b> · tabular-nums · 计量单位 K/M 24px 600 accent 蓝（对齐表单数量规范）<span class="m">qty: 32px bold · K/M</span></span></div>
+        <div class="rule"><span class="k">价格小数</span><span class="v">等宽 <b>Consolas</b> · 32px · tabular-nums 对齐 · 色 #E6EAF2<span class="m">price: mono · tabular-nums</span></span></div>
+        <div class="rule"><span class="k">百分比</span><span class="v">32px · 色 #9AA3B8 · tabular-nums · 小数位按数据精度统一<span class="m">pct: 32px · sub</span></span></div>
+        <div class="rule"><span class="k">策略标签</span><span class="v">描边胶囊 · 24px 500 · <b>止损=红描边</b> · <b>信号跟随=蓝描边</b> · <b>移动止盈=黄描边</b><span class="m">strat: outline pill · state colors</span></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

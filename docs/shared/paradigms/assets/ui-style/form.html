@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family:"HarmonyOS Sans";
+    src:url("file:///H:/UltimaAI/_shared/brand/fonts/HarmonyOS_Sans.ttf") format("truetype");
+    font-weight:700;
+  }
+  @font-face {
+    font-family:"HarmonyOS Sans SC";
+    src:url("file:///H:/UltimaAI/_shared/brand/fonts/HarmonyOS_Sans_SC.ttf") format("truetype");
+    font-weight:400 700;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#070B14;display:flex;align-items:center;justify-content:center;min-height:100vh;}
+  .artboard{
+    width:2560px;height:1600px;zoom:0.5;flex:0 0 auto;
+    background:#0F1420;color:#E6EAF2;padding:80px 88px;
+    font-family:"HarmonyOS Sans SC","HarmonyOS Sans",sans-serif;
+  }
+  .head{display:flex;align-items:center;gap:24px;padding-bottom:40px;border-bottom:2px solid #2A3550;}
+  .head .logo{height:108px;width:108px;flex:0 0 auto;}
+  .head .logo img{width:100%;height:100%;display:block;}
+  .head .ttl{font-size:48px;font-weight:700;letter-spacing:.5px;color:#E6EAF2;}
+  .head .ttl span{color:#3D7EFF;}
+  .head .sub{font-size:28px;color:#9AA3B8;margin-top:8px;letter-spacing:1px;}
+  .grid{display:grid;grid-template-columns:1.25fr 1fr;gap:40px;margin-top:48px;}
+  .col h3{font-size:24px;font-weight:600;color:#3D7EFF;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+  .col h3::before{content:"";width:8px;height:28px;background:#3D7EFF;border-radius:4px;}
+  .form-card{background:#161D2C;border:1px solid #2A3550;border-radius:12px;padding:44px 48px;}
+  .frow{margin-bottom:36px;}
+  .frow:last-child{margin-bottom:0;}
+  .flabel{font-size:26px;color:#9AA3B8;font-weight:500;margin-bottom:14px;display:flex;align-items:center;gap:12px;}
+  .flabel .star{color:#E5484D;}
+  .input{background:#0F1420;border:2px solid #2A3550;border-radius:8px;padding:18px 24px;font-size:32px;color:#E6EAF2;display:flex;align-items:center;gap:16px;}
+  .input .icon{color:#78849E;font-size:28px;}
+  .input .ph{color:#78849E;}
+  .input.focus{border-color:#3D7EFF;}
+  .input .unit{color:#9AA3B8;font-size:28px;margin-left:auto;}
+  .qty{display:flex;align-items:baseline;gap:16px;}
+  .qty .num{font-size:72px;font-weight:700;font-variant-numeric:tabular-nums;color:#E6EAF2;line-height:1;}
+  .qty .u{font-size:32px;color:#3D7EFF;font-weight:600;}
+  .qty .hint{font-size:24px;color:#78849E;margin-left:auto;}
+  .caps{display:flex;flex-wrap:wrap;gap:16px;}
+  .cap{font-size:24px;font-weight:500;border-radius:4px;padding:8px 18px;line-height:1.4;}
+  .cap.fill{background:#3D7EFF;color:#fff;}
+  .cap.line{border:2px solid #22C55E;color:#22C55E;}
+  .cap.neutral{background:#1E2A3D;color:#E6EAF2;}
+  .cap.pick{background:rgba(61,126,255,.14);border:2px solid #3D7EFF;color:#E6EAF2;}
+  /* 规则区 */
+  .sec{background:#161D2C;border:1px solid #2A3550;border-radius:12px;padding:28px 32px;margin-bottom:24px;}
+  .rule{display:flex;align-items:flex-start;gap:20px;padding:14px 0;border-bottom:1px dashed #2A3550;font-size:26px;color:#E6EAF2;line-height:1.5;}
+  .rule:last-child{border-bottom:none;}
+  .rule .k{flex:0 0 150px;color:#3D7EFF;font-weight:600;}
+  .rule .v{flex:1;color:#9AA3B8;}
+  .rule .v b{color:#E6EAF2;font-weight:600;}
+  .rule .v .m{font-family:Consolas,monospace;font-size:22px;color:#78849E;display:block;margin-top:4px;}
+  .unit-demo{display:flex;gap:32px;align-items:baseline;margin-top:8px;}
+  .unit-demo .n{font-size:56px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .unit-demo .n small{font-size:28px;font-weight:600;color:#3D7EFF;margin-left:6px;}
+  .unit-demo .cap{font-size:24px;}
+</style>
+</head>
+<body>
+<div class="artboard">
+  <div class="head">
+    <div class="logo"><img src="../../ultima-logo/helmet.png"></div>
+    <div>
+      <div class="ttl">Ultima<span>AI</span> · 表单样式</div>
+      <div class="sub">FORM STANDARD v1.0 ｜ 2560×1600 物理基准 ｜ HarmonyOS Sans</div>
+    </div>
+  </div>
+  <div class="grid">
+    <!-- 表单示例 -->
+    <div class="col">
+      <h3>表单示例 Form</h3>
+      <div class="form-card">
+        <div class="frow">
+          <div class="flabel"><span class="star">*</span>时间 Time</div>
+          <div class="input"><span class="icon">📅</span><span style="font-family:Consolas,monospace;">2026-10-19 10:30</span><span class="unit">UTC+8</span></div>
+        </div>
+        <div class="frow">
+          <div class="flabel"><span class="star">*</span>名称 Name</div>
+          <div class="input focus">Ultima<span style="color:#3D7EFF">AI</span><span class="unit">已填写</span></div>
+        </div>
+        <div class="frow">
+          <div class="flabel">标签 Tags</div>
+          <div class="caps">
+            <span class="cap pick">进行中</span>
+            <span class="cap neutral">v1.2.0</span>
+            <span class="cap line">达标</span>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="flabel">数量 Quantity</div>
+          <div class="qty">
+            <div class="num">1.2<small class="u">K</small></div>
+            <span class="hint">= 1,200 条数据 · 阿拉伯数字等宽对齐</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 规则说明 -->
+    <div class="col">
+      <h3>表单规范 Rules</h3>
+      <div class="sec">
+        <div class="rule"><span class="k">字段标签</span><span class="v">中文字号 <b>26px</b>（13px 逻辑）· 字重 500 · 色 #9AA3B8 · 必填加红星 <b style="color:#E5484D">*</b><span class="m">label: font-size 26px · font-weight 500</span></span></div>
+        <div class="rule"><span class="k">输入框文字</span><span class="v">内容 <b>32px</b>（16px 逻辑）· 字重 400 · 色 #E6EAF2 · 占位符 #78849E<span class="m">input: font-size 32px · color #E6EAF2</span></span></div>
+        <div class="rule"><span class="k">时间/代码</span><span class="v">等宽 <b>Consolas</b> · 32px · 色 #E6EAF2 · 时区后缀 #9AA3B8<span class="m">time: font-family Consolas,monospace</span></span></div>
+        <div class="rule"><span class="k">标签胶囊</span><span class="v">24px · 字重 500 · 圆角 4px · 选中=蓝描边+淡蓝底 · 中性=elevated 底<span class="m">tag: 24px · radius 4px</span></span></div>
+        <div class="rule"><span class="k">数量数字</span><span class="v"><b>72px</b> · 字重 700 · <b>tabular-nums</b> 等宽对齐 · 计量单位 32px 字重 600<span class="m">number: 72px bold · tabular-nums</span></span></div>
+      </div>
+      <h3>计量单位 Unit</h3>
+      <div class="sec">
+        <div class="unit-demo">
+          <span class="n">999<small></small></span>
+          <span class="n">1.2<small>K</small></span>
+          <span class="n">3.4<small>M</small></span>
+          <span class="n">1.0<small>B</small></span>
+        </div>
+        <div style="font-size:24px;color:#78849E;line-height:1.8;margin-top:24px;">
+          规则：≥1000 用英文计量单位 <b style="color:#E6EAF2">K / M / B</b>（千 / 百万 / 十亿）；保留 1 位小数；单位紧跟数字、字号 32px 字重 600、accent 蓝；阿拉伯数字一律等宽对齐（tabular-nums）。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
