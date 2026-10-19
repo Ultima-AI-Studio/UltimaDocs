@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:100%; height:100%; background:#070B14; }
+  .stage {
+    width:1200px; height:400px;
+    margin:60px auto;
+    background:radial-gradient(120% 200% at 20% 0%, #101A30 0%, #0A0F1E 55%, #070B14 100%);
+    display:flex; align-items:center; justify-content:center; gap:52px;
+    border-radius:24px; border:1px solid #1B2740;
+    box-shadow:0 0 80px rgba(45,110,255,.18), inset 0 0 120px rgba(45,110,255,.05);
+    position:relative; overflow:hidden;
+  }
+  .stage::before {
+    content:""; position:absolute; top:-40%; left:-10%; width:60%; height:160%;
+    background:radial-gradient(circle, rgba(61,138,255,.16) 0%, transparent 65%);
+    pointer-events:none;
+  }
+  .logo {
+    width:200px; height:200px; flex:0 0 auto; filter:drop-shadow(0 0 34px rgba(70,150,255,.55));
+    position:relative; z-index:2;
+  }
+  .logo img { width:100%; height:100%; display:block; }
+  .word { display:flex; flex-direction:column; gap:16px; position:relative; z-index:2; }
+  .main {
+    font-family:"Segoe UI","Microsoft YaHei",sans-serif;
+    font-size:88px; font-weight:700; letter-spacing:1px; line-height:1;
+    color:#EAF2FF;
+  }
+  .main .acc { color:#4D9FFF; }
+  .main .acc2 { color:#6FB6FF; }
+  .sub {
+    font-family:"Microsoft YaHei",sans-serif; font-size:30px; font-weight:400;
+    color:#8A94A6; letter-spacing:14px;
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="logo"><img src="../ultima-logo/helmet.png"></div>
+    <div class="word">
+      <div class="main">Ultima<span class="acc">Console</span></div>
+      <div class="sub">工程调度管理中心</div>
+    </div>
+  </div>
+</body>
+</html>
