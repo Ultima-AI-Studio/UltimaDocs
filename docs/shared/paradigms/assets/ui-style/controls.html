@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family:"HarmonyOS Sans";
+    src:url("file:///H:/UltimaAI/_shared/brand/fonts/HarmonyOS_Sans.ttf") format("truetype");
+    font-weight:700;
+  }
+  @font-face {
+    font-family:"HarmonyOS Sans SC";
+    src:url("file:///H:/UltimaAI/_shared/brand/fonts/HarmonyOS_Sans_SC.ttf") format("truetype");
+    font-weight:400 700;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#070B14;display:flex;align-items:center;justify-content:center;min-height:100vh;}
+  .artboard{
+    width:2560px;height:1600px;zoom:0.5;flex:0 0 auto;
+    background:#0F1420;color:#E6EAF2;padding:80px 88px;
+    font-family:"HarmonyOS Sans SC","HarmonyOS Sans",sans-serif;
+  }
+  .head{display:flex;align-items:center;gap:24px;padding-bottom:40px;border-bottom:2px solid #2A3550;}
+  .head .logo{height:108px;width:108px;flex:0 0 auto;}
+  .head .logo img{width:100%;height:100%;display:block;}
+  .head .ttl{font-size:48px;font-weight:700;letter-spacing:.5px;color:#E6EAF2;}
+  .head .ttl span{color:#3D7EFF;}
+  .head .sub{font-size:28px;color:#9AA3B8;margin-top:8px;letter-spacing:1px;}
+  .grid{display:grid;grid-template-columns:1.15fr 1.15fr 1fr;gap:40px;margin-top:48px;}
+  .col h3{font-size:24px;font-weight:600;color:#3D7EFF;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+  .col h3::before{content:"";width:8px;height:28px;background:#3D7EFF;border-radius:4px;}
+  .sec{background:#161D2C;border:1px solid #2A3550;border-radius:12px;padding:28px 32px;margin-bottom:24px;}
+  .sec-t{font-size:26px;font-weight:500;color:#9AA3B8;margin-bottom:16px;}
+  /* 滚动条 */
+  .scrollbox{position:relative;height:300px;overflow-y:auto;background:#0F1420;border:1px solid #2A3550;border-radius:8px;padding:16px 24px;}
+  .scrollbox::-webkit-scrollbar{width:12px;}
+  .scrollbox::-webkit-scrollbar-track{background:transparent;}
+  .scrollbox::-webkit-scrollbar-thumb{background:#2A3550;border-radius:6px;border:3px solid #0F1420;}
+  .scrollbox.hover::-webkit-scrollbar-thumb:hover{background:#3D7EFF;}
+  .scrollbox.thin::-webkit-scrollbar{width:6px;}
+  .scrollbox.thin::-webkit-scrollbar-thumb{border:none;border-radius:3px;background:linear-gradient(180deg,#3D7EFF,#5B9BFF);}
+  .item{padding:14px 0;border-bottom:1px dashed #2A3550;font-size:28px;color:#9AA3B8;}
+  .item:last-child{border-bottom:none;}
+  .item b{color:#E6EAF2;font-weight:500;}
+  .scroll-note{font-size:22px;color:#78849E;margin-top:12px;line-height:1.6;}
+  /* 下拉 */
+  .trigger{display:flex;align-items:center;justify-content:space-between;background:#0F1420;border:2px solid #2A3550;border-radius:8px;padding:18px 24px;font-size:32px;color:#E6EAF2;}
+  .trigger.on{border-color:#3D7EFF;}
+  .trigger .arr{color:#78849E;font-size:28px;}
+  .menu{position:relative;margin-top:16px;background:#161D2C;border:1px solid #2A3550;border-radius:8px;box-shadow:0 16px 40px rgba(0,0,0,.5);padding:8px;max-width:640px;}
+  .mgroup{font-size:26px;font-weight:500;color:#9AA3B8;padding:12px 16px 6px;}
+  .mitem{display:flex;align-items:center;gap:14px;padding:12px 16px;font-size:32px;color:#E6EAF2;border-radius:6px;}
+  .mitem.on{background:rgba(61,126,255,.12);color:#3D7EFF;}
+  .mitem.hov{background:rgba(61,126,255,.1);}
+  .mitem .ck{margin-left:auto;color:#3D7EFF;}
+  .mitem .key{margin-left:auto;font-size:24px;color:#78849E;font-family:Consolas,monospace;}
+  .mitem .cap{margin-left:auto;}
+  .mitem.dis{color:#78849E;}
+  .msep{height:1px;background:#2A3550;margin:8px 0;}
+  .cap{font-size:24px;font-weight:500;border-radius:4px;padding:4px 14px;line-height:1.4;}
+  .cap.fill{background:#22C55E;color:#fff;}
+  .cap.line{border:2px solid #3D7EFF;color:#3D7EFF;}
+  /* 规则 */
+  .rule{display:flex;align-items:flex-start;gap:20px;padding:14px 0;border-bottom:1px dashed #2A3550;font-size:26px;line-height:1.5;}
+  .rule:last-child{border-bottom:none;}
+  .rule .k{flex:0 0 130px;color:#3D7EFF;font-weight:600;}
+  .rule .v{flex:1;color:#9AA3B8;}
+  .rule .v b{color:#E6EAF2;font-weight:600;}
+  .rule .v .m{font-family:Consolas,monospace;font-size:22px;color:#78849E;display:block;margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="artboard">
+  <div class="head">
+    <div class="logo"><img src="../../ultima-logo/helmet.png"></div>
+    <div>
+      <div class="ttl">Ultima<span>AI</span> · 控件样式</div>
+      <div class="sub">CONTROL STANDARD ｜ 滚动条 · 下拉菜单 ｜ HarmonyOS Sans</div>
+    </div>
+  </div>
+  <div class="grid">
+    <!-- 滚动条 -->
+    <div class="col">
+      <h3>滚动条 Scrollbar</h3>
+      <div class="sec">
+        <div class="sec-t">① 默认（宽 6px · 滑块 line）</div>
+        <div class="scrollbox">
+          <div class="item"><b>任务单元验收</b> · wo-07</div>
+          <div class="item"><b>悬浮球扫光动画</b> · 已完成</div>
+          <div class="item"><b>数据通道接入</b> · 进行中</div>
+          <div class="item"><b>文档库同步</b> · 达标</div>
+          <div class="item"><b>品牌区落位</b> · v1.3</div>
+          <div class="item"><b>队列状态回执</b> · 已冻结</div>
+          <div class="item"><b>评分汇总</b> · 92</div>
+          <div class="item"><b>预警处理</b> · 3</div>
+        </div>
+        <div class="scroll-note">轨道透明 · 无滚动时自动隐藏 · 滑块圆角 3px</div>
+      </div>
+      <div class="sec">
+        <div class="sec-t">② 悬停 / 拖动（accent 蓝）</div>
+        <div class="scrollbox hover">
+          <div class="item"><b>任务单元验收</b> · wo-07</div>
+          <div class="item"><b>悬浮球扫光动画</b> · 已完成</div>
+          <div class="item"><b>数据通道接入</b> · 进行中</div>
+          <div class="item"><b>文档库同步</b> · 达标</div>
+          <div class="item"><b>品牌区落位</b> · v1.3</div>
+          <div class="item"><b>队列状态回执</b> · 已冻结</div>
+          <div class="item"><b>评分汇总</b> · 92</div>
+          <div class="item"><b>预警处理</b> · 3</div>
+        </div>
+        <div class="scroll-note">悬停 / 拖动时滑块变 accent #3D7EFF</div>
+      </div>
+      <div class="sec">
+        <div class="sec-t">③ 组件级变体（3px 蓝色渐变细竖线）</div>
+        <div class="scrollbox thin">
+          <div class="item"><b>任务单元验收</b> · wo-07</div>
+          <div class="item"><b>悬浮球扫光动画</b> · 已完成</div>
+          <div class="item"><b>数据通道接入</b> · 进行中</div>
+          <div class="item"><b>文档库同步</b> · 达标</div>
+          <div class="item"><b>品牌区落位</b> · v1.3</div>
+          <div class="item"><b>队列状态回执</b> · 已冻结</div>
+          <div class="item"><b>评分汇总</b> · 92</div>
+          <div class="item"><b>预警处理</b> · 3</div>
+        </div>
+        <div class="scroll-note">3px accent 渐变细线 · 仅特定列表 / 指示类组件使用</div>
+      </div>
+    </div>
+    <!-- 下拉菜单 -->
+    <div class="col">
+      <h3>下拉菜单 Dropdown</h3>
+      <div class="sec">
+        <div class="sec-t">触发器（关闭 / 聚焦）</div>
+        <div class="trigger">选择产品<span class="arr">▾</span></div>
+        <div style="height:14px;"></div>
+        <div class="trigger on">Ultima<span style="color:#3D7EFF">AI</span> 控制台<span class="arr" style="color:#3D7EFF;">▾</span></div>
+      </div>
+      <div class="sec">
+        <div class="sec-t">弹出面板</div>
+        <div class="menu">
+          <div class="mgroup">产品 PRODUCTS</div>
+          <div class="mitem on">Ultima<span style="color:#3D7EFF">AI</span> 控制台<span class="ck">✓</span></div>
+          <div class="mitem hov">Ultima 雷达<span class="cap fill">达标</span></div>
+          <div class="mitem">Ultima 黄金<span class="cap line">进行中</span></div>
+          <div class="msep"></div>
+          <div class="mgroup">操作 ACTIONS</div>
+          <div class="mitem">同步文档库<span class="key">⌘S</span></div>
+          <div class="mitem">生成审计报告<span class="key">⌘A</span></div>
+          <div class="mitem dis">发布版本（未授权）</div>
+        </div>
+      </div>
+    </div>
+    <!-- 规则说明 -->
+    <div class="col">
+      <h3>控件规范 Rules</h3>
+      <div class="sec">
+        <div class="rule"><span class="k">滚动条宽度</span><span class="v"><b>6px</b>（逻辑 3px）· overlay 不占布局 · 轨道透明 · 无滚动隐藏<span class="m">scrollbar: 6px · track transparent</span></span></div>
+        <div class="rule"><span class="k">滑块颜色</span><span class="v">默认 <b>#2A3550</b> 圆角 3px · 悬停/拖动 <b>#3D7EFF</b><span class="m">thumb: line → accent</span></span></div>
+        <div class="rule"><span class="k">渐变细线</span><span class="v"><b>3px accent 渐变</b> · 仅特定列表 / 指示组件 · 不改全局形态<span class="m">variant: 3px accent gradient</span></span></div>
+        <div class="rule"><span class="k">下拉触发器</span><span class="v">复用输入框：32px 400 · 圆角 8px · 描边 line → 聚焦 accent · 箭头 ▾ #78849E<span class="m">trigger = input style</span></span></div>
+        <div class="rule"><span class="k">弹出面板</span><span class="v">surface 底 · 圆角 8px · 描边 line · 阴影 0 16px 40px rgba(0,0,0,.5)<span class="m">menu: surface · radius 8px</span></span></div>
+        <div class="rule"><span class="k">菜单项</span><span class="v">32px 400 · 12px 16px · hover rgba(61,126,255,.1) · 选中 accent + ✓ · 禁用 #78849E<span class="m">item: 32px · hover accent-tint</span></span></div>
+        <div class="rule"><span class="k">分组 / 分隔</span><span class="v">分组标题 26px 500 #9AA3B8 · 分隔线 1px line<span class="m">group 26px · sep 1px</span></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
