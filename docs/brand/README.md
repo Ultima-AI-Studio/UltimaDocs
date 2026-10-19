@@ -33,11 +33,21 @@
 | `references/brand-zone-landscape.jpeg` | 品牌区横屏渲染参考（v11 验收证据） |
 | `references/brand-zone-portrait.jpeg` | 品牌区竖屏渲染参考（v11 验收证据） |
 
-### 组合参考渲染（可选，非必用）
+### 标准效果图（showcase，v1.3 规范渲染，正式资产）
 
 | 文件 | 说明 |
 |---|---|
-| `combo/deep/ultima-console-landscape.png` 等 4 张 | 按参数规范渲染出的参考示例图。**应用时直接用 logo + 字体文字实时渲染，无需合成图**；需要预览图时可改 HTML 源重渲 |
+| `showcase/deep-landscape.png` | 标准效果图-横屏深色（2560×1600 基准：logo 108px + 主标 48px，列间距 17px） |
+| `showcase/deep-portrait.png` | 标准效果图-竖屏深色（1600×2560 基准：logo 192px + 主标 48px，行间距 23px） |
+| `showcase/light-landscape.png` | 标准效果图-横屏浅色（同参数，浅底黑字） |
+| `showcase/light-portrait.png` | 标准效果图-竖屏浅色（同参数，浅底黑字） |
+| `showcase/*.html`（4 个） | 标准效果图渲染源（引入 `fonts/` 字库，改产品名/颜色可重渲） |
+
+### 组合参考渲染（历史存档，旧 v1.0 参数，已由 showcase 取代）
+
+| 文件 | 说明 |
+|---|---|
+| `combo/deep/`、`combo/light/`（各 4 文件） | 旧版组合参考（88px@1200 宽基准，仅存档，不再作为规范依据） |
 
 ### 品牌字体（HarmonyOS Sans，唯一字库）
 
