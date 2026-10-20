@@ -39,6 +39,13 @@
 4. **工单队列**：`tasks/queue/wo-<阶段>-mN.md`（三段式：文件/写什么/验收/禁止）+ 队列主表
 5. **阶段报告**：`docs/reports/stage-<阶段>.md`（每阶段冻结产出，含 Gate 结果）
 6. **审计报告**：`docs/reports/<审计名>-audit.md`（治理体检结论 + 评分）
+7. **文档库 AI 精简**（2026-10-20 新增）：文档库挂载文档的 `content` 由本地千问 14B 生成「精炼版」，客户端点击展开即读完整精简内容、链接回原文，实现"内容都连上"。
+   - **引擎**：本地 Ollama `qwen2.5-14b-opencode:8k`（`127.0.0.1:11434`，纯本地无外部授权）
+   - **脚本**：`H:\UltimaAI\_shared\queue\doc-summarize.py`（幂等：已精简/相同内容自动跳过）
+   - **对象**：各产品 `sync/product.json` 文档库（`docs` 组）中挂载的**本地 md 文档**；飞书介绍类文档（本身为短介绍）保留原文不精简
+   - **输出**：每篇生成精炼版 markdown——保留章节结构/关键结论/数据/约束/验收项，压缩冗余至原文 1/3 左右，**完整可读（非一句话摘要）**，不编造原文没有的数据 → 写回 `docs[].content` 并同步 seed
+   - **触发**：文档新增/修订后跑一次；数据变化后按五节触发点推送（Gist + Gitee）
+   - **验收**：`docs[].content` 长度 >200 字（完整精炼）；客户端文档库点击展开可见完整内容；本地源文档不被删除/改写
 
 ## 四、执行标准（每次开发/执行必须符合）
 
@@ -48,14 +55,103 @@
 4. **数据同步**：状态/版本/评分变化 → 按触发点更新 `sync/product.json` → 双端同步（**不轮询**）
 5. **审计**：对照治理体检基线（结构/文档/工单/验收/同步/活动），产出评分 0-100
 
-## 五、数据同步标准
+## 五、落盘与同步标准（v2 · 具体操作）
+
+> 本节解决"往哪推、用谁推、怎么验证授权、卡住怎么办"。每产品必须三端就绪：
+> **GitHub 正式仓（代码）＋ GitHub 公开 Gist（product.json 免 token 主源）＋ Gitee 镜像仓（备份）**。
+
+### 5.1 账号与凭证（不落明文）
+
+| 端 | 账号/标识 | 凭证存放 | 说明 |
+|---|---|---|---|
+| GitHub | 组织 `Ultima-AI-Studio`；账号 `ArkExlabs` | gh CLI keyring（scope 含 gist） | 建仓/推送/Gist 均用 gh |
+| Gitee | 空间 `Ultima-AI-Studio` | 环境变量 `GITEE_TOKEN`（32 字符） | 从 vault 取出后注入环境 |
+| 凭证库 | `H:\UltimaAI\_shared\vault\vault.json.enc`（`vault.ps1` 管理） | 加密存储 | root/API key/token 一律存此，**不落明文于文档、仓库、聊天记录** |
+
+> **授权三查（任何"没有授权"报错，先跑这三条再反馈）**：
+> 1. **GitHub**：`gh api user --jq .login` 返回 `ArkExlabs` 即有效。`gh auth status` 报 token invalid 多为本机网络校验未走代理的误报：先设 `$env:HTTPS_PROXY="http://127.0.0.1:1080"`、`$env:HTTP_PROXY="http://127.0.0.1:1080"`（仅当 1080 代理在运行）再验证；确认失效才执行 `gh auth refresh -h github.com`（浏览器授权一次）。
+> 2. **Gitee**：`$env:GITEE_TOKEN` 长度应为 32；缺失时从 vault 取出（`vault.ps1` 读取对应密钥），不向用户重复索要。
+> 3. **出网通道**：本机 git / PowerShell 可直连 GitHub；gh / urllib 被网络设备拦截时，Gist 类调用改走 PowerShell `Invoke-RestMethod`（见 sync-dual.py 实现，勿改回 urllib 直连）。
+
+### 5.2 仓库治理
+
+- 组织根（`Ultima-AI-Studio`）**只允许项目同名仓**：`H:\UltimaAI\<Product>` 每个产品对应一个同名 GitHub 仓；备份/子工程放该仓 `backup/` 子路径，**禁止**在根下再建 `<Project>-backup` 等衍生仓。
+- 可见性：默认**私有**（源码/文档/工单）；仅对外发布件公开（如 `UltimaDocs` 文档中心、`Ultima-Agent` Releases 通道）。
+- Gitee 镜像命名：`<product>-sync`（全小写，如 `ultimaconsole-sync` / `ultimaradar-sync`），私有，全仓镜像。
+
+### 5.3 怎么上传（标准动作）
+
+**代码/文档落盘（产品根目录执行）：**
+```
+git add -A
+git commit -m "<描述>"
+git push origin main        # GitHub 正式仓（remote: origin）
+git push gitee main         # Gitee 镜像（remote: gitee）
+```
+
+**首次建仓**：`git init` → `git branch -m master main` → `git remote add origin https://github.com/Ultima-AI-Studio/<Product>.git` → `git remote add gitee https://gitee.com/Ultima-AI-Studio/<product>-sync.git` → 提交推送。Gitee 首次推送遇 non-fast-forward 时先 `git pull --rebase gitee main` 再推。
+
+**product.json 数据落盘（双端一次更新）：**
+```
+python sync-dual.py
+```
+脚本行为：GitHub Gist PATCH（免 token 匿名主源）＋ Gitee contents PUT（带 sha 更新 `sync/product.json`）。脚本位于产品根目录；缺脚本的产品按 `UltimaConsole/sync-dual.py` / `UltimaRadar/sync-dual.py` 复制改造（GIST_ID 与 GITEE_REPO 换成自己的）。
+
+### 5.4 Gist 登记表（每产品一个公开 Gist 存 product.json）
+
+| 产品 | Gist ID | 免 token 读取 URL |
+|---|---|---|
+| UltimaConsole | `5d0043cc6fd2441997c686a206053529` | https://gist.githubusercontent.com/ArkExlabs/5d0043cc6fd2441997c686a206053529/raw/product.json |
+| UltimaRadar | `49007d6263d79ec13d5c0f6e108bd007` | https://gist.githubusercontent.com/ArkExlabs/49007d6263d79ec13d5c0f6e108bd007/raw/product.json |
+| 其他产品 | 建仓后回填本表 | — |
+
+### 5.5 各产品落盘状态表（2026-10-20 核查）
+
+| 产品 | GitHub 仓 | Gitee 镜像 | Gist | sync-dual.py | 待补缺口 |
+|---|---|---|---|---|---|
+| UltimaConsole | ✓ | `ultimaconsole-sync` ✓ | ✓ | ✓ | — |
+| UltimaRadar | ✓ | `ultimaradar-sync` ✓ | ✓ | ✓ | — |
+| UltimaAgent | ✓（公开发布通道） | 未建 | 未建 | ✗ | Gitee 镜像 + Gist + 脚本 |
+| UltimaEngine | 未建 | 未建 | 未建 | ✗ | GitHub 仓 + 镜像 + Gist + 脚本 |
+| UltimaGold | 未建 | 未建 | 未建 | ✗ | GitHub 仓 + 镜像 + Gist + 脚本 |
+| UltimaScan | ✓（私有） | 未建 | 未建 | ✗ | product.json + 镜像 + Gist + 脚本 |
+
+### 5.6 执行端读取路径（不再索要授权/账号）
+
+1. 读根标准本文件第五节（本文）；
+2. 读本产品 `sync/README.md`「双端落盘方式」小节（Gist ID / 镜像仓 / 命令已写死）；
+3. 凭证一律从 `_shared\vault` 取，不向用户重复索要；
+4. 遇"没有授权"报错按 5.1 授权三查处理，处理不了再反馈。
+
+### 5.7 触发点与验收（沿用 v1 定义）
 
 | 项 | 标准 |
 |---|---|
 | 唯一模板 | 每产品 `sync/product.json`（结构遵循 `UltimaConsole/docs/product-sync-template.md`） |
-| 双端目标 | GitHub 公开 Gist（App 匿名主源）+ Gitee 镜像仓库（备份端） |
-| 触发点 | 版本冻结 / 版本发布 / 数据变更 / 用户指示同步 |
-| 动作 | 更新模板后执行双端同步脚本，一次命令两端更新 |
+| 触发点 | 版本冻结 / 版本发布 / 数据变更 / 用户指示同步（手动）＋ 常驻自动同步（见 5.8） |
+| 动作 | 手动触发执行 sync-dual.py（见 5.3）；常驻自动同步走 5.8 看门狗 |
+| 验收 | Gist 匿名可读 / Gitee 可更新 / GitHub 仓 main 最新 / 看门狗日志有最近成功记录 |
+
+### 5.8 常驻同步机制（看门狗 · 15 分钟，2026-10-20 新增）
+
+> 目的：Owner 离开本地后，客户端（Pad/手机，任意网络）仍能拿到最新任务状态。
+> 链路：**本地推（看门狗 15 分钟）→ 云端存（Gist 免 token 主源 + Gitee 镜像）→ 客户端拉（15 分钟轮询 Gist）**；客户端无网络时有内置 seed 兜底。
+
+**本地看门狗（Windows 计划任务，本地电脑）：**
+- 脚本：`H:\UltimaAI\_shared\queue\watchdog-sync.ps1`（全局共享）。幂等：对比上次推送 hash，无变化跳过不空推；凭证：GitHub PAT（`github-pat`）与 Gitee token（`gitee-token`）均存加密 vault（`_shared\vault\vault.ps1` 管理），不落明文；Gist PATCH 必须用 UTF-8 字节 body（PS5.1 字符串 body 含中文会致 400）。
+- 任务：`UltimaWatchdogSync`，每 15 分钟触发，cmd /c + 日志重定向，交互式令牌（当前用户已登录，vault/git 凭证可用）。
+- 建任务命令：
+  ```
+  schtasks /create /tn "UltimaWatchdogSync" /tr "cmd /c powershell.exe -NoProfile -ExecutionPolicy Bypass -File H:\UltimaAI\_shared\queue\watchdog-sync.ps1 >> H:\UltimaAI\_shared\queue\watchdog-sync.log 2>&1" /sc minute /mo 15 /f
+  ```
+- 每次执行写审计日志 `H:\UltimaAI\_shared\queue\watchdog-sync.log`（SKIP/OK/WARN 可追踪）。
+- 新接入产品：复制脚本改 `$ProductFile` / `$GistId` / `$GiteeRepo` 三项（Gist 免 token 主源见 5.4 登记表，Gitee 镜像命名见 5.2）。
+
+**客户端轮询（App / 看门狗 UI）：**
+- 每 15 分钟重新拉 Gist（免 token）刷状态：`setInterval(..., 15*60*1000)`，刷新后同步 AppStorage + 当前页 + 详情页选中对象（参考 `UltimaConsole/entry/src/main/ets/pages/Index.ets` 的 `startAutoRefresh`）。
+- 无网络降级链：Gist 拉取失败 → RDB 本地快照 → 内置 seed（首次安装离线可用），见产品 `M1Runtime` 实现。
+
+**边界**：电脑关机时段推送暂停，重启后计划任务自动恢复；需要"电脑关机也能同步"时，将脚本部署到 VPS（`198.13.46.208`，4核4G 未启用）做常驻兜底（从 GitHub 仓拉状态再推 Gist/Gitee）。
 
 ## 六、合规检查（治理体检 · 每产品按此自查）
 
