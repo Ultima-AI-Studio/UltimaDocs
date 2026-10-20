@@ -153,6 +153,17 @@ python sync-dual.py
 
 **边界**：电脑关机时段推送暂停，重启后计划任务自动恢复；需要"电脑关机也能同步"时，将脚本部署到 VPS（`198.13.46.208`，4核4G 未启用）做常驻兜底（从 GitHub 仓拉状态再推 Gist/Gitee）。
 
+### 5.9 队列状态同步（防止 Console 数据源滞后 · 2026-10-20 新增）
+
+> 背景事实：看门狗（5.8）**只推送** `sync/product.json`，**不生成**汇总。若 Agent/Console/Sentinel 派发 Codex 后未更新 product.json，客户端（鸿蒙）将一直显示旧队列状态（本次事故：Agent 20:51 续派宿主壳，product.json 仍为 20:07 旧数据，鸿蒙端无"执行中"）。
+
+**规则（派发/回执后必做）：**
+
+1. **每次 Codex 派发 / 回执 / 冻结变更后，必须同步更新对应产品 `sync/product.json`** 的 `queue` / `stage` / `summary`（主脑审计轮或当轮对话内完成，不得只更新全局主表）；
+2. 更新路径：读全局主表 `_shared\queue\global-queue-index.md`（唯一权威汇总）→ 按产品更新 product.json `queue` 数组（工单 id + 状态：待派发 / 执行中 / 审计中 / 已冻结）→ 同步 seed 副本（`entry/src/main/resources/rawfile/product-seed.json`）→ 删除 `_shared\queue\.last-push.json` 强制重推（幂等 hash 会跳过未变更）；
+3. **长期自动增量**：watchdog-sync.ps1 逐步增加"从 global-queue-index.md 增量读取各产品工单状态并合入 product.json"的步骤（生成职责从人工迁向看门狗，未实现前人工兜底）；
+4. 验收：派发/回执后 **15 分钟内**，Gist 与 Gitee 的 product.json 含最新执行中状态，客户端轮询可见。
+
 ## 六、合规检查（治理体检 · 每产品按此自查）
 
 - [ ] README + architecture.md 存在且最新（版本/状态同步）
