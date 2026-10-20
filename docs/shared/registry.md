@@ -12,7 +12,10 @@
 | 模板 | `H:\UltimaAI\_shared\templates\` | 工单 / 审计 / 报告 / **项目引导索引** |
 | 全局队列主表 | `H:\UltimaAI\_shared\queue\global-queue-index.md` | 全项目派单登记 + 看门狗巡检 |
 | 各项目入口 | `<产品>\docs\INDEX.md` | **项目引导索引（必读，派单首段强制引用）** |
-| GitHub | 组织 `Ultima-AI-Studio`：`UltimaDocs`（全局文档库）+ 各项目同名仓库 | 根路径只允许项目同名仓库，备份落内部子路径（§5.1） |
+| 顶层架构标准 | `H:\UltimaAI\ULTIMA-STANDARD.md`（同步：UltimaDocs `docs/shared/ULTIMA-STANDARD.md` + 飞书范式库） | 强制对象=全部 Ultima 产品；第五节=落盘与同步标准 v2（账号/授权三查/上传动作/Gist 登记/各产品状态） |
+| GitHub | 组织 `Ultima-AI-Studio`：`UltimaDocs`（全局文档库）+ 各项目同名仓库 | 根路径只允许项目同名仓库，备份落内部子路径（ULTIMA-STANDARD §5.2） |
+| Gitee | 空间 `Ultima-AI-Studio`：`<product>-sync` 镜像仓（私有全仓备份，如 ultimaconsole-sync / ultimaradar-sync） | 备份端；数据更新走各产品 `sync-dual.py`（Gist PATCH + Gitee contents PUT） |
+| Gist 主源 | 每产品公开 Gist 存 `sync/product.json`（免 token 匿名主源）；ID 登记见 ULTIMA-STANDARD §5.4 | Console `5d0043cc…` / Radar `49007d62…`，其他产品待补 |
 | VPS | `161.33.167.206`（一核1G·Ubuntu24.04·Radar 在用）｜ `198.13.46.208`（四核8G 实测·Debian13·未启用） | 域名 `namechatai.space`（挂 198）；工具链/安全（ufw+fail2ban）见各产品 INDEX §4 |
 | 飞书 | 范式 docx（全局根目录 v2 等） | 三层数据备份层，经 `C:\Users\Administrator\Doubao\lark-sync\` 中转 |
 

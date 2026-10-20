@@ -9,6 +9,7 @@
 |---|---|---|---|---|---|
 | 1 | UltimaAI 全局根目录范式 | v1.0 | 待批准 | `UltimaAI-全局根目录范式-方案.md` | 全系产品 + Tuppo 系（改名并入） |
 | 2 | Codex 外部执行端调用范式 | v1.1 | 批准生效（2026-10-19 增任务路由标准） | `Codex-外部执行端调用范式.md` | 全系产品所有挂 Ultima 前缀项目 |
+| 3 | ULTIMA-STANDARD 顶层架构标准 | v1.0 | 批准生效（第五节升级为落盘与同步标准 v2） | `H:\UltimaAI\ULTIMA-STANDARD.md`（UltimaDocs 同步 `docs/shared/ULTIMA-STANDARD.md`） | 全系产品（身份/目录/文档/执行/落盘同步） |
 
 ## 二、范式登记规则
 
@@ -20,7 +21,7 @@
 
 1. **根目录**：所有开发在 `H:\UltimaAI\` 下，产品目录 Ultima 开头，不另起路径。
 2. **命名**：产品名 Ultima 开头；Tuppo 字样不再作为产品名。
-3. **三层数据**：本地权威 → GitHub 桥接 → 飞书备份，同一制式。
+3. **三端落盘**：GitHub 正式仓（代码）→ GitHub 公开 Gist（product.json 免 token 主源）→ Gitee 镜像仓（`<product>-sync` 备份端），同一制式；授权三查/上传动作/登记表见 ULTIMA-STANDARD §5。
 4. **目录结构**：每产品 `docs/tasks/reports/ops/src/artifacts/sync` 统一骨架。
 5. **Codex 调用**：显式 `-m` 指定模型（默认 gpt-6.1-sol 已失效）；派发用 `- < dispatch-*.txt` 喂文件；只归档+同步≠派发，必须真正触发 `codex exec`；WIP 执行中 ≤2；工单三段式 + DoR 五项 + 回执必报字段（详见 Codex 外部执行端调用范式）。
 6. **任务路由**：产出型任务（报告/方案/审计/代码/文档等可写成封闭工单的）默认派 Codex，豆包只转工单+验收交付；交互型任务（问答/决策/偏好确认）豆包直做；对所有会话窗口（新开与旧窗口）统一生效（详见 Codex 外部执行端调用范式 §0.1）。
