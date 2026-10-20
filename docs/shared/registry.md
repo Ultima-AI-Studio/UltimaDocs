@@ -13,7 +13,7 @@
 | 全局队列主表 | `H:\UltimaAI\_shared\queue\global-queue-index.md` | 全项目派单登记 + 看门狗巡检 |
 | 各项目入口 | `<产品>\docs\INDEX.md` | **项目引导索引（必读，派单首段强制引用）** |
 | GitHub | 组织 `Ultima-AI-Studio`：`UltimaDocs`（全局文档库）+ 各项目同名仓库 | 根路径只允许项目同名仓库，备份落内部子路径（§5.1） |
-| VPS | `161.33.167.206`（一核1G·Radar 在用）｜ `198.13.46.208`（四核4G·未启用） | 域名 `namechatai.space` |
+| VPS | `161.33.167.206`（一核1G·Ubuntu24.04·Radar 在用）｜ `198.13.46.208`（四核8G 实测·Debian13·未启用） | 域名 `namechatai.space`（挂 198）；工具链/安全（ufw+fail2ban）见各产品 INDEX §4 |
 | 飞书 | 范式 docx（全局根目录 v2 等） | 三层数据备份层，经 `C:\Users\Administrator\Doubao\lark-sync\` 中转 |
 
 ## 一、产品注册
