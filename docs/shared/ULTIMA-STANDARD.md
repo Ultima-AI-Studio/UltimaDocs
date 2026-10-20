@@ -121,9 +121,30 @@ python sync-dual.py
 | 项 | 标准 |
 |---|---|
 | 唯一模板 | 每产品 `sync/product.json`（结构遵循 `UltimaConsole/docs/product-sync-template.md`） |
-| 触发点 | 版本冻结 / 版本发布 / 数据变更 / 用户指示同步 |
-| 动作 | 更新模板后执行 sync-dual.py，一次命令双端更新（**不轮询**） |
-| 验收 | Gist 匿名可读 / Gitee 可更新 / GitHub 仓 main 最新 |
+| 触发点 | 版本冻结 / 版本发布 / 数据变更 / 用户指示同步（手动）＋ 常驻自动同步（见 5.8） |
+| 动作 | 手动触发执行 sync-dual.py（见 5.3）；常驻自动同步走 5.8 看门狗 |
+| 验收 | Gist 匿名可读 / Gitee 可更新 / GitHub 仓 main 最新 / 看门狗日志有最近成功记录 |
+
+### 5.8 常驻同步机制（看门狗 · 15 分钟，2026-10-20 新增）
+
+> 目的：Owner 离开本地后，客户端（Pad/手机，任意网络）仍能拿到最新任务状态。
+> 链路：**本地推（看门狗 15 分钟）→ 云端存（Gist 免 token 主源 + Gitee 镜像）→ 客户端拉（15 分钟轮询 Gist）**；客户端无网络时有内置 seed 兜底。
+
+**本地看门狗（Windows 计划任务，本地电脑）：**
+- 脚本：`H:\UltimaAI\_shared\queue\watchdog-sync.ps1`（全局共享）。幂等：对比上次推送 hash，无变化跳过不空推；凭证：GitHub PAT 走 git 凭证库、Gitee token 走加密 vault，不落明文。
+- 任务：`UltimaWatchdogSync`，每 15 分钟触发，cmd /c + 日志重定向，交互式令牌（当前用户已登录，vault/git 凭证可用）。
+- 建任务命令：
+  ```
+  schtasks /create /tn "UltimaWatchdogSync" /tr "cmd /c powershell.exe -NoProfile -ExecutionPolicy Bypass -File H:\UltimaAI\_shared\queue\watchdog-sync.ps1 >> H:\UltimaAI\_shared\queue\watchdog-sync.log 2>&1" /sc minute /mo 15 /f
+  ```
+- 每次执行写审计日志 `H:\UltimaAI\_shared\queue\watchdog-sync.log`（SKIP/OK/WARN 可追踪）。
+- 新接入产品：复制脚本改 `$ProductFile` / `$GistId` / `$GiteeRepo` 三项（Gist 免 token 主源见 5.4 登记表，Gitee 镜像命名见 5.2）。
+
+**客户端轮询（App / 看门狗 UI）：**
+- 每 15 分钟重新拉 Gist（免 token）刷状态：`setInterval(..., 15*60*1000)`，刷新后同步 AppStorage + 当前页 + 详情页选中对象（参考 `UltimaConsole/entry/src/main/ets/pages/Index.ets` 的 `startAutoRefresh`）。
+- 无网络降级链：Gist 拉取失败 → RDB 本地快照 → 内置 seed（首次安装离线可用），见产品 `M1Runtime` 实现。
+
+**边界**：电脑关机时段推送暂停，重启后计划任务自动恢复；需要"电脑关机也能同步"时，将脚本部署到 VPS（`198.13.46.208`，4核4G 未启用）做常驻兜底（从 GitHub 仓拉状态再推 Gist/Gitee）。
 
 ## 六、合规检查（治理体检 · 每产品按此自查）
 
