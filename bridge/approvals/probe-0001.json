@@ -1,0 +1,12 @@
+{
+  "id": "probe-0001",
+  "mode": "confirm",
+  "title": "链路验证 · 审批通道探针",
+  "src": "UltimaDocs",
+  "summary": "验证主脑→GitHub 中转→读回的写读闭环；本条目为探针，不派发任何真实任务。",
+  "impact": "无业务影响，验证完成后归档",
+  "recommended": "同意",
+  "reason": "探针：验证桥接链路可写可读",
+  "created_at": "2026-10-20T00:00:00+08:00",
+  "status": "pending"
+}
