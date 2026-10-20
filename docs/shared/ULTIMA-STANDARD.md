@@ -131,7 +131,7 @@ python sync-dual.py
 > 链路：**本地推（看门狗 15 分钟）→ 云端存（Gist 免 token 主源 + Gitee 镜像）→ 客户端拉（15 分钟轮询 Gist）**；客户端无网络时有内置 seed 兜底。
 
 **本地看门狗（Windows 计划任务，本地电脑）：**
-- 脚本：`H:\UltimaAI\_shared\queue\watchdog-sync.ps1`（全局共享）。幂等：对比上次推送 hash，无变化跳过不空推；凭证：GitHub PAT 走 git 凭证库、Gitee token 走加密 vault，不落明文。
+- 脚本：`H:\UltimaAI\_shared\queue\watchdog-sync.ps1`（全局共享）。幂等：对比上次推送 hash，无变化跳过不空推；凭证：GitHub PAT（`github-pat`）与 Gitee token（`gitee-token`）均存加密 vault（`_shared\vault\vault.ps1` 管理），不落明文；Gist PATCH 必须用 UTF-8 字节 body（PS5.1 字符串 body 含中文会致 400）。
 - 任务：`UltimaWatchdogSync`，每 15 分钟触发，cmd /c + 日志重定向，交互式令牌（当前用户已登录，vault/git 凭证可用）。
 - 建任务命令：
   ```
