@@ -10,6 +10,8 @@
 
 **所有任务的处理与下发统一走[任务工作流范式](_shared/paradigms/UltimaAI-任务工作流范式.md)**：登记 → 计划评审 → 执行 → 独立审计 → 有界修复 → 验收 → 冻结。**执行端无关**——Codex API / DeepSeek API / 未来模型都只是可替换执行适配器，替换入口不改变工作流本体；Codex 适配器细则见[Codex-外部执行端调用范式](_shared/paradigms/Codex-外部执行端调用范式.md)。规划/开发/独立审查分离，越界保护 fail-closed，缺 tag = 闭环未完成。
 
+**UltimaManager（任务控制面）已登记为 UltimaAgent 标准基础能力（2026-10-29）**：工单编号核发（G-WO-NAME-001）、全局队列主表登记、接管/来源/授权与前置核验；G-DISPATCH-001 自主推进版下为可选监督/审计工具，不阻塞产品推进。登记见[能力注册表](_shared/registry.md)（组件 `ultima-manager` + 能力 m29）与 `UltimaManager/docs/INDEX.md`。
+
 ## 阅读顺序
 
 1. 阅读既有[启动入口](_shared/启动入口.md)与[顶层架构标准](ULTIMA-STANDARD.md)。
