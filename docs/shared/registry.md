@@ -63,6 +63,10 @@
 
 ## 三、已登记能力（组件/模块）
 
+| 能力/组件 | 性质 | 权威源 | 状态 |
+|---|---|---|---|
+| **任务工作流范式（G-TASKFLOW-001）** | **全系任务处理与下发的标准基础能力**（执行端无关：登记→计划评审→执行→独立审计→有界修复→验收→冻结；Codex/DeepSeek/未来模型=可替换执行适配器） | `_shared/paradigms/UltimaAI-任务工作流范式.md` v1.0（2026-10-29 Owner 拍板；镜像 UltimaDocs tag gtaskflow-001-registered-20261029） | 已登记为标准组件（UltimaAgent registry.md v3.0 组件 `task-workflow-paradigm` + 能力清单 m28） |
+
 （随开发登记，防重复开发）
 
 ## 四、待办工单（任务队列登记）
