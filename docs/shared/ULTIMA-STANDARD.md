@@ -49,6 +49,14 @@
 
 ## 四、执行标准（每次开发/执行必须符合）
 
+### 全局强制规则 G-DISPATCH-001（2026-10-28 用户拍板自主推进版，取代 2026-10-24 旧版）
+
+**各项目自主推进开发，由项目方直接调用 Codex 执行；开发必须遵守本 STANDARD 与 INDEX 要求的规范队列底线（工单三段式 + DoR 五项 + 全局主表登记 + WIP 上限 + 冻结门 + 打 tag 铁律 + 回执必报），禁止绕过规范裸跑。** 适用于全部现有与后续项目，包括 Manager 自身；UltimaManager 不再作为前置准入闸门，改为可选监督/审计工具，不阻塞产品推进。已受派 worker 仅在其正式契约内执行。
+
+全局登记不等于准入，文档入口不等于授权；原目标、验收、预算、暂停及 Owner 冻结发布门继续有效。该条替代旧文档要求"必须经 Manager 统一调配"的表述，不自动改变历史回执或中止既有进程。规范入口见 [INDEX.md](INDEX.md) 与 [AGENTS.md](AGENTS.md)。
+
+### 既有执行要求
+
 1. **全链路**：需求 → 方案 → 工单 → 执行 → 验收 → 审计（不跳阶段、不省验收）
 2. **工单纪律**：三段式（文件精确/写什么可执行/验收封闭清单 + 禁止清单）；每 T 验收门全绿 + 越界声明
 3. **冻结门**：阶段报告产出 → AI 复核 → 冻结 tag（`stageN-frozen`），未冻结不进下一阶段
@@ -103,6 +111,7 @@ python sync-dual.py
 |---|---|---|
 | UltimaConsole | `5d0043cc6fd2441997c686a206053529` | https://gist.githubusercontent.com/ArkExlabs/5d0043cc6fd2441997c686a206053529/raw/product.json |
 | UltimaRadar | `49007d6263d79ec13d5c0f6e108bd007` | https://gist.githubusercontent.com/ArkExlabs/49007d6263d79ec13d5c0f6e108bd007/raw/product.json |
+| UltimaSkin | `f5ebd9599f5e6cb3601b5125a744cfda` | https://gist.githubusercontent.com/ArkExlabs/f5ebd9599f5e6cb3601b5125a744cfda/raw/product.json |
 | 其他产品 | 建仓后回填本表 | — |
 
 ### 5.5 各产品落盘状态表（2026-10-20 核查）
@@ -115,6 +124,7 @@ python sync-dual.py
 | UltimaEngine | 未建 | 未建 | 未建 | ✗ | GitHub 仓 + 镜像 + Gist + 脚本 |
 | UltimaGold | 未建 | 未建 | 未建 | ✗ | GitHub 仓 + 镜像 + Gist + 脚本 |
 | UltimaScan | ✓（私有） | 未建 | 未建 | ✗ | product.json + 镜像 + Gist + 脚本 |
+| UltimaSkin | ✓ | `ultimaskin-sync` ✓ | ✓ | ✓ | 看门狗暂缓（按需启用：项目启动后或 Owner 通知时再接入）；飞书灾备已建（URL 见产品 sync/README） |
 
 ### 5.6 执行端读取路径（不再索要授权/账号）
 

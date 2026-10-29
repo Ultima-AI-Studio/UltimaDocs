@@ -7,6 +7,7 @@
 
 | 资源 | 位置 | 说明 |
 |---|---|---|
+| 唯一开发调配入口 | **各项目自主派发**；Manager 为可选监督/审计工具（`H:\UltimaAI\UltimaManager`）；根规则见 `H:\UltimaAI\AGENTS.md` | G-DISPATCH-001（2026-10-28 自主推进版）：各项目直接调用 Codex 开发，遵守规范队列标准；未建队列先补建再派发，禁止裸派。Manager 不再作为前置准入闸门 |
 | 范式权威源 | `H:\UltimaAI\_shared\paradigms\` | UI 样式 / Codex 调用 / 全局根目录 / 存档总纲 |
 | 品牌资产 | `H:\UltimaAI\_shared\brand\` | 主 logo（astronaut.png）/ 组合规范 / showcase |
 | 模板 | `H:\UltimaAI\_shared\templates\` | 工单 / 审计 / 报告 / **项目引导索引** |
