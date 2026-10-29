@@ -1,8 +1,10 @@
 # Codex 外部执行端调用范式
 
-> 版本：v1.1 ｜ 状态：批准生效 ｜ 适用范围：Ultima 全系产品（UltimaConsole / UltimaRadar / UltimaGold / UltimaEngine / UltimaAgent / UltimaScan / UltimaSentinel 等所有挂 Ultima 前缀项目）及后续新项目
+> **G-DISPATCH-001（2026-10-24 用户明确批准，优先于本文旧派发职责描述）**：全部项目开发必须由 UltimaManager 控制管理器统一入队、准入和调配，包括 Manager 自身。项目、聊天窗口、独立脚本、旧调度器不得自行入列开工；未接管或 Manager 未就绪时只读等待。下文 CLI 参数、提示词及回执示例仅供 Manager 已授权执行适配器使用，不授权窗口直接运行。原验收、预算、暂停与 Owner 冻结/发布门保留。详见[统一接入范式](UltimaAI-项目接入与任务队列派发范式.md)。
+
+> 版本：v1.3 ｜ 状态：批准生效 ｜ 适用范围：Ultima 全系产品（UltimaConsole / UltimaRadar / UltimaGold / UltimaEngine / UltimaAgent / UltimaScan / UltimaSentinel 等所有挂 Ultima 前缀项目）及后续新项目
 > 唯一权威源：`H:\UltimaAI\_shared\paradigms\Codex-外部执行端调用范式.md`（镜像：ultima-docs-repo `docs/shared/`）
-> 依据：本范式由 2026-10-19 UltimaConsole v1.1-N6 实战（Codex 会话 01a15071）验证后固化；v1.1 新增任务路由标准（2026-10-19 用户拍板）。模型/工具链变化时按 §8 维护更新。
+> 依据：本范式由 2026-10-19 UltimaConsole v1.1-N6 实战（Codex 会话 01a15071）验证后固化；v1.1 新增任务路由标准（2026-10-19 用户拍板）；**v1.2 新增派发执行环境（静默 + 精简 CODEX_HOME，2026-10-28 修复 Codex 派发弹窗后固化）**；**v1.3 新增打 tag 铁律（§6.1，2026-10-28 用户明确要求：每个关键修改或更新必须打 tag，防止进度偏差导致开发倒退）**。模型/工具链变化时按 §8 维护更新。
 
 ---
 
@@ -10,11 +12,12 @@
 
 | 角色 | 是谁 | 职责 |
 |---|---|---|
-| 主脑（调度端） | 豆包 | 制定任务、写工单、派发、监控执行顺序/目标/进度/结果、定时审计、验收冻结 |
+| 交互与请求端 | 用户及助手 | 澄清目标、记录工单与入队请求、只读观察，不独立派发开发 |
+| 唯一控制管理器 | UltimaManager | 项目接管、准入与队列调配、执行监督、组织独立审计和有界接续；不得代签 Owner |
 | 执行端 | Codex（`codex exec` 非交互会话） | 照工单逐 T 执行，每 T 自证 Gate 证据，输出标准化回执 |
 | 门禁 | 用户 | 只在立项/方案/发布/大变更门介入，不逐行盯实现 |
 
-铁律：**豆包只监控执行顺序/目标/进度/结果并分派给 Codex，不规划不拆解**；审查与执行分离（开发方不自审）；人只在门禁介入。
+铁律：**所有项目开发由 UltimaManager 统一调配**；规划、开发和独立审查分离；只有人类能完成原规定的 Owner 验收、冻结和发布批准。**每个关键修改或更新必须打 tag（§6.1），防止进度偏差导致开发倒退。**
 
 ---
 
@@ -22,11 +25,11 @@
 
 | 任务类型 | 路由 | 说明 |
 |---|---|---|
-| **产出型**：报告 / 方案 / 审计 / 代码 / 文档整理等一切可写成封闭工单的任务 | **默认派 Codex** | 豆包把需求转成标准工单（背景、验收门、禁止项、必要上下文载荷）→ 派 Codex 照单执行 → 豆包验收回执、冻结交付。豆包不做实质产出 |
+| **项目产出型**：报告 / 方案 / 审计 / 代码 / 文档整理等可写成封闭工单的任务 | **经 Manager 准入后派 Codex** | 交互端提交标准工单和必要上下文 → Manager 核对来源/权限/资源/预算后入队调配 → 独立验收审计 → 保留原人类门 |
 | **交互型**：实时问答、现场决策确认、用户偏好确认、门禁拍板、需要多轮对话澄清 | **豆包直做** | 强制转 Codex 会增加补上下文的往返，此类任务豆包直接处理 |
 
 规则：
-1. 用户提出报告/方案/审计类需求时，默认按产出型处理：先转工单再派 Codex，不再由豆包直接思考产出。
+1. 用户提出项目报告/方案/审计等产出需求时，先转为 Manager 入队请求；不得直接启动执行端。用户明确要求的控制面规则记录与交互确认可由当前助手办理。
 2. 工单质量决定产出质量：豆包派单时把约束、上下文、验收标准写全（交接载荷见 §5）。
 3. **本路由对所有会话窗口生效（新开窗口与旧工作窗口一律执行）**，由主脑在派单时声明路由归属。
 4. 不确定归属时：能写成封闭工单且验收可判定的 → 产出型派 Codex；需要用户在场决策的 → 交互型豆包直做。
@@ -51,10 +54,12 @@
 ## 2. 调用方式（Windows 已验证命令形态）
 
 ```powershell
+# 派发执行环境（强制）：先设精简 CODEX_HOME，再执行（详见 §2.1）
+$env:CODEX_HOME = 'C:\Users\Administrator\.codex-cli'
 cmd /c "codex.exe exec -m gpt-5.6-sol --dangerously-bypass-approvals-and-sandbox - < tasks\queue\dispatch-<工单号>-prompt.txt"
 ```
 
-- codex.exe 绝对路径：`C:\Users\Administrator\AppData\Local\Programs\OpenAI\Codex\bin\codex.exe`
+- codex.exe 绝对路径：`C:\Users\Administrator\AppData\Local\Programs\OpenAI\Codex\bin\codex.exe`（登录版，auth_mode=chatgpt）
 - 工作目录：**项目根**（如 `H:\UltimaAI\UltimaConsole`），prompt 文件用相对路径
 - 会话模型：`codex exec` 非交互；会话 originator 必须是 `codex_exec`（仅归档工单+同步状态 ≠ 派发，必须真正触发 exec 才算派发）
 
@@ -66,15 +71,19 @@ cmd /c "codex.exe exec -m gpt-5.6-sol --dangerously-bypass-approvals-and-sandbox
 | 显式 `-m` | 默认模型已失效（§1），不传必报 not supported |
 | 沙箱 | 本机存在 helper 缺失 / SID 解析失败（`CodexSandboxOffline 1332`）时，配合用户完全访问授权使用 `--dangerously-bypass-approvals-and-sandbox`；有正常沙箱环境的机器不得滥用 |
 | 后台执行 | 长任务用 `run_in_background` 挂起，轮询回执，不阻塞主脑 |
+| **精简 CODEX_HOME（强制）** | 派发必须设 `CODEX_HOME=C:\Users\Administrator\.codex-cli`（该目录仅含 model 配置 + auth，**无插件 / MCP / notify / desktop**）。禁止用桌面应用配置 `~\.codex` 直接派发，否则 Codex 启动会拉起 desktop-commander / cua-repl / rea / xcodebuild 等 MCP 子进程并弹窗；队列引擎已在 `run_worker.py` 注入此变量，手工派发须自行设置 |
+| **窗口静默（强制）** | Codex CLI 必须 ≥ **0.159.2**（官方修复 Windows 子进程弹窗，现装 **0.165.0**）。派发全程不得出现终端窗口：主进程用 `CREATE_NO_WINDOW\|DETACHED_PROCESS`（派发器已内置），子进程由新版隐藏启动。验证方法：派发后进程树可见窗口应为 0（EnumWindows + IsWindowVisible 巡检） |
+| 登录版与 API 版 | API key（sk-proj-*）版受配额限制会 Quota exceeded，须用 ChatGPT 账号登录版；模型 `gpt-6.1-sol` 在 ChatGPT 账号下不可用，用 `gpt-5.6-sol` |
 
 ### 2.2 派发 prompt 文件（`tasks\queue\dispatch-<工单号>-prompt.txt`）必含内容
 
-1. 扮演声明：`Act as the Ultima coding executor`
-2. 工单路径：`tasks/queue/wo-<工单号>.md`
-3. 执行顺序：按 T0→Tn 逐条，Gate PASS 再进下一条
-4. 证据落盘：每 T 记录 Gate 证据到 `docs/reports/stage-<阶段>.md` + `docs/reports/evidence/<阶段>/`
-5. 回执字段：根因结论 / 产出路径 / 验收证据 / 越界声明（无=明确写"无"）
-6. 临时文件：执行完由主脑清理（dispatch prompt 不入仓）
+1. **引导索引**：首段强制引用 `docs/INDEX.md` —— "先读项目引导索引 INDEX.md，按其权威源地图定位规范，再执行工单"（INDEX 缺失=DoR 不满足，禁止派发）
+2. 扮演声明：`Act as the Ultima coding executor`
+3. 工单路径：`tasks/queue/wo-<工单号>.md`
+4. 执行顺序：按 T0→Tn 逐条，Gate PASS 再进下一条
+5. 证据落盘：每 T 记录 Gate 证据到 `docs/reports/stage-<阶段>.md` + `docs/reports/evidence/<阶段>/`
+6. 回执字段：根因结论 / 产出路径 / 验收证据 / 越界声明（无=明确写"无"）
+7. 临时文件：执行完由主脑清理（dispatch prompt 不入仓）
 
 ---
 
@@ -87,10 +96,11 @@ cmd /c "codex.exe exec -m gpt-5.6-sol --dangerously-bypass-approvals-and-sandbox
 | 状态镜像 | `tasks/queue/queue-status.json` | `queue-status-gen.py` 生成：total/frozen/in_progress/blocked/wip |
 | **全局主表（2026-10-19 新增）** | `_shared\queue\global-queue-index.md` | **全项目监察总表**：所有项目派 Codex 的工单必须登记一行（项目+工单+状态+冻结门+回执），看门狗巡检此表；只聚合状态不复制正文（防双源漂移） |
 
-状态流转：`待派发 → 执行中 → 逐 T 验收 → 已完成（frozen）`
+状态流转：`待准入 → 等待调配 → 执行中 → 配置验收 → 独立审计 → 技术阶段通过 → 原 Owner 门 → 已冻结`；技术阶段通过不等于自动冻结。
 
 硬约束：
-- WIP 上限：**执行中 ≤2 张、审计中 ≤1 张（全项目合计）**
+- **派单模型（2026-10-20 用户拍板）**：**一张工单 = 一次 `codex exec` = 一个独立进程/会话**（`dispatch-<工单号>-prompt.txt` 独立文件）；**禁止"一包多单"**（一个会话内串行塞多张工单）。工单内部 T0→Tn 仍在该进程内顺序执行。
+- **WIP 双层上限（2026-10-20 用户拍板，替代全局 ≤2）**：**每项目执行中 ≤1**（同项目不并发，防抢改同一批文件）+ **全项目执行中进程 ≤3**（本机资源安全线）；**审计中 ≤1 不变**。跨项目工单可同时开独立进程并行。
 - 前置冻结门：未冻结不进下一阶段；`mN-frozen` tag/阶段报告 `docs/reports/stage-mN.md` 缺失=冻结门未闭合
 - 队列主表是唯一权威，queue-status.json 只是其镜像，改状态先改主表再重新生成
 - **派单前必须先在全局主表登记**（项目/工单/状态三要素），禁止绕过全局登记直接派 Codex；没有本地队列的项目（Engine/Gold/Radar/Scan 等）派单时同步补建 `tasks\queue\`
@@ -128,16 +138,39 @@ cmd /c "codex.exe exec -m gpt-5.6-sol --dangerously-bypass-approvals-and-sandbox
 
 ---
 
-## 6. 验收与闭环（监督端=豆包执行）
+## 6. 验收与闭环（Manager 组织，原 Owner 门保留）
 
 1. 读阶段报告 `docs/reports/stage-<v>-<n>.md`：Gate 逐条核对（T0-C1/C2、T1-C1/C2、Tn 全 PASS）
 2. 核证据目录 `docs/reports/evidence/<阶段>/` 存在且与报告路径一致
-3. 冻结：主表状态改 `已完成（<tag>-frozen）` → 重跑 `queue-status-gen.py`
+3. 技术验收与独立审计通过后记录阶段通过；需要冻结时，只有取得原规定的 Owner 批准和实际冻结证据后才能登记 `<tag>-frozen`，再生成状态镜像。
 4. commit + push GitHub（修复源码 + 报告 + 证据 + 主表 + queue-status）
 5. 三端同步（§7）
 6. 验证截图不污染主仓（fab-* 等过程截图不入仓，evidence 正式证据入仓）
 
 ---
+
+## 6.1 打 tag 铁律（2026-10-28 用户明确要求，全系强制）
+
+> 目的：防止进度偏差导致开发倒退。每个关键修改或更新必须在 git 中留 tag 锚点，让"当前真实进度"可被任意时刻核验、可回滚。
+
+**适用对象（每项完成即打）**：
+
+| 节点 | tag 命名示例 | 谁打 |
+|---|---|---|
+| 版本冻结 | `v0.1.0` / `v1.2.0`（SemVer） | 主脑（Owner 批准后） |
+| 阶段/工单冻结 | `m8-frozen` / `v11-n6-frozen` / `stage1-v1.0-frozen` | 主脑（验收通过后） |
+| 系列收口 | `m2-series-frozen` | 主脑（批次全冻结后） |
+| **关键修改/修复闭环** | `<product>-<节点>-<日期>` 或复用上述冻结 tag | 执行端 + 主脑双确认 |
+
+**规则**：
+1. **关键修改 = 改了核心代码/配置/队列/范式/数据结构，或涉及版本/接口/冻结边界的任何改动**；小范围纯文档、注释、证据落盘可不打独立 tag，但须随所在工单冻结 tag 一并锚定。
+2. **先打 tag 再宣称完成**：回执/报告宣称"已完成/已闭环/已冻结"时，对应 git tag 必须已存在（`git tag -l` 可查），缺 tag = 闭环未完成。
+3. **tag 与 commit 一一对应**：每个 tag 指向具体 commit SHA（`git rev-parse <tag>` 可解析），tag 缺失 SHA 或指向漂移 = 异常。
+4. **tag 命名唯一**：同一节点不得重复/覆盖 tag；重打必须 `-f` 并登记原因，禁止静默覆盖历史锚点。
+5. **看门狗/审计校验点**：阶段报告、冻结声明、回执中出现的 tag 全部可解析、指向正确 commit；发现"声称冻结但无 tag"即判定冻结门未闭合。
+6. 跨端同步：tag 随 commit 推 GitHub/Gitee（`git push --tags`），App/远端读取进度以 tag 为准。
+
+
 
 ## 7. 同步通道（队列状态三端一致）
 
@@ -163,6 +196,7 @@ cmd /c "codex.exe exec -m gpt-5.6-sol --dangerously-bypass-approvals-and-sandbox
 | 参数未传入卡 stdin | `- < dispatch-<id>-prompt.txt` 喂文件 |
 | 长时间无回执 | 先确认是否真正触发 exec（会话 originator=codex_exec）；只归档+同步≠派发 |
 | 执行端报"无法处理" | 升级回主脑（一次一主），不自行换路 |
+| 派发弹出一堆终端窗口 | Codex 版本过旧（<0.159.2）或未用精简 CODEX_HOME → `codex update` 升级至 ≥0.165.0，且派发设 `CODEX_HOME=C:\Users\Administrator\.codex-cli`（无插件/MCP/notify）；修复后进程树可见窗口应为 0 |
 
 ---
 
