@@ -36,6 +36,7 @@
 | 工单命名 | [全局工单命名标准](_shared/paradigms/UltimaAI-全局工单命名标准.md) | 新单 ID、显示标题、文件名、阶段关联和存量兼容 |
 | 能力登记 | [能力注册表](_shared/registry.md) | 复用能力和项目登记 |
 | 服务器资产台账 | [_shared/server-assets.md](_shared/server-assets.md) | 全系服务器唯一权威（规格/工具链/凭证指针）；变更只改该文件 |
+| 本地访问地址 | [_shared/server-assets.md](_shared/server-assets.md) §6.4 | **本地一律 `http://127.0.0.1:<端口>/` 直连**（不走域名/代理；域名仅供 VPS 生产 nginx 反代），各产品端口按 server-assets 分配表 |
 | 新项目索引 | [项目引导索引模板](_shared/templates/项目引导索引模板.md) | 新项目必读入口模板 |
 
 ## 项目入口
