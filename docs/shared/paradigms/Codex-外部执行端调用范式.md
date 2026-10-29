@@ -1,10 +1,12 @@
 # Codex 外部执行端调用范式
 
+> **上位工作流（G-TASKFLOW-001，2026-10-29 用户拍板）**：本范式是[UltimaAI 任务工作流范式](UltimaAI-任务工作流范式.md)的**执行适配器细则**——Codex 是当前默认执行端，替换为 DeepSeek API 或其他模型时只改适配层，任务处理与下发工作流（登记 → 计划评审 → 执行 → 独立审计 → 有界修复 → 验收 → 冻结）不变。
+
 > **G-DISPATCH-001（2026-10-28 用户明确批准自主推进版，优先于本文旧派发职责描述）**：各项目自主推进开发，由项目方直接调用 Codex 执行；不再要求经 UltimaManager 统一准入（Manager 改为可选监督/审计工具，不阻塞产品推进）。**必须遵守规范队列底线**：工单三段式 + DoR 五项 + 全局主表登记 + WIP 上限 + 冻结门 + 打 tag 铁律 + 回执必报；禁止绕过规范裸跑。下文 CLI 参数、提示词及回执示例供各项目方自主派发时使用。原验收、预算、暂停与 Owner 冻结/发布门保留。详见[项目接入与任务队列派发范式](UltimaAI-项目接入与任务队列派发范式.md)。
 
-> 版本：v1.4 ｜ 状态：批准生效 ｜ 适用范围：Ultima 全系产品（UltimaConsole / UltimaRadar / UltimaGold / UltimaEngine / UltimaAgent / UltimaScan / UltimaSentinel 等所有挂 Ultima 前缀项目）及后续新项目
+> 版本：v1.5 ｜ 状态：批准生效 ｜ 适用范围：Ultima 全系产品（UltimaConsole / UltimaRadar / UltimaGold / UltimaEngine / UltimaAgent / UltimaScan / UltimaSentinel 等所有挂 Ultima 前缀项目）及后续新项目
 > 唯一权威源：`H:\UltimaAI\_shared\paradigms\Codex-外部执行端调用范式.md`（镜像：ultima-docs-repo `docs/shared/`）
-> 依据：本范式由 2026-10-19 UltimaConsole v1.1-N6 实战（Codex 会话 01a15071）验证后固化；v1.1 新增任务路由标准（2026-10-19 用户拍板）；**v1.2 新增派发执行环境（静默 + 精简 CODEX_HOME，2026-10-28 修复 Codex 派发弹窗后固化）**；**v1.3 新增打 tag 铁律（§6.1，2026-10-28 用户明确要求：每个关键修改或更新必须打 tag，防止进度偏差导致开发倒退）**；**v1.4 G-DISPATCH-001 改为各项目自主推进调用 Codex（2026-10-28 用户拍板，Manager 不再作为唯一派发中枢）**。模型/工具链变化时按 §8 维护更新。
+> 依据：本范式由 2026-10-19 UltimaConsole v1.1-N6 实战（Codex 会话 01a15071）验证后固化；v1.1 新增任务路由标准（2026-10-19 用户拍板）；**v1.2 新增派发执行环境（静默 + 精简 CODEX_HOME，2026-10-28 修复 Codex 派发弹窗后固化）**；**v1.3 新增打 tag 铁律（§6.1，2026-10-28 用户明确要求：每个关键修改或更新必须打 tag，防止进度偏差导致开发倒退）**；**v1.4 G-DISPATCH-001 改为各项目自主推进调用 Codex（2026-10-28 用户拍板，Manager 不再作为唯一派发中枢）**；**v1.5 对齐 G-TASKFLOW-001：本文定位为执行适配器细则，上位工作流见 UltimaAI-任务工作流范式（2026-10-29 用户拍板：以后替换 Codex API/DeepSeek API 均走同一套任务工作流）**。模型/工具链变化时按 §8 维护更新。
 
 ---
 
