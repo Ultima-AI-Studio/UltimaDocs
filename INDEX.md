@@ -12,6 +12,7 @@
 2. 查阅[范式存档总纲](_shared/paradigms/Ultima-范式存档总纲.md)，再进入目标项目的 `docs/INDEX.md`。
 3. 涉及项目接入、任务入队或接续时，阅读[项目接入与任务队列派发范式](_shared/paradigms/UltimaAI-项目接入与任务队列派发范式.md)。其中 G-DISPATCH-001 自主推进版已由用户批准生效（2026-10-28），其余新增接入细则仍待复核；原工单验收和 Owner 决定保留。
 4. 按项目工单和真实执行证据核对就绪条件，各项目自主准入、自主派发 Codex，独立验收后登记冻结。
+5. **任务执行第一步必读** [Ultima Console 标准管理中枢范式](_shared/paradigms/UltimaAI-Console标准管理中枢范式.md)（能力 m30）：Console 是全系标准管理中枢——标准注册表 + 版本基线打 tag + 审计入口；Agent 侧按 §2.1 标准注册表进入对应权威源。
 
 ## 全局工单命名 G-WO-NAME-001
 
