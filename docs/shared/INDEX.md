@@ -12,13 +12,19 @@
 
 **UltimaManager（任务控制面）已登记为 UltimaAgent 标准基础能力（2026-10-29）**：工单编号核发（G-WO-NAME-001）、全局队列主表登记、接管/来源/授权与前置核验；G-DISPATCH-001 自主推进版下为可选监督/审计工具，不阻塞产品推进。登记见[能力注册表](_shared/registry.md)（组件 `ultima-manager` + 能力 m29）与 `UltimaManager/docs/INDEX.md`。
 
+## 全局沟通落盘规则 G-PERSIST-001（2026-10-29 用户批准建立）
+
+**每次沟通、每次回答，都必须提炼有用内容并及时落盘同步**：与 Owner 讨论确认的规则、决策、编号登记、范式更新、同步动作，统一登记到对应权威源（`_shared/` 范式/registry/台账 → 项目 docs → UltimaDocs 镜像 → 打 tag），禁止只停留在对话里不落盘、不写 tag。落盘是沟通的完成态，不是可选项。
+
 ## 阅读顺序
 
 1. 阅读既有[启动入口](_shared/启动入口.md)与[顶层架构标准](ULTIMA-STANDARD.md)。
 2. 查阅[范式存档总纲](_shared/paradigms/Ultima-范式存档总纲.md)，再进入目标项目的 `docs/INDEX.md`。
 3. 涉及任务处理/下发时，先读[任务工作流范式](_shared/paradigms/UltimaAI-任务工作流范式.md)（G-TASKFLOW-001，执行端无关）与[Codex 外部执行端调用范式](_shared/paradigms/Codex-外部执行端调用范式.md)（当前默认执行适配器）。
 4. 涉及项目接入、任务入队或接续时，阅读[项目接入与任务队列派发范式](_shared/paradigms/UltimaAI-项目接入与任务队列派发范式.md)。其中 G-DISPATCH-001 自主推进版已由用户批准生效（2026-10-28），其余新增接入细则仍待复核；原工单验收和 Owner 决定保留。
-5. 按项目工单和真实执行证据核对就绪条件，各项目自主准入、自主派发 Codex，独立验收后登记冻结。
+5. 产品要接入统一主控后台（UltimaAdmin CMS，端口 8913）时，先读[产品接入 UltimaAdmin CMS 范式](_shared/paradigms/UltimaAI-产品接入UltimaAdminCMS范式.md)：登记 → 数据（sync/product.json）→ 菜单（平台路由模板）→ 验收四步唯一路径；禁止手写多套后台页面、禁止改他人 product.json、禁止绕过登记挂菜单。
+6. **任务执行第一步必读** [Ultima Console 标准管理中枢范式](_shared/paradigms/UltimaAI-Console标准管理中枢范式.md)（能力 m30）：Console 是全系标准管理中枢——标准注册表 + 版本基线打 tag + 审计入口；Agent 侧按 §2.1 标准注册表进入对应权威源。
+7. 按项目工单和真实执行证据核对就绪条件，各项目自主准入、自主派发 Codex，独立验收后登记冻结。
 
 ## 全局工单命名 G-WO-NAME-001
 
@@ -37,11 +43,13 @@
 | 内容 | 入口 | 用途 |
 |---|---|---|
 | 项目接入、入队与接续 | [接入与派发范式](_shared/paradigms/UltimaAI-项目接入与任务队列派发范式.md) | 身份隔离、执行权威、准入清单、独立审计和人工门 |
+| 产品接入 CMS | [产品接入 UltimaAdmin CMS 范式](_shared/paradigms/UltimaAI-产品接入UltimaAdminCMS范式.md) | 登记→数据→菜单→验收四步；通用三件套模板，禁手写多套后台 |
 | 执行端调用 | [Codex 外部执行端调用范式](_shared/paradigms/Codex-外部执行端调用范式.md) | 既有工单、派发、回执及并发规则；**v1.2 已固化派发执行环境：Codex ≥0.165.0 + 精简 CODEX_HOME（静默无弹窗）**；历史命令与环境清单仍须在实际执行时重新核验 |
 | 全局工单登记 | [全局队列主表](_shared/queue/global-queue-index.md) | 聚合、预登记与证据入口；不是另一套派发器 |
 | 工单命名 | [全局工单命名标准](_shared/paradigms/UltimaAI-全局工单命名标准.md) | 新单 ID、显示标题、文件名、阶段关联和存量兼容 |
 | 能力登记 | [能力注册表](_shared/registry.md) | 复用能力和项目登记 |
 | 服务器资产台账 | [_shared/server-assets.md](_shared/server-assets.md) | 全系服务器唯一权威（规格/工具链/凭证指针）；变更只改该文件 |
+| 本地访问地址 | [_shared/server-assets.md](_shared/server-assets.md) §6.4 | **本地一律 `http://127.0.0.1:<端口>/` 直连**（不走域名/代理；域名仅供 VPS 生产 nginx 反代），各产品端口按 server-assets 分配表 |
 | 新项目索引 | [项目引导索引模板](_shared/templates/项目引导索引模板.md) | 新项目必读入口模板 |
 
 ## 项目入口
