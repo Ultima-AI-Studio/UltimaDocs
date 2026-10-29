@@ -169,6 +169,7 @@ cmd /c "codex.exe exec -m gpt-5.6-sol --dangerously-bypass-approvals-and-sandbox
 4. **tag 命名唯一**：同一节点不得重复/覆盖 tag；重打必须 `-f` 并登记原因，禁止静默覆盖历史锚点。
 5. **看门狗/审计校验点**：阶段报告、冻结声明、回执中出现的 tag 全部可解析、指向正确 commit；发现"声称冻结但无 tag"即判定冻结门未闭合。
 6. 跨端同步：tag 随 commit 推 GitHub/Gitee（`git push --tags`），App/远端读取进度以 tag 为准。
+7. **默认自动执行（2026-10-28 用户明确拍板，全产品生效）**：所有 Ultima 产品（Console/Radar/Gold/Sentinel/Scan/Agent/Engine/Admin/Manager 等）的关键修改或更新，完成即自动打 tag 并推送（`git tag <节点> && git push --tags`），**无需逐次向用户询问确认**；属默认动作的一部分。
 
 
 
