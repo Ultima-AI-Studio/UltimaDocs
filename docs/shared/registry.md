@@ -67,7 +67,7 @@
 |---|---|---|---|
 | **任务工作流范式（G-TASKFLOW-001）** | **全系任务处理与下发的标准基础能力**（执行端无关：登记→计划评审→执行→独立审计→有界修复→验收→冻结；Codex/DeepSeek/未来模型=可替换执行适配器） | `_shared/paradigms/UltimaAI-任务工作流范式.md` v1.0（2026-10-29 Owner 拍板；镜像 UltimaDocs tag gtaskflow-001-registered-20261029） | 已登记为标准组件（UltimaAgent registry.md v3.0 组件 `task-workflow-paradigm` + 能力清单 m28） |
 | **UltimaManager 任务控制面** | **全系任务管控标准基础能力**（工单编号核发 G-WO-NAME-001 / 全局队列主表登记 G-DISPATCH-001 / 接管·来源·授权·前置核验；自主推进版下为可选监督/审计工具，不阻塞产品推进） | `H:\UltimaAI\UltimaManager\docs\INDEX.md` + `sync/product.json` + `tasks/queue/index.md` + 全局主表 | 已登记为标准组件（UltimaAgent registry.md v3.1 组件 `ultima-manager` + 能力清单 m29）；wo-manager-v01 已冻结（OWNER_RELEASED_AND_FROZEN） |
-| **Ultima Console 标准管理中枢** | **全系标准管理中枢标准基础能力**（标准注册表 / 版本基线打 tag / 审计入口；Agent 任务执行第一步=读 Console 标准注册表；只管理标准不派发任务） | `_shared/paradigms/UltimaAI-Console标准管理中枢范式.md` v1.0（2026-10-29 Owner 拍板） | 已登记为标准组件（UltimaAgent registry.md v3.2 组件 `ultima-console-standard-hub` + 能力清单 m30）；本范式待 UltimaAgent 侧 registry 同步 |
+| **Ultima Console 标准管理中枢** | **全系标准管理中枢标准基础能力**（标准注册表 / 版本基线打 tag / 审计入口；Agent 任务执行第一步=读 Console 标准注册表；只管理标准不派发任务） | `_shared/paradigms/UltimaAI-Console标准管理中枢范式.md` v1.0（2026-10-29 Owner 拍板） | **已登记为标准组件（UltimaAgent registry.md v3.2 组件 `ultima-console-standard-hub` + 能力清单 m30）**；**已冻结**（镜像 UltimaDocs tag `console-standard-hub-v1.0-frozen-20261029`）；Agent 侧 registry 已同步 |
 
 （随开发登记，防重复开发）
 

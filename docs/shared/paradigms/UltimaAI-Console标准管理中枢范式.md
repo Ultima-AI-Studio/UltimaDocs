@@ -69,7 +69,9 @@ Console 维护全系标准注册表，Agent 在执行任何任务前必须读取
 - [x] 范式落盘 `_shared/paradigms/`
 - [x] registry.md 登记组件 `ultima-console-standard-hub` + 能力 m30
 - [x] INDEX 引用本范式（阅读顺序 + 引用表）
-- [ ] UltimaAgent 侧 registry 同步（登记后由 Agent 项目读入，不阻塞本范式生效）
+- [x] UltimaAgent 侧 registry 同步（docs/specs/registry.md v3.2）
+- [x] 同步 UltimaDocs 镜像（tag `console-standard-hub-v1.0-frozen-20261029`，2026-10-29 push f28da3e）
+- [x] **冻结完成**（本范式 v1.0，Owner 2026-10-29 拍板）
 
 ## 7. 维护
 
