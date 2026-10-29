@@ -68,6 +68,7 @@
 | **任务工作流范式（G-TASKFLOW-001）** | **全系任务处理与下发的标准基础能力**（执行端无关：登记→计划评审→执行→独立审计→有界修复→验收→冻结；Codex/DeepSeek/未来模型=可替换执行适配器） | `_shared/paradigms/UltimaAI-任务工作流范式.md` v1.0（2026-10-29 Owner 拍板；镜像 UltimaDocs tag gtaskflow-001-registered-20261029） | 已登记为标准组件（UltimaAgent registry.md v3.0 组件 `task-workflow-paradigm` + 能力清单 m28） |
 | **UltimaManager 任务控制面** | **全系任务管控标准基础能力**（工单编号核发 G-WO-NAME-001 / 全局队列主表登记 G-DISPATCH-001 / 接管·来源·授权·前置核验；自主推进版下为可选监督/审计工具，不阻塞产品推进） | `H:\UltimaAI\UltimaManager\docs\INDEX.md` + `sync/product.json` + `tasks/queue/index.md` + 全局主表 | 已登记为标准组件（UltimaAgent registry.md v3.1 组件 `ultima-manager` + 能力清单 m29）；wo-manager-v01 已冻结（OWNER_RELEASED_AND_FROZEN） |
 | **Ultima Console 标准管理中枢** | **全系标准管理中枢标准基础能力**（标准注册表 / 版本基线打 tag / 审计入口；Agent 任务执行第一步=读 Console 标准注册表；只管理标准不派发任务） | `_shared/paradigms/UltimaAI-Console标准管理中枢范式.md` v1.0（2026-10-29 Owner 拍板） | **已登记为标准组件（UltimaAgent registry.md v3.2 组件 `ultima-console-standard-hub` + 能力清单 m30）**；**已冻结**（镜像 UltimaDocs tag `console-standard-hub-v1.0-frozen-20261029`）；Agent 侧 registry 已同步 |
+| **UltimaWallet 资产管理核心** | **Ultima Agent 多链资产管理插件（标准基础能力）**：嵌入 Agent 的资产管理核心组件（原生库/SDK），仅资产展示 + 发送（签名转账）+ 接收（地址/收款码）；EVM+BTC+Solana 三链；FFI 契约 v0.1.0（9 操作+2 事件）+ 四套 SDK（C#/TS/Kotlin/Swift）；私钥永不跨 FFI、签名先预览后确认 | `H:\UltimaAI\UltimaWallet\docs\INDEX.md` + `docs\ultima-wallet-core-scheme.md`（方案 v1.0 冻结）+ `docs\integration-standard.md`（接入标准 v1.0） | **已登记为 Ultima Agent 插件（UltimaAgent registry.md v3.3 组件 `ultima-wallet-core` + 能力清单 m31）**；v0.1 全量审计通过（16 项 PASS）；M0-M3/L3-SDK 全部 frozen；Windows DLL+C# SDK 实测可用 |
 
 （随开发登记，防重复开发）
 
