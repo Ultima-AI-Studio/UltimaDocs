@@ -1,10 +1,12 @@
 # Codex 外部执行端调用范式
 
-> **G-DISPATCH-001（2026-10-24 用户明确批准，优先于本文旧派发职责描述）**：全部项目开发必须由 UltimaManager 控制管理器统一入队、准入和调配，包括 Manager 自身。项目、聊天窗口、独立脚本、旧调度器不得自行入列开工；未接管或 Manager 未就绪时只读等待。下文 CLI 参数、提示词及回执示例仅供 Manager 已授权执行适配器使用，不授权窗口直接运行。原验收、预算、暂停与 Owner 冻结/发布门保留。详见[统一接入范式](UltimaAI-项目接入与任务队列派发范式.md)。
+> **上位工作流（G-TASKFLOW-001，2026-10-29 用户拍板）**：本范式是[UltimaAI 任务工作流范式](UltimaAI-任务工作流范式.md)的**执行适配器细则**——Codex 是当前默认执行端，替换为 DeepSeek API 或其他模型时只改适配层，任务处理与下发工作流（登记 → 计划评审 → 执行 → 独立审计 → 有界修复 → 验收 → 冻结）不变。
 
-> 版本：v1.3 ｜ 状态：批准生效 ｜ 适用范围：Ultima 全系产品（UltimaConsole / UltimaRadar / UltimaGold / UltimaEngine / UltimaAgent / UltimaScan / UltimaSentinel 等所有挂 Ultima 前缀项目）及后续新项目
+> **G-DISPATCH-001（2026-10-28 用户明确批准自主推进版，优先于本文旧派发职责描述）**：各项目自主推进开发，由项目方直接调用 Codex 执行；不再要求经 UltimaManager 统一准入（Manager 改为可选监督/审计工具，不阻塞产品推进）。**必须遵守规范队列底线**：工单三段式 + DoR 五项 + 全局主表登记 + WIP 上限 + 冻结门 + 打 tag 铁律 + 回执必报；禁止绕过规范裸跑。下文 CLI 参数、提示词及回执示例供各项目方自主派发时使用。原验收、预算、暂停与 Owner 冻结/发布门保留。详见[项目接入与任务队列派发范式](UltimaAI-项目接入与任务队列派发范式.md)。
+
+> 版本：v1.6 ｜ 状态：批准生效 ｜ 适用范围：Ultima 全系产品（UltimaConsole / UltimaRadar / UltimaGold / UltimaEngine / UltimaAgent / UltimaScan / UltimaSentinel 等所有挂 Ultima 前缀项目）及后续新项目
 > 唯一权威源：`H:\UltimaAI\_shared\paradigms\Codex-外部执行端调用范式.md`（镜像：ultima-docs-repo `docs/shared/`）
-> 依据：本范式由 2026-10-19 UltimaConsole v1.1-N6 实战（Codex 会话 01a15071）验证后固化；v1.1 新增任务路由标准（2026-10-19 用户拍板）；**v1.2 新增派发执行环境（静默 + 精简 CODEX_HOME，2026-10-28 修复 Codex 派发弹窗后固化）**；**v1.3 新增打 tag 铁律（§6.1，2026-10-28 用户明确要求：每个关键修改或更新必须打 tag，防止进度偏差导致开发倒退）**。模型/工具链变化时按 §8 维护更新。
+> 依据：本范式由 2026-10-19 UltimaConsole v1.1-N6 实战（Codex 会话 01a15071）验证后固化；v1.1 新增任务路由标准（2026-10-19 用户拍板）；**v1.2 新增派发执行环境（静默 + 精简 CODEX_HOME，2026-10-28 修复 Codex 派发弹窗后固化）**；**v1.3 新增打 tag 铁律（§6.1，2026-10-28 用户明确要求：每个关键修改或更新必须打 tag，防止进度偏差导致开发倒退）**；**v1.4 G-DISPATCH-001 改为各项目自主推进调用 Codex（2026-10-28 用户拍板，Manager 不再作为唯一派发中枢）**；**v1.5 对齐 G-TASKFLOW-001：本文定位为执行适配器细则，上位工作流见 UltimaAI-任务工作流范式（2026-10-29 用户拍板：以后替换 Codex API/DeepSeek API 均走同一套任务工作流）**；**v1.6 新增登记同步强制（2026-10-31 用户明确要求"以后再参与任务下发一定要走 UltimaAgent 的登记接口，否则它读不到做了哪些任务/更新"）：派发与状态变更必须在全局主表登记后主动触发 Manager 权威刷新（RuntimeAuthority.refresh），使新工单/新状态进入 Manager 18766 可读范围（UltimaAgent HUD 任务队列读 Manager API 的 items+legacy）**。模型/工具链变化时按 §8 维护更新。
 
 ---
 
@@ -13,11 +15,11 @@
 | 角色 | 是谁 | 职责 |
 |---|---|---|
 | 交互与请求端 | 用户及助手 | 澄清目标、记录工单与入队请求、只读观察，不独立派发开发 |
-| 唯一控制管理器 | UltimaManager | 项目接管、准入与队列调配、执行监督、组织独立审计和有界接续；不得代签 Owner |
+| 唯一控制管理器 | UltimaManager（**2026-10-28 起改为可选监督/审计工具**，不再作为产品推进前置准入闸门） | 可选：项目监督、独立审计、状态聚合；不阻塞产品自主派发 |
 | 执行端 | Codex（`codex exec` 非交互会话） | 照工单逐 T 执行，每 T 自证 Gate 证据，输出标准化回执 |
 | 门禁 | 用户 | 只在立项/方案/发布/大变更门介入，不逐行盯实现 |
 
-铁律：**所有项目开发由 UltimaManager 统一调配**；规划、开发和独立审查分离；只有人类能完成原规定的 Owner 验收、冻结和发布批准。**每个关键修改或更新必须打 tag（§6.1），防止进度偏差导致开发倒退。**
+铁律：**各项目自主推进开发，直接调用 Codex，并遵守规范队列底线（工单三段式 + DoR 五项 + 全局登记 + WIP + 冻结门 + 打 tag 铁律 + 回执必报）**；规划、开发和独立审查分离；只有人类能完成原规定的 Owner 验收、冻结和发布批准。**每个关键修改或更新必须打 tag（§6.1），防止进度偏差导致开发倒退。**
 
 ---
 
@@ -104,6 +106,7 @@ cmd /c "codex.exe exec -m gpt-5.6-sol --dangerously-bypass-approvals-and-sandbox
 - 前置冻结门：未冻结不进下一阶段；`mN-frozen` tag/阶段报告 `docs/reports/stage-mN.md` 缺失=冻结门未闭合
 - 队列主表是唯一权威，queue-status.json 只是其镜像，改状态先改主表再重新生成
 - **派单前必须先在全局主表登记**（项目/工单/状态三要素），禁止绕过全局登记直接派 Codex；没有本地队列的项目（Engine/Gold/Radar/Scan 等）派单时同步补建 `tasks\queue\`
+- **登记后必须触发 Manager 权威刷新（2026-10-31 用户拍板，v1.6 新增）**：全局主表登记（派发/状态变更/收口）后，必须主动执行一次 `RuntimeAuthority.refresh(store)`（等价于服务启动导入，见 §9.1），否则 UltimaAgent/HUD 读不到新工单与新状态。Manager 的 `legacy_records` 是快照，仅在服务启动或存在候选 stage 的调度轮才刷新；只登记不刷新 = 界面侧读不到，视为登记未闭环。
 
 ---
 
@@ -171,7 +174,27 @@ cmd /c "codex.exe exec -m gpt-5.6-sol --dangerously-bypass-approvals-and-sandbox
 6. 跨端同步：tag 随 commit 推 GitHub/Gitee（`git push --tags`），App/远端读取进度以 tag 为准。
 7. **默认自动执行（2026-10-28 用户明确拍板，全产品生效）**：所有 Ultima 产品（Console/Radar/Gold/Sentinel/Scan/Agent/Engine/Admin/Manager 等）的关键修改或更新，完成即自动打 tag 并推送（`git tag <节点> && git push --tags`），**无需逐次向用户询问确认**；属默认动作的一部分。
 
+---
 
+## 6.2 Manager 权威刷新命令（v1.6 新增，登记后必跑）
+
+> 目的：全局主表（唯一事实源）→ Manager `legacy_records`（快照，18766 API 供给 UltimaAgent HUD 任务队列）。只登记不刷新，界面侧读不到。刷新是**只读镜像**：不改审批/派发/调度，不产生新工单，仅同步全局主表最新行状态。
+
+```powershell
+# 触发一次权威刷新（等价服务启动导入；需 Python 能 import manager.*，用 Manager 仓解释器）
+$env:PYTHONPATH='H:\UltimaAI\UltimaManager\src'
+python -B -X utf8 -c "import sys; sys.path.insert(0, r'H:\UltimaAI\UltimaManager\src'); from manager.store import Store; from manager.runtime import RuntimeAuthority; s = Store(r'C:\Users\Administrator\AppData\Local\UltimaManager\manager.db'); a = RuntimeAuthority();
+try:
+    with a.locked():
+        snap = a.refresh(s)
+    print('REFRESH_OK imported=', snap.registry_rows, 'native=', snap.native_actors)
+except Exception as e:
+    print('REFRESH_FAIL', type(e).__name__, str(e))"
+```
+
+验证（刷新后必查）：GET `http://127.0.0.1:18766/api/v1/tasks?project_id=<产品>`（Bearer 鉴权，token 从 Manager `CredentialStore` 读取），确认目标工单在 `legacy[]` 中且 `registry_state` 为最新状态（executing/completed 等）。`agent_server.py` `_manager_active_tasks()` 读 items+legacy，其中 `registry_state ∈ {executing, in_progress, running, develop, plan, plan_review, audit}` 的行会显示到 UltimaAgent HUD 左下角任务队列。
+
+---
 
 ## 7. 同步通道（队列状态三端一致）
 
