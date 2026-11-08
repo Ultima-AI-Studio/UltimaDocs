@@ -72,7 +72,9 @@
 ## 6. 心跳与生命周期
 
 - 心跳周期 30s；连续 3 次缺失判异常
-- 状态机 6 态：`排队 → 派发中 → 执行中 → 自检 → 审计 → 终态(frozen/revise/failed/blocked/cancelled)`
+- 状态机**对齐已实现的** `tasks/queue_engine/state_machine.py`（**8 态**）：`QUEUED → EXECUTING → SELF-CHECK → AUDIT → COMPLETED`，旁支 `FAILED / BLOCKED / CANCELLED`；合法迁移由 `_ALLOWED` 表 fail-closed 校验
+- REVISE 不新增状态：审计 REVISE 走 `FAILED → QUEUED` 重新排队，修复轮次记工单卡 `revise_count`（≤2），不占新状态
+- 引擎无「派发中」态（派发与执行瞬时衔接）；如需展示派发窗口，在 run 目录写 `dispatch-record.json` 时间戳，**不改状态枚举**
 - 任一状态变更写全局主表；**主表是唯一权威**，看板与镜像只读
 
 ## 7. 主脑汇报凭据（硬）
@@ -105,7 +107,21 @@
 4. 跨模型审计是否默认开启（建议仅涉安全/资金/对外接口时开）
 5. 外脑用哪家 API、key 如何管理
 
-## 11. 与 v0.1 的差异
+## 11. 落地状态（纸面 vs 已实现）
+
+标准落盘 ≠ 能跑。按下表核对，**不要看到文档就以为链路已通**。
+
+| 能力 | 状态 | 证据 |
+|---|---|---|
+| 标准文档四层 | 已落盘 | 本文件 + 铁律 §9 + 范式 §12 + 根 INDEX；tag `g-orch-001-v0.2-20261108` |
+| DeepSeek 外脑 API | **有凭证，未接线** | `DEEPSEEK_API_KEY` 存在（35 位）；`tasks/queue_engine/*.py` 对 deepseek **零引用** |
+| 常驻监工 Agent | **不存在** | `guardian.py` 仅"父进程死了就退出"，无心跳、无异常事件上报 |
+| 状态机 | 已实现 8 态 | `state_machine.py`，含 `_ALLOWED` fail-closed 迁移表 |
+| ②③ 两轮自审 | **无载体** | 无独立会话调度，无人执行"审→修→复验" |
+| ④ 双会话复核 | **无载体** | 同上 |
+| 按此流程可派的工单卡 | **暂无** | 现存卡多为旧格式：无 §5 开源排查段、非三段式、无 tag/revise 字段 |
+
+## 12. 与 v0.1 的差异
 
 | 项 | v0.1 | v0.2 |
 |---|---|---|
