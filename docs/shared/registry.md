@@ -9,12 +9,14 @@
 |---|---|---|
 | 唯一开发调配入口 | **各项目自主派发**；Manager 为可选监督/审计工具（`H:\UltimaAI\UltimaManager`）；根规则见 `H:\UltimaAI\AGENTS.md` | G-DISPATCH-001（2026-10-28 自主推进版）：各项目直接调用 Codex 开发，遵守规范队列标准；未建队列先补建再派发，禁止裸派。Manager 不再作为前置准入闸门 |
 | 范式权威源 | `H:\UltimaAI\_shared\paradigms\` | UI 样式 / Codex 调用 / 全局根目录 / 存档总纲 |
+| UI 主题参考库 | `H:\UltimaAI\_shared\paradigms\assets\ui-style\theme-library\` | 外部 UI 主题样本归档（当前 1 库：`agent-display-v10` 十主题）。**仅结构研究参考**；样本受 PolyForm Noncommercial 1.0.0 约束，**禁止复制进任何商业产品仓库**，代码须自研。索引见该目录 `README.md` |
 | 品牌资产 | `H:\UltimaAI\_shared\brand\` | 主 logo（astronaut.png）/ 组合规范 / showcase |
 | 模板 | `H:\UltimaAI\_shared\templates\` | 工单 / 审计 / 报告 / **项目引导索引** |
 | 全局队列主表 | `H:\UltimaAI\_shared\queue\global-queue-index.md` | 全项目派单登记 + 看门狗巡检 |
 | 各项目入口 | `<产品>\docs\INDEX.md` | **项目引导索引（必读，派单首段强制引用）** |
 | 顶层架构标准 | `H:\UltimaAI\ULTIMA-STANDARD.md`（同步：UltimaDocs `docs/shared/ULTIMA-STANDARD.md` + 飞书范式库） | 强制对象=全部 Ultima 产品；第五节=落盘与同步标准 v2（账号/授权三查/上传动作/Gist 登记/各产品状态） |
 | GitHub | 组织 `Ultima-AI-Studio`：`UltimaDocs`（全局文档库）+ 各项目同名仓库 | 根路径只允许项目同名仓库，备份落内部子路径（ULTIMA-STANDARD §5.2） |
+| **阿里云账号与 CLI** | `H:\UltimaAI\_shared\阿里云CLI能力手册.md` | 唯一阿里云账号 `1035610218742193`（主账号 root 级 AK）；凭证托管于根 vault（`aliyun-accesskey-id` / `aliyun-accesskey-secret`），**明文不落文件**；官方 CLI 3.5.3 + 包装脚本 `tools\aliyun-ultima.ps1`；含命令清单与坑 P1-P6 |
 | Gitee | 空间 `Ultima-AI-Studio`：`<product>-sync` 镜像仓（私有全仓备份，如 ultimaconsole-sync / ultimaradar-sync） | 备份端；数据更新走各产品 `sync-dual.py`（Gist PATCH + Gitee contents PUT） |
 | Gist 主源 | 每产品公开 Gist 存 `sync/product.json`（免 token 匿名主源）；ID 登记见 ULTIMA-STANDARD §5.4 | Console `5d0043cc…` / Radar `49007d62…`，其他产品待补 |
 | VPS | `161.33.167.206`（一核1G·Ubuntu24.04·Radar 在用）｜ `198.13.46.208`（四核8G 实测·Debian13·未启用） | 域名 `namechatai.space`（挂 198）；工具链/安全（ufw+fail2ban）见各产品 INDEX §4 |
@@ -30,7 +32,9 @@
 | UltimaRadar | H:\UltimaAI\UltimaRadar | Solana 聪明钱监控 | B | 开发中 |
 | UltimaScan | H:\UltimaAI\UltimaScan | 加密项目全量归档+多维打标（永不剔除，标签表达风险） | A | 开发中（2026-10-19 补登） |
 | UltimaSentinel | H:\UltimaAI\UltimaSentinel | 智能合约+网站应用双域全 AI 自动审计（Scan→Audit 闭环） | A | 开发中（阶段0已冻结，原定名 UltimaAudit） |
+| UltimaGA | H:\UltimaAI\UltimaGA | MT5 智能交易助手（本地决策端 + VPS 授权服务 + MQL5 EA 分发，XAUUSD） | A | 开发中（2026-11-04 Stage 0 结构合规建档；策略待实盘验证，现参数实盘期望 −0.06/笔） |
 | UltimaConsole | H:\UltimaAI\UltimaConsole | 全产品监督仪表盘（鸿蒙 Pad，只监督不派发） | A | **v1.0.0 鸿蒙首版已发布（M1-M8 全部冻结）** |
+| UltimaZhiWei（知微） | H:\UltimaAI\UltimaZhiWei | 银发AI守护：面向国内安卓老年机用户的陪伴式云端 AI 反诈风险解读工具（只解释风险不拦截、决策权归老人；公益免费、无商业变现；独立 C 端产品，规则库由 UltimaSentinel 生产） | A | **立项冻结（2026-11-14，ZHIWEI-DEC-001）**：V1.0 产品方案已落盘（`docs/plans/UltimaZhiWei-产品方案-v1.0-20261114.md`，ZHIWEI-PLAN-001，DRAFT_OWNER_REVIEW）；下一道门=Owner 指定的外部大模型方案审计；技术方案/UX-UI/规则库契约/工单拆单暂不做；GitHub 远端、飞书备份、云端出口机暂不做；无障碍权限定为 V1.0 必做项（形态待拍板）；开发未启动，队列为空 |
 | UltimaOps（规划） | （待立项） | 运营管理产品：多平台账号配置 + 多账号管理 + 内容分发 + 数据回传（渠道运营技能的能力层载体） | A | 沟通规划中 |
 
 ## 二、技能注册（23 技能）
@@ -69,6 +73,8 @@
 | **UltimaManager 任务控制面** | **全系任务管控标准基础能力**（工单编号核发 G-WO-NAME-001 / 全局队列主表登记 G-DISPATCH-001 / 接管·来源·授权·前置核验；自主推进版下为可选监督/审计工具，不阻塞产品推进） | `H:\UltimaAI\UltimaManager\docs\INDEX.md` + `sync/product.json` + `tasks/queue/index.md` + 全局主表 | 已登记为标准组件（UltimaAgent registry.md v3.1 组件 `ultima-manager` + 能力清单 m29）；wo-manager-v01 已冻结（OWNER_RELEASED_AND_FROZEN） |
 | **Ultima Console 标准管理中枢** | **全系标准管理中枢标准基础能力**（标准注册表 / 版本基线打 tag / 审计入口；Agent 任务执行第一步=读 Console 标准注册表；只管理标准不派发任务） | `_shared/paradigms/UltimaAI-Console标准管理中枢范式.md` v1.0（2026-10-29 Owner 拍板） | **已登记为标准组件（UltimaAgent registry.md v3.2 组件 `ultima-console-standard-hub` + 能力清单 m30）**；**已冻结**（镜像 UltimaDocs tag `console-standard-hub-v1.0-frozen-20261029`）；Agent 侧 registry 已同步 |
 | **UltimaWallet 资产管理核心** | **Ultima Agent 多链资产管理插件（标准基础能力）**：嵌入 Agent 的资产管理核心组件（原生库/SDK），仅资产展示 + 发送（签名转账）+ 接收（地址/收款码）；EVM+BTC+Solana 三链；FFI 契约 v0.1.0（9 操作+2 事件）+ 四套 SDK（C#/TS/Kotlin/Swift）；私钥永不跨 FFI、签名先预览后确认；**UI 创建：由 Ultima Agent 统一执行，样式强制引用 `_shared/paradigms/Ultima-UI样式范式.md`（深色板 #0F1420，禁止自造色）** | `H:\UltimaAI\UltimaWallet\docs\INDEX.md` + `docs\ultima-wallet-core-scheme.md`（方案 v1.0 冻结）+ `docs\integration-standard.md`（接入标准 v1.0） | **已登记为 Ultima Agent 插件（UltimaAgent registry.md v3.3 组件 `ultima-wallet-core` + 能力清单 m31）**；v0.1 全量审计通过（16 项 PASS）；M0-M3/L3-SDK 全部 frozen；Windows DLL+C# SDK 实测可用 |
+
+| **阿里云 CLI + 凭证托管（aliyun-cli 3.5.3）** | **根级基础能力**：全系产品调用阿里云 API 的唯一标准通道（RPC 云产品 ECS/RDS/SLB/VPC/DNS/BSS + OSS）；凭证单一来源托管于根 vault，禁止各项目自带密钥 | `_shared\阿里云CLI能力手册.md`（权威用法）+ `tools\aliyun-ultima.ps1`（vault→环境变量→`--profile default`）+ `tools\bin\aliyun-cli\aliyun.exe`（3.5.3，SHA256 已校验）+ vault `aliyun-accesskey-id` / `aliyun-accesskey-secret` | **已登记（2026-11-14）**：STS 身份核验（root）、ECS DescribeInstances、OSS ls 三项实测通过；已知限制 P1-P6（profile 抢凭证/多值参数/无 jmespath 等）；风险 R8（旧 profile `tuppo-web` 明文 AK 待轮转） |
 
 （随开发登记，防重复开发）
 
