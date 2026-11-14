@@ -8,6 +8,8 @@
 
 > 2026-11-14 状态签注（边界冻结 · ZHIWEI-DEC-001）：**本轮仅立项，处于立项冻结态**。GitHub 项目远端仓库与推送、飞书备份、云端出口机分配、Sentinel 规则库接口契约、技术方案编制、工单拆单**全部暂不做**（Owner 有需求时另下指令）；下一道门 = **Owner 指定的其他大模型做一轮方案审计**，结论回来前不进入技术方案。**无障碍权限已确认为 V1.0 必做项**（页面文本识别在不上传原文、不 root、不截屏前提下唯一可行通道）；同步登记审核口径红线：对外一律写「适老化辅助阅读」，禁用「监控屏幕 / 读取他人内容」类表述，Google Play 不沿用国内口径；形态（可选授权 + 无授权降级）与渠道范围待 Owner 拍板 D1-D3。详见 `docs/references/决-2026-11-14-立项边界与无障碍权限专项.md`。
 
+> 2026-11-14 状态签注（云端载体落地 · ZHIWEI-OPS-001）：**阿里云 ECS `47.106.12.198` 已定为知微云端载体**，但只落运维骨架：`/opt/ultima-zhiwei-ops` 项目库建成（git 首提 `61e5eea`、权限 750、docs/bin/conf/rules/logs/data/backups 七目录），**不启任何常驻进程、不上业务服务**（V1.0 仍立项冻结）。本机已在承载既有 tuppo 站点（nginx 80/443，vhost `tuppo-acme/tuppo-local/tuppo-tls`，webroot `/var/www`），**知微运维动作不得触碰**。访问通道：云助手实测可用（`tools\aliyun_run_cmd.py`）；**SSH 不可用**（根因 `/run/sshd` 缺失导致 sshd 起不来 + root 无 `authorized_keys` + 密码认证关闭），修复须 Owner 放行（加公钥=权限变更，不擅自动）。
+
 ## 0. 三条铁律
 
 1. **先读本 INDEX → 再读权威范式 → 再动手**（Codex 派单 prompt 首段强制引用本文件）
@@ -29,6 +31,7 @@
 1. `docs\INDEX.md`（本文件）
 2. **`docs\plans\UltimaZhiWei-产品方案-v1.0-20261114.md`（ZHIWEI-PLAN-001）** —— 产品边界、八条设计原则、V1.0 功能范围、产品局限、合规口径的唯一依据；任何实现与之冲突以本方案为准（变更须走 Owner 评审）
    - 本轮边界与暂停项、无障碍权限专项：`docs\references\决-2026-11-14-立项边界与无障碍权限专项.md`（ZHIWEI-DEC-001）
+   - 云端载体（阿里云 ECS）档案：`docs\references\知微云端载体-阿里云ECS运维档案-20261114.md`（ZHIWEI-OPS-001）
 3. `H:\UltimaAI\_shared\paradigms\UltimaAI-任务工作流范式.md` —— G-TASKFLOW-001：登记 → 计划评审 → 执行 → 复核 → 有界修复 → 验收 → 冻结
 4. `H:\UltimaAI\_shared\paradigms\Codex-外部执行端调用范式.md` —— 派单 / 回执 / WIP / DoR
 5. `H:\UltimaAI\_shared\paradigms\UltimaAI-全局根目录范式-方案.md` —— 目录骨架 / 三层数据 / GitHub 桥接
@@ -51,7 +54,7 @@
 
 | IP | 本项目用途 |
 |---|---|
-| 暂无分配 | Owner 2026-11-14 明确：**云端出口机本轮暂不做**，有需求时另行指定；V1.0 云端 AI 研判与规则下发实际需要一台出口机，进技术方案阶段再定。**候选资产（已实测存在）**：阿里云主账号名下唯一 ECS —— 深圳 `cn-shenzhen` / 实例 `i-wz97a4ek6qb2o6cfytxh` / `ecs.e-c1m1.large` 2 核 2G / Ubuntu 26.04 / 公网 `47.106.12.198` / 3Mbps / 包年包月到期 2027-09-30。详见 `_shared\server-assets.md` §七 |
+| 阿里云 ECS `47.106.12.198`（深圳） | **已定为知微云端载体（2026-11-14）**，但**只建运维骨架、不上业务服务**：`/opt/ultima-zhiwei-ops` 项目库已建（git 首提 `61e5eea`，权限 750），含 docs/bin/conf/rules/logs/data/backups。**硬边界**：本机 nginx 已在 80/443 承载既有 tuppo 站点，知微运维动作不得改 `/etc/nginx`、`/var/www`。访问通道：云助手可用（脚本 `tools\aliyun_run_cmd.py`）；**SSH 当前不可用**（`/run/sshd` 缺失 + root 无授权公钥 + 密码认证关闭），修复待 Owner 放行。详情 `docs/references/知微云端载体-阿里云ECS运维档案-20261114.md`（ZHIWEI-OPS-001） |
 
 **凭证管理（强制）**：API key / Token / 服务器凭证**不写入本项目任何文件**，集中存于主脑加密 vault（`H:\UltimaAI\_shared\vault\`，DPAPI 加密，**禁入 git / 云盘 / 飞书 / 聊天**）；需用时向主脑申请，`vault.ps1 get <名称>` 解密取用，用后即弃。
 
@@ -98,6 +101,7 @@
 | 根索引入口 | ✅ `H:\UltimaAI\INDEX.md` 项目入口表 |
 | **方案审计（外部大模型）** | ⏳ 待 Owner 指定执行 —— 立项冻结门，未过不进技术方案 |
 | 无障碍权限 | ✅ 定为 V1.0 必做项（审核口径 + 信任对策见 ZHIWEI-DEC-001 §二）；形态待拍板 D1 |
+| **云端载体 OPS 项目库** | ✅ 已建（阿里云 ECS `47.106.12.198` → `/opt/ultima-zhiwei-ops`，ZHIWEI-OPS-001）；业务服务未部署 |
 | 技术落地方案 | ⏸ 本轮暂停（ZHIWEI-DEC-001） |
 | UX / UI 方案 | ⏸ 本轮暂停 |
 | Sentinel 规则库接口契约 | ⏸ 本轮暂停（跨产品边界，进技术方案阶段再谈） |
